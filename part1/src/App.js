@@ -57,5 +57,5 @@ const App = () => {
 		</div>
 	);
 };
-
+console.log(`let's study!!`)
 export default App;
