@@ -19,11 +19,11 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
-  
+  //preciso fazer uma função que gere um random number
   return (
     <div>
       {anecdotes[selected]}
-      <Button text="change"/>
+      <Button onClick={() => console.log(Math.floor(Math.random()*anecdotes.length))} text="change"/>
     </div>
   )
 }
