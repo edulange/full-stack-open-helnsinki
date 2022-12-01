@@ -17,13 +17,19 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
   ]
-   
   const [selected, setSelected] = useState(0)
   //preciso fazer uma função que gere um random number
+  const generateRandomNumber = Math.floor((anecdotes.length -1) * Math.random() + 1)
+  const setingRandom = () => {
+    
+  }
+
+  console.log('gerando randomnumb', generateRandomNumber, 'selected', selected)
+  
   return (
     <div>
-      {anecdotes[selected]}
-      <Button onClick={() => console.log(Math.floor(Math.random()*anecdotes.length))} text="change"/>
+      <p>{anecdotes[selected]}</p>
+      <Button onClick={() => setSelected(generateRandomNumber)} text="change quote"/>
     </div>
   )
 }
