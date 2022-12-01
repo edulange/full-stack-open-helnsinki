@@ -7,6 +7,7 @@ const Button = ({ text, onClick}) => {
     )
 }
 
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -19,17 +20,20 @@ const App = () => {
   ]
   const [selected, setSelected] = useState(0)
   //preciso fazer uma função que gere um random number
-  const generateRandomNumber = Math.floor((anecdotes.length -1) * Math.random() + 1)
+
   const setingRandom = () => {
-    
+    let value = 0;
+    value = Math.floor(Math.random() * anecdotes.length)
+    return value
   }
 
-  console.log('gerando randomnumb', generateRandomNumber, 'selected', selected)
+
+  console.log('selected', selected)
   
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <Button onClick={() => setSelected(generateRandomNumber)} text="change quote"/>
+      <Button onClick={() => setSelected(setingRandom())} text="change quote"/>
     </div>
   )
 }
