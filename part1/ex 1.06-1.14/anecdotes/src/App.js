@@ -20,6 +20,16 @@ const App = () => {
   ]
   const [selected, setSelected] = useState(0)
   //preciso fazer uma função que gere um random number
+  const points = {
+    0:0,
+    1:1,
+    2:2,
+    3:3,
+    4:4,
+    5:5,
+    6:6
+  }
+  const copy = {...points}
 
   const setingRandom = () => {
     let value = 0;
@@ -28,12 +38,14 @@ const App = () => {
   }
 
 
-  console.log('selected', selected)
-  
+console.log(points)
+
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
       <Button onClick={() => setSelected(setingRandom())} text="change quote"/>
+      <Button onClick={() => (points[selected] += 1) + console.log(points)} text="vote"/>
     </div>
   )
 }
