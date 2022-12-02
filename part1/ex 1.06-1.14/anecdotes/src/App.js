@@ -1,11 +1,7 @@
 import { useState } from 'react'
 
 
-const Button = ({ text, onClick}) => {
-    return (
-        <button onClick={onClick}>{text}</button>
-    )
-}
+const Button = ({ text, onClick}) => <button onClick={onClick}>{text}</button>
 
 
 const App = () => {
@@ -18,34 +14,38 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
   ]
+ 
   const [selected, setSelected] = useState(0)
-  //preciso fazer uma função que gere um random number
-  const points = {
-    0:0,
-    1:1,
-    2:2,
-    3:3,
-    4:4,
-    5:5,
-    6:6
-  }
-  const copy = {...points}
+  //tudo que precis ficar re-renderizando, eu preciso usar um useState 
+  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0])
+  // logo, faz sentido usar para a contagem dos votes 
 
-  const setingRandom = () => {
-    let value = 0;
-    value = Math.floor(Math.random() * anecdotes.length)
-    return value
+  let change ; // armazenar o número 
+  const generateRandomNumber = () => {
+    change = () => Math.floor(Math.random() * anecdotes.length)
+    setSelected(change)
   }
 
+  const name = useState("Eduardo")
+  console.log(name)
 
-console.log(points)
+const handleVotes = () => {
+  const copy = [...votes]
+  copy[selected] += 1
+  setVotes(copy)
+}
 
+// é uma função que chama outra função(no caso setselected)
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <Button onClick={() => setSelected(setingRandom())} text="change quote"/>
-      <Button onClick={() => (points[selected] += 1) + console.log(points)} text="vote"/>
+      <br />
+      has {votes[selected]} votes 
+      <br />
+      <button onClick={handleVotes}>Votesss</button>
+      <Button oncClick={handleVotes} text="vote"/>
+      <Button onClick={generateRandomNumber} text="next anecdote"/>
     </div>
   )
 }
