@@ -3,6 +3,16 @@ import { useState } from 'react'
 
 const Button = ({ text, onClick}) => <button onClick={onClick}>{text}</button>
 
+const Anecdote = ({ anecdotes , votes}) => {
+  return (
+  <>
+    {anecdotes}
+    <br/>
+    has {votes} votes
+    <br />
+  </>
+  )
+}
 
 const App = () => {
   const anecdotes = [
@@ -26,26 +36,26 @@ const App = () => {
     setSelected(change)
   }
 
-  const name = useState("Eduardo")
-  console.log(name)
-
 const handleVotes = () => {
   const copy = [...votes]
   copy[selected] += 1
   setVotes(copy)
 }
 
-// é uma função que chama outra função(no caso setselected)
+//Math.max (acha o maior num do array)
+const biggestNum = Math.max(...votes)
+const most = votes.indexOf(biggestNum)
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <br />
-      has {votes[selected]} votes 
-      <br />
+      <h2>Anecdote of the day</h2>
+      <Anecdote anecdotes={anecdotes[selected]} votes={votes[selected]}/>
+
       <button onClick={handleVotes}>Votesss</button>
-      <Button oncClick={handleVotes} text="vote"/>
       <Button onClick={generateRandomNumber} text="next anecdote"/>
+      <h2>Anecdote with most votes</h2>
+
+      <Anecdote anecdotes={anecdotes[most]} votes={votes[most]}/>
     </div>
   )
 }
