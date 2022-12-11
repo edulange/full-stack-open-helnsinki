@@ -4,13 +4,18 @@ const Part = ({ part }) => (
 		{part.name} {part.exercises}
 	</p>
 );
+
 const Content = ({ parts }) => (
 	<div>
 		{parts.map((part) => (
 			<Part part={part} key={part.id} />
 		))}
+    <p>
+      Total of {parts.reduce((acc, {exercises}) => acc + exercises, 0)} exercises
+    </p>
 	</div>
 );
+//jesus christ xDDD, this is awesome
 
 const Course = ({ course }) => {
 	return (
@@ -44,6 +49,8 @@ const App = () => {
 			},
 		],
 	};
+
+console.log('course.parts', course.parts.reduce((acc, {exercises}) => acc + exercises, 0))
 
 	return <Course course={course} />;
 };
