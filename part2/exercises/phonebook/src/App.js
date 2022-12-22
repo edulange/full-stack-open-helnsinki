@@ -6,10 +6,8 @@ const Numbers = ( {persons} ) => {
   )
 }
 
-const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', id: 1, }, { name: 'Testando', id: 2,}
-  ]) 
+const App = (props) => {
+  const [persons, setPersons] = useState(props.persons) 
   const [newName, setNewName] = useState('')
 
   const addName = (event) => {
