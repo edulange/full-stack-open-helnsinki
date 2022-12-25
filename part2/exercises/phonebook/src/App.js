@@ -1,12 +1,9 @@
 import { useState } from "react";
+import Persons from './Components/Persons'
+import Filter from './Components/Filter'
 
-const Numbers = ({ persons }) => {
-	return (
-		<li>
-			{persons.name} {persons.number}
-		</li>
-	);
-};
+
+
 
 const App = (props) => {
 	const [persons, setPersons] = useState(props.persons);
@@ -34,32 +31,21 @@ const App = (props) => {
 		}
 	};
 
-	const handleNameChange = (event) => {
-		setNewName(event.target.value);
-		//agora eu entendi, eu preicso fazer isso para ele renderizar a colocação de CADA letra
-	};
-	const handleNumberChange = (event) => {
-		setNewNumber(event.target.value);
-	};
-	const handleFilterChange = (event) => {
-		setNewFilter(event.target.value);
-	};
+
+  const handleChange = setValue => event => setValue(event.target.value)
 
 	return (
 		<div>
 			<h1>Phonebook</h1>
-			<p>
-				filter shown with{" "}
-				<input value={newFilter} onChange={handleFilterChange} />
-			</p>
+      <Filter value={newFilter} handleChange={handleChange(setNewFilter)}/>
 			<h2>Add a new</h2>
 			<form onSubmit={addName}>
 				<div>
-					name: <input value={newName} onChange={handleNameChange} />
+					name: <input value={newName} onChange={handleChange(setNewName)} />
 				</div>
 				<div>
 					number:
-					<input value={newNumber} onChange={handleNumberChange} />
+					<input value={newNumber} onChange={handleChange(setNewNumber)} />
 				</div>
 
 				<div>
@@ -69,7 +55,7 @@ const App = (props) => {
 			<h2>Numbers</h2>
 			<ul>
 				{persons.filter(person => person.name.toLowerCase().includes(newFilter)).map((person) => (
-					<Numbers persons={person} key={person.id} />
+					<Persons persons={person} key={person.id} />
 				))}
 			</ul>
 		</div>
