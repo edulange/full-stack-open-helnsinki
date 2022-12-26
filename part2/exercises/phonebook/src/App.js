@@ -1,9 +1,7 @@
 import { useState } from "react";
-import Persons from './Components/Persons'
-import Filter from './Components/Filter'
-
-
-
+import Persons from "./Components/Persons";
+import Filter from "./Components/Filter";
+import PersonForm from "./Components/PersonForm";
 
 const App = (props) => {
 	const [persons, setPersons] = useState(props.persons);
@@ -13,7 +11,9 @@ const App = (props) => {
 
 	const addName = (event) => {
 		//o addname só vai ser executado ao ser submitado
-		const checkName = persons.some((person) => newName === person.name);
+		const checkName = persons.some(
+			(person) => newName === person.name.toLowerCase()
+		);
 		if (!checkName) {
 			event.preventDefault();
 			const nameObject = {
@@ -31,32 +31,26 @@ const App = (props) => {
 		}
 	};
 
-
-  const handleChange = setValue => event => setValue(event.target.value)
+	const handleChange = (setValue) => (event) => setValue(event.target.value);
 
 	return (
 		<div>
 			<h1>Phonebook</h1>
-      <Filter value={newFilter} handleChange={handleChange(setNewFilter)}/>
+			<Filter
+				value={newFilter}
+				handleChange={handleChange(setNewFilter)}
+			/>
 			<h2>Add a new</h2>
-			<form onSubmit={addName}>
-				<div>
-					name: <input value={newName} onChange={handleChange(setNewName)} />
-				</div>
-				<div>
-					number:
-					<input value={newNumber} onChange={handleChange(setNewNumber)} />
-				</div>
-
-				<div>
-					<button type="submit">add</button>
-				</div>
-			</form>
+			<PersonForm
+				name={newName}
+				number={newNumber}
+				handleChangeName={handleChange(setNewName)}
+				handleChangeNumber={handleChange(setNewNumber)}
+				handleAddPerson={addName}
+			/>
 			<h2>Numbers</h2>
 			<ul>
-				{persons.filter(person => person.name.toLowerCase().includes(newFilter)).map((person) => (
-					<Persons persons={person} key={person.id} />
-				))}
+				<Persons persons={persons} newFilter={newFilter} />
 			</ul>
 		</div>
 	);
