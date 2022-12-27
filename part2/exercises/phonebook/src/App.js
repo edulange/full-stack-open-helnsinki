@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios'
+
 import Persons from "./Components/Persons";
 import Filter from "./Components/Filter";
 import PersonForm from "./Components/PersonForm";
@@ -9,6 +11,16 @@ const App = (props) => {
 	const [newNumber, setNewNumber] = useState("");
 	const [newFilter, setNewFilter] = useState("");
 
+	useEffect(() => {
+		console.log('effect')
+		axios
+		  .get('http://localhost:3001/persons')
+		  .then(response => {
+			console.log('promise fulfilled')
+			setPersons(response.data)
+		  })
+	  }, [])
+	  console.log('render', persons.length, 'persons')
 	const addName = (event) => {
 		//o addname só vai ser executado ao ser submitado
 		const checkName = persons.some(
