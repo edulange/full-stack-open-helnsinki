@@ -1,15 +1,15 @@
-```mermaid
 sequenceDiagram
-  A[User types in URL or clicks link] --> B(Browser sends HTTP request);
-  B --> C(Server receives request);
-  C --> D[Server looks up resource];
-  D --> E{Resource exists?};
-  E -- Yes --> F[Server retrieves resource];
-  F --> G[Server processes resource];
-  G --> H[Server wraps resource in HTTP response];
-  H --> I(Browser receives response);
-  I --> J[Browser parses response header];
-  J --> K[Browser requests additional resources (if any)];
-  K --> L[Browser parses and renders resource];
-  L --> M[Browser displays web page to user];
-```
+    participant BROWSER
+    participant SERVER
+    BROWSER->>SERVER: HTTP POST https://studies.cs.helsinki.fi/exampleapp/notes
+    SERVER-->>BROWSER: status code 302, do a new HTTP GET with adress notes
+    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+    SERVER-->>BROWSER: HTML code
+    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    SERVER-->>BROWSER: main.css
+    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    SERVER-->>BROWSER: main.js
+    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    SERVER-->>BROWSER: data.json
+
+
