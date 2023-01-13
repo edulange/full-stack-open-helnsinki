@@ -1,14 +1,13 @@
-
 ```mermaid
-graph TD;
-  A[User types in URL or clicks link] --> B(Browser sends HTTP request);
-  B --> C(Server receives request);
-  C --> D[Server looks up resource];
-  D --> E{Resource exists?};
-  E -- Yes --> F[Server retrieves resource];
-  F --> G[Server processes resource];
-  G --> H[Server wraps resource in HTTP response];
-  H --> I(Browser receives response);
-  I --> J[Browser parses and renders resource];
-  J --> K[Browser displays web page to user];
+
+sequenceDiagram
+  User ->> Browser: Types in URL or clicks link
+  Browser->> Server: HTTP Request
+  Server->> Server: Check if resource exists
+  Server-->> Browser: Resource not found (404)
+  Server->> Server: Retrieve resource
+  Server->> Server: Process resource
+  Server->> Browser: HTTP Response
+  Browser->> Browser: Parse and Render
+  Browser->> User: Display
 ```
