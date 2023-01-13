@@ -1,15 +1,12 @@
-sequenceDiagram
-    participant BROWSER
-    participant SERVER
-    BROWSER->>SERVER: HTTP POST https://studies.cs.helsinki.fi/exampleapp/notes
-    SERVER-->>BROWSER: status code 302, do a new HTTP GET with adress notes
-    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
-    SERVER-->>BROWSER: HTML code
-    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
-    SERVER-->>BROWSER: main.css
-    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
-    SERVER-->>BROWSER: main.js
-    BROWSER->>SERVER: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    SERVER-->>BROWSER: data.json
-
-
+```mermaid
+    graph TD;
+    A[User types in URL or clicks link] -->|HTTP Request| B(Server);
+    B -->|Check if resource exists| C{Resource Exists?};
+    C -- Yes -->|Retrieve resource| D[Server retrieves resource];
+    C -- No -->|Send 404 response| E[Server sends 404 Not Found];
+    D -->|Process resource| F[Server processes resource];
+    F -->|Wrap in HTTP response| G[Server wraps resource in HTTP response];
+    G -->|HTTP Response| H(Browser);
+    H -->|Parse and Render| I[Browser parses and renders resource];
+    I -->|Display| J[Browser displays web page to user];
+```
