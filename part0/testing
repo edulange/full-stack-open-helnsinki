@@ -12,4 +12,4 @@ graph TD;
   J --> K[Browser requests additional resources (if any)];
   K --> L[Browser parses and renders resource];
   L --> M[Browser displays web page to user];
-  ```
+```
