@@ -1,5 +1,5 @@
 ```mermaid
-graph TD;
+sequenceDiagram
   A[User types in URL or clicks link] --> B(Browser sends HTTP request);
   B --> C(Server receives request);
   C --> D[Server looks up resource];
