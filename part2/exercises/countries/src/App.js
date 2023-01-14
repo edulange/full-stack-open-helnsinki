@@ -3,38 +3,34 @@ import axios from "axios";
 import Filter from "./Components/Filter";
 
 const App = () => {
-	const [countries, setCountries] = useState([]);
-	const [newFilter, setNewFilter] = useState("");
+    
+    const [countries, setCountries] = useState([]);//os dados sao armazenados aqui
+    const [newFilter, setNewFilter] = useState("");
 
+    //Handle do input do usuário
+    const handleChange = (setValue) => (event) => setValue(event.target.value);
 
-	const handleChange = (setValue) => (event) => setValue(event.target.value);
+    //API é chamada e dados são armazenados no estado
+    useEffect(() => {
+        axios.get("https://restcountries.com/v3.1/all").then((response) => {
+            setCountries(response.data);
+        });
+    }, []);
 
-	// eu não preciso de um "npx json-server --port 3001 --watch db.json"
-	//pq? => pq eu chamo o API direto do site
-	useEffect(() => {
-		console.log("effect");
-		axios.get("https://restcountries.com/v3.1/all").then((response) => {
-			console.log("promise cumprida xD");
-			console.log("response.data", response.data);
-			setCountries(response.data);
-		});
-	}, []);
+    //Filtro para países com base na entrada do usuário
+    const filteredCountries = countries.filter(country => {
+        return country.name.common.toLowerCase().includes(newFilter.toLowerCase());
+    });
 
-//vamos fazer o filtrinho xD
-
-
-	return (
-		<div>
-			<Filter
-				value={newFilter}
-				handleChange={handleChange(setNewFilter)}
-			/>
-    <ul>
-    {countries.map((country) => (
-        <li key={1}>{country.name.common}</li>
-    ))}
-</ul>
-		</div>
-	);
+    return (
+        <div>
+            <Filter value={newFilter} handleChange={handleChange(setNewFilter)} />
+            <ul>
+                {filteredCountries.map((country) => (
+                    <li key={country.name.common}>{country.name.common}</li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 export default App;
