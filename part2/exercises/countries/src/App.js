@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Filter from "./Components/Filter";
+import CountryList from "./Components/CountryList";
+
 
 const App = () => {
     
@@ -25,11 +27,7 @@ const App = () => {
     return (
         <div>
             <Filter value={newFilter} handleChange={handleChange(setNewFilter)} />
-            <ul>
-                {filteredCountries.map((country) => (
-                    <li key={country.name.common}>{country.name.common}</li>
-                ))}
-            </ul>
+            <CountryList filteredCountries={filteredCountries} />
         </div>
     );
 };
