@@ -1,5 +1,5 @@
-const CountryList = ({ filteredCountries }) => {
-    if (filteredCountries.length <= 10) {
+const CountryList = ({ filteredCountries, countries}) => {
+    if (filteredCountries.length <= 10 && filteredCountries.length > 1) {
         return (
              (
                 <ul>
@@ -9,6 +9,8 @@ const CountryList = ({ filteredCountries }) => {
                 </ul>
             )
         );
+    } if (filteredCountries.length === 1) {
+        return console.log(countries)
     }
 };
 
