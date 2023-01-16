@@ -23,11 +23,16 @@ const App = () => {
     const filteredCountries = countries.filter(country => {
         return country.name.common.toLowerCase().includes(newFilter.toLowerCase());
     });
+    
+    let countryToDisplay = null;
+if (filteredCountries.length === 1) {
+    countryToDisplay = filteredCountries[0];
+}
 
     return (
         <div>
             <Filter value={newFilter} handleChange={handleChange(setNewFilter)} />
-            <CountryList filteredCountries={filteredCountries} countries={countries}/>
+            <CountryList filteredCountries={filteredCountries} countries={countries} newFilter={newFilter} countryToDisplay={countryToDisplay}/>
         </div>
     );
 };
