@@ -1,4 +1,4 @@
-const CountryList = ({ filteredCountries, countries, newFilter, countryToDisplay}) => {
+const CountryList = ({ filteredCountries, countryToDisplay}) => {
     if (filteredCountries.length <= 10 && filteredCountries.length > 1) {
         return (
              (
@@ -10,9 +10,15 @@ const CountryList = ({ filteredCountries, countries, newFilter, countryToDisplay
             )
         );
     } if (filteredCountries.length === 1) {
+        console.log(Object.values(countryToDisplay.languages))
         return (
             <div>
-                <h2>{countryToDisplay.name.common}</h2>
+                <h1>{countryToDisplay.name.common}</h1>
+                <p>{countryToDisplay.capital}</p>
+                <p>{countryToDisplay.area}</p>
+                    <p>{Object.values(countryToDisplay.languages)}</p>
+
+                
             </div>
         )
     }

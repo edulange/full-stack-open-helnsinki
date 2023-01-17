@@ -23,8 +23,7 @@ const App = () => {
 			.toLowerCase()
 			.includes(newFilter.toLowerCase());
 	});
-
-	let countryToDisplay = null;
+    let countryToDisplay = null;
 	if (filteredCountries.length === 1) {
 		countryToDisplay = filteredCountries[0];
 	}
@@ -37,8 +36,6 @@ const App = () => {
 			/>
 			<CountryList
 				filteredCountries={filteredCountries}
-				countries={countries}
-				newFilter={newFilter}
 				countryToDisplay={countryToDisplay}
 			/>
 		</div>
