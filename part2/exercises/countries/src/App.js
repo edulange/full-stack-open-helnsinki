@@ -7,6 +7,10 @@ const App = () => {
 	const [countries, setCountries] = useState([]); //os dados sao armazenados aqui
 	const [newFilter, setNewFilter] = useState("");
 
+	const handleCountryClick = (countryName) => {
+        setNewFilter(countryName);
+    }
+
 	//Handle do input do usuário
 	const handleChange = (setValue) => (event) => setValue(event.target.value);
 
@@ -37,6 +41,7 @@ const App = () => {
 			<CountryList
 				filteredCountries={filteredCountries}
 				countryToDisplay={countryToDisplay}
+				handleCountryClick={handleCountryClick}
 			/>
 		</div>
 	);
