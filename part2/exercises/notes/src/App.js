@@ -28,6 +28,13 @@ const App = () => {
     }
     setNotes(notes.concat(noteObject)) //ele cria uam copia do array, nunca deve mudar o estado diretamente
     setNewNote('')
+
+    axios
+    .post('http://localhost:3001/notes', noteObject)
+    .then(response => {
+      setNotes(notes.concat(response.data))
+      setNewNote('')
+    })
   }
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)  //para aparecer na página ele precisa ser renderizado, logo precisa alterar o setnewnote
