@@ -68,5 +68,3 @@ const notesToShow = showAll ? notes : notes.filter(note => note.important === tr
   )
 }
 export default App 
-
-console.log('imtrying my best')
