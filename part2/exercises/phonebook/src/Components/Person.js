@@ -1,7 +1,16 @@
-const Person = ({ name, number, id }) => {
+const Person = ({ name, number }) => {
+	const deleteRequest = () => {
+		var result = window.confirm("Press a button!");
+		if (result == true) {
+			console.log("OK was pressed.")
+		} else {
+			console.log("Cancel was pressed.")
+		}
+	}
 	return (
-		<li key={id}>
+		<li>
 			{name} {number}
+			<button onClick={deleteRequest} >Delete</button>
 		</li>
 	);
 };

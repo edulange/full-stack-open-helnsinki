@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import axios from 'axios'
 
 import Persons from "./Components/Persons";
 import Filter from "./Components/Filter";
 import PersonForm from "./Components/PersonForm";
+import numbersService from "./services/phonenumbers";
 
 const App = (props) => {
 	const [persons, setPersons] = useState(props.persons);
@@ -12,15 +12,12 @@ const App = (props) => {
 	const [newFilter, setNewFilter] = useState("");
 
 	useEffect(() => {
-		console.log('effect')
-		axios
-		  .get('http://localhost:3001/persons')
-		  .then(response => {
-			console.log('promise fulfilled')
-			setPersons(response.data)
-		  })
-	  }, [])
-	  console.log('render', persons.length, 'persons')
+		console.log("effect começou aqui");
+		numbersService.getAll().then((initialPhoneNumbers) => {
+			setPersons(initialPhoneNumbers);
+		});
+	}, []);
+
 	const addName = (event) => {
 		//o addname só vai ser executado ao ser submitado
 		const checkName = persons.some(
@@ -33,9 +30,11 @@ const App = (props) => {
 				id: persons.length + 1,
 				number: newNumber,
 			};
-			setPersons(persons.concat(nameObject));
-			setNewName("");
-			setNewNumber("");
+			numbersService.create(nameObject).then((returnedPerson) => {
+				setPersons(persons.concat(returnedPerson));
+				setNewName("");
+				setNewNumber("");
+			});
 		} else {
 			event.preventDefault();
 			alert(`${newName} is already added to phonebook`);
