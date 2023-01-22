@@ -4,6 +4,7 @@ import Persons from "./Components/Persons";
 import Filter from "./Components/Filter";
 import PersonForm from "./Components/PersonForm";
 import numbersService from "./services/phonenumbers";
+import axios from "axios";
 
 const App = (props) => {
 	const [persons, setPersons] = useState(props.persons);
@@ -12,7 +13,6 @@ const App = (props) => {
 	const [newFilter, setNewFilter] = useState("");
 
 	useEffect(() => {
-		console.log("effect começou aqui");
 		numbersService.getAll().then((initialPhoneNumbers) => {
 			setPersons(initialPhoneNumbers);
 		});
@@ -35,6 +35,13 @@ const App = (props) => {
 				setNewName("");
 				setNewNumber("");
 			});
+			axios
+			.post("http://localhost:3001/persons", nameObject)
+			.then((returnedPerson) => {
+				setPersons(persons.concat(returnedPerson));
+				setNewName("");
+				setNewNumber("");
+			});
 		} else {
 			event.preventDefault();
 			alert(`${newName} is already added to phonebook`);
@@ -44,6 +51,11 @@ const App = (props) => {
 
 	const handleChange = (setValue) => (event) => setValue(event.target.value);
 
+	const handleDelete = (id) => {
+		numbersService.remove(id).then(() => {
+			setPersons(persons.filter(person => person.id !== id))
+		})
+	}
 	return (
 		<div>
 			<h1>Phonebook</h1>
@@ -59,9 +71,14 @@ const App = (props) => {
 				handleChangeNumber={handleChange(setNewNumber)}
 				handleAddPerson={addName}
 			/>
-			<h2>Numbers</h2>
+			<h2>Numbers List</h2>
 			<ul>
-				<Persons persons={persons} newFilter={newFilter} />
+				<Persons
+					persons={persons}
+					newFilter={newFilter}
+					handleDelete={handleDelete}
+					
+				/>
 			</ul>
 		</div>
 	);

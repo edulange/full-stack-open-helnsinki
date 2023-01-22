@@ -1,18 +1,15 @@
-import Person from "./Person";
-const Persons = ({ persons, newFilter }) => (
-	<>
+const Persons = ({ persons, newFilter, handleDelete }) => (
+	<ul>
 		{persons
 			.filter((person) => person.name.toLowerCase().includes(newFilter))
 			.map(({ name, number, id }) => (
-				<Person name={name} number={number} key={id} />
+				<li name={name} number={number} key={id}>
+					{" "}
+					{name} {number}
+					<button onClick={() => handleDelete(id)}>Delete</button>
+				</li>
 			))}
-	</>
+	</ul>
 );
 
 export default Persons;
-
-/*
-			.map((person) => (
-						<Persons persons={person} key={person.id} />
-					))}
-*/
