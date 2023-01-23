@@ -26,8 +26,8 @@ const App = (props) => {
 			event.preventDefault();
 			const nameObject = {
 				name: newName,
-				id: persons.length + 1,
 				number: newNumber,
+				id: newNumber,
 			};
 			numbersService.create(nameObject).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
