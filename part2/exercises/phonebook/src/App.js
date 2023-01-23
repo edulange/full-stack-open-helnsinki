@@ -22,13 +22,13 @@ const App = (props) => {
 		const checkName = persons.some(
 			(person) => newName === person.name.toLowerCase()
 		);
+		const nameObject = {
+			name: newName,
+			number: newNumber,
+			id: newNumber,
+		};
 		if (!checkName) {
 			event.preventDefault();
-			const nameObject = {
-				name: newName,
-				number: newNumber,
-				id: newNumber,
-			};
 			numbersService.create(nameObject).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
 				setNewName("");
@@ -41,10 +41,21 @@ const App = (props) => {
 					setNewName("");
 					setNewNumber("");
 				});
-		} else {
-			event.preventDefault();
-			alert(`${newName} is already added to phonebook`);
-			setNewName("");
+			} if(checkName) {
+				event.preventDefault();
+				let result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
+				if (result == true) {
+					numbersService
+						.update(nameObject.id, nameObject)
+						.then((returnedPerson) => {
+							setPersons(persons.concat(returnedPerson));
+							setNewName("");
+							setNewNumber("");
+						});
+					// ta faltando eu conseguir colocar um replace?
+				}
+				setNewName("");
+				setNewNumber("");
 		}
 	};
 
