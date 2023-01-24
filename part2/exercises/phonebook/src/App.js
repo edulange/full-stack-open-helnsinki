@@ -41,33 +41,42 @@ const App = (props) => {
 					setNewName("");
 					setNewNumber("");
 				});
-			} if(checkName) {
-				event.preventDefault();
-				let result = window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)
-				if (result == true) {
-					numbersService
-						.update(nameObject.id, nameObject)
-						.then((returnedPerson) => {
-							setPersons(persons.concat(returnedPerson));
-							setNewName("");
-							setNewNumber("");
-						});
-					// ta faltando eu conseguir colocar um replace?
-				}
-				setNewName("");
-				setNewNumber("");
+		}
+		if (checkName) {
+			event.preventDefault();
+			let result = window.confirm(
+				`${newName} is already added to phonebook, replace the old number with a new one?`
+			);
+			if (result === true) {
+				const existingPerson = persons.find(
+					(person) => person.name === newName
+				);
+				const updatedPerson = { ...existingPerson, number: newNumber };
+				numbersService
+					.update(existingPerson.id, updatedPerson)
+					.then((returnedPerson) => {
+						setPersons(
+							persons.map((person) =>
+								person.id === existingPerson.id
+									? returnedPerson
+									: person
+							)
+						);
+						setNewName("");
+						setNewNumber("");
+					});
+			}
 		}
 	};
 
 	const handleChange = (setValue) => (event) => setValue(event.target.value);
 
 	const handleDelete = (id) => {
-		let result = window.confirm("Do you want do delete?")
-		if (result == true) {
+		let result = window.confirm("Do you want do delete?");
+		if (result === true) {
 			numbersService.remove(id).then(() => {
 				setPersons(persons.filter((person) => person.id !== id));
 			});
-
 		}
 	};
 	return (
