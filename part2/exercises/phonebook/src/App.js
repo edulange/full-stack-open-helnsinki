@@ -5,6 +5,21 @@ import Filter from "./Components/Filter";
 import PersonForm from "./Components/PersonForm";
 import numbersService from "./services/phonenumbers";
 
+
+const Footer = () => {
+	const footerStyle = {
+	  color: 'green',
+	  fontStyle: 'italic',
+	  fontSize: 16
+	}
+	return (
+	  <div style={footerStyle}>
+		<br />
+		<em>Eduardo Lange estudando 😊</em>
+	  </div>
+	)
+  }
+
 const App = (props) => {
 	const [persons, setPersons] = useState(props.persons);
 	const [newName, setNewName] = useState("");
@@ -82,6 +97,7 @@ const App = (props) => {
 	return (
 		<div>
 			<h1>Phonebook</h1>
+			<Notification message={successfulMessage} />
 			<Filter
 				value={newFilter}
 				handleChange={handleChange(setNewFilter)}
