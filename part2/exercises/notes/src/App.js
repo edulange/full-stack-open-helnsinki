@@ -1,22 +1,37 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Note from "./components/Note";
 import noteService from "./services/notes";
+import Notification from "./components/Notification";
+
+
+const Footer = () => {
+	const footerStyle = {
+	  color: 'green',
+	  fontStyle: 'italic',
+	  fontSize: 16
+	}
+	return (
+	  <div style={footerStyle}>
+		<br />
+		<em>Eduardo Lange estudando 😊, Department of Computer Science, University of Helsinki 2022</em>
+	  </div>
+	)
+  }
 
 const App = () => {
 	const [notes, setNotes] = useState([]);
 	const [newNote, setNewNote] = useState("");
 	const [showAll, setShowAll] = useState(true);
+	const [errorMessage, setErrorMessage] = useState(null)
+
 
 	useEffect(() => {
 		noteService.getAll().then((initialNotes) => {
 			setNotes(initialNotes);
 		});
 	}, []);
-	console.log("render", notes.length, "notes");
 
 	const toggleImportance = (id) => {
-		console.log(`importance of ${id} needs to be toggled`);
 		const note = notes.find((n) => n.id === id);
 		const changedNote = { ...note, important: !note.important };
 
@@ -28,11 +43,14 @@ const App = () => {
 				);
 			})
 			.catch((error) => {
-				alert(
-					`the note '${note.content}" was already deleted from server`
-				);
+				setErrorMessage(
+					`Note '${note.content}' was already removed from server`
+					)
+				setTimeout(() => {
+					setErrorMessage(null)
+				}, 5000)
+				setNotes(notes.filter((n) => n.id !== id));
 			});
-		setNotes(notes.filter((n) => n.id !== id));
 	};
 
 	const addNote = (event) => {
@@ -64,6 +82,7 @@ const App = () => {
 	return (
 		<div>
 			<h1>Notes</h1>
+			<Notification message={errorMessage} />
 			<div>
 				<button onClick={() => setShowAll(!showAll)}>
 					show {showAll ? "important" : "all"}
@@ -82,10 +101,13 @@ const App = () => {
 				<input value={newNote} onChange={handleNoteChange} />
 				<button type="submit">save</button>
 			</form>
+			<Footer />
 		</div>
 	);
 };
 export default App;
+
+
 /* fullstack oath
 I will have my browser developer console open all the time
 I will use the network tab of the browser dev tools to ensure that frontend and backend are communicating as I expect
