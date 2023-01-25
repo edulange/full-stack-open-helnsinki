@@ -3,6 +3,7 @@ import axios from "axios";
 import Filter from "./Components/Filter";
 import CountryList from "./Components/CountryList";
 
+
 const App = () => {
 	const [countries, setCountries] = useState([]); //os dados sao armazenados aqui
 	const [newFilter, setNewFilter] = useState("");

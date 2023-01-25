@@ -65,7 +65,7 @@ const App = (props) => {
 						setNewName("");
 						setNewNumber("");
 					});
-			}
+			} 
 		}
 	};
 
