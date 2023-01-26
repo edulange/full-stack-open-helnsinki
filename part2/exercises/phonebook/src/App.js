@@ -44,20 +44,16 @@ const App = (props) => {
 			id: newNumber,
 		};
 
-		const sucess = () => {
-			setSuccessfulMessage(`${nameObject.name} foi adicionado`);
-			setTimeout(() => {
-				setSuccessfulMessage(null);
-			}, 5000);
-		};
-
 		if (!checkName) {
 			event.preventDefault();
 			numbersService.create(nameObject).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
 				setNewName("");
 				setNewNumber("");
-				sucess();
+				setSuccessfulMessage(`${nameObject.name} foi adicionado`);
+				setTimeout(() => {
+					setSuccessfulMessage(null);
+				}, 5000);
 			});
 
 			numbersService
@@ -90,7 +86,10 @@ const App = (props) => {
 						);
 						setNewName("");
 						setNewNumber("");
-						sucess()
+						setSuccessfulMessage(`o número de ${nameObject.name} foi alterado`);
+						setTimeout(() => {
+							setSuccessfulMessage(null);
+						}, 5000);
 					});
 			}
 		}
