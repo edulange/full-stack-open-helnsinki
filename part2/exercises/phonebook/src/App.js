@@ -5,6 +5,7 @@ import Filter from "./Components/Filter";
 import PersonForm from "./Components/PersonForm";
 import numbersService from "./services/phonenumbers";
 import Notification from "./Components/Notification";
+import ErrorNotification from "./Components/ErrorNotification";
 
 const Footer = () => {
 	const footerStyle = {
@@ -26,6 +27,7 @@ const App = (props) => {
 	const [newNumber, setNewNumber] = useState("");
 	const [newFilter, setNewFilter] = useState("");
 	const [successfulMessage, setSuccessfulMessage] = useState(null);
+	const [errorMessage, setErrorMessage] = useState(null);
 
 	useEffect(() => {
 		numbersService.getAll().then((initialPhoneNumbers) => {
@@ -90,7 +92,16 @@ const App = (props) => {
 						setTimeout(() => {
 							setSuccessfulMessage(null);
 						}, 5000);
-					});
+					})
+					.catch(error => {
+						console.log('error :>> ', error);
+						setErrorMessage(
+							`${nameObject.name} has already been removed from the server`
+							)
+						setTimeout(() => {
+							setErrorMessage(null)
+						}, 5000);
+					})
 			}
 		}
 	};
@@ -109,6 +120,7 @@ const App = (props) => {
 		<div>
 			<h1>Phonebook</h1>
 			<Notification message={successfulMessage} />
+			<ErrorNotification message={errorMessage} />
 			<Filter
 				value={newFilter}
 				handleChange={handleChange(setNewFilter)}
