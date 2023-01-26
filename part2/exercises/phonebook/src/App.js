@@ -4,27 +4,28 @@ import Persons from "./Components/Persons";
 import Filter from "./Components/Filter";
 import PersonForm from "./Components/PersonForm";
 import numbersService from "./services/phonenumbers";
-
+import Notification from "./Components/Notification";
 
 const Footer = () => {
 	const footerStyle = {
-	  color: 'green',
-	  fontStyle: 'italic',
-	  fontSize: 16
-	}
+		color: "green",
+		fontStyle: "italic",
+		fontSize: 16,
+	};
 	return (
-	  <div style={footerStyle}>
-		<br />
-		<em>Eduardo Lange estudando 😊</em>
-	  </div>
-	)
-  }
+		<div style={footerStyle}>
+			<br />
+			<em>Eduardo Lange estudando 😊</em>
+		</div>
+	);
+};
 
 const App = (props) => {
 	const [persons, setPersons] = useState(props.persons);
 	const [newName, setNewName] = useState("");
 	const [newNumber, setNewNumber] = useState("");
 	const [newFilter, setNewFilter] = useState("");
+	const [successfulMessage, setSuccessfulMessage] = useState(null);
 
 	useEffect(() => {
 		numbersService.getAll().then((initialPhoneNumbers) => {
@@ -42,13 +43,23 @@ const App = (props) => {
 			number: newNumber,
 			id: newNumber,
 		};
+
+		const sucess = () => {
+			setSuccessfulMessage(`${nameObject.name} foi adicionado`);
+			setTimeout(() => {
+				setSuccessfulMessage(null);
+			}, 5000);
+		};
+
 		if (!checkName) {
 			event.preventDefault();
 			numbersService.create(nameObject).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
 				setNewName("");
 				setNewNumber("");
+				sucess();
 			});
+
 			numbersService
 				.update(nameObject.id, nameObject)
 				.then((returnedPerson) => {
@@ -79,8 +90,9 @@ const App = (props) => {
 						);
 						setNewName("");
 						setNewNumber("");
+						sucess()
 					});
-			} 
+			}
 		}
 	};
 
@@ -118,6 +130,7 @@ const App = (props) => {
 					handleDelete={handleDelete}
 				/>
 			</ul>
+			<Footer />
 		</div>
 	);
 };
