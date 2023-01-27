@@ -4,6 +4,11 @@ import Filter from "./Components/Filter";
 import CountryList from "./Components/CountryList";
 
 
+//const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&lang=pt_br&appid=9230098fd00da4fd9c835976ddf4dbcc`
+//aprender como usar o postman
+const apiKey = '9230098fd00da4fd9c835976ddf4dbcc'
+// https://www.youtube.com/watch?v=rtR4s626ebE
+
 const App = () => {
 	const [countries, setCountries] = useState([]); //os dados sao armazenados aqui
 	const [newFilter, setNewFilter] = useState("");
