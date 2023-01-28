@@ -8,9 +8,15 @@ import CountryList from "./Components/CountryList";
 //aprender como usar o postman
 // https://www.youtube.com/watch?v=rtR4s626ebE
 
+
+
+
 const App = () => {
 	const [countries, setCountries] = useState([]); //os dados sao armazenados aqui
 	const [newFilter, setNewFilter] = useState("");
+
+	
+
 
 	const handleCountryClick = (countryName) => {
         setNewFilter(countryName);

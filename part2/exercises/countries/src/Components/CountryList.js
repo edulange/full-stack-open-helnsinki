@@ -1,3 +1,4 @@
+import { useState } from "react";
 import axios from "axios";
 
 //const apiKey = '9230098fd00da4fd9c835976ddf4dbcc'
@@ -10,11 +11,20 @@ axios.get(weatherAPI).then((response) => {
 https://api.openweathermap.org/data/2.5/weather?q=berlim&units=metric&lang=pt_br9230098fd00da4fd9c835976ddf4dbcc
 
 */
+const apiKey = '9230098fd00da4fd9c835976ddf4dbcc'
+
+
+
 const CountryList = ({
 	filteredCountries,
 	countryToDisplay,
 	handleCountryClick,
 }) => {
+	const [temperature, setTemperature] = useState(0)
+	const [weatherIcon, setWeatherIcon] = useState(0)
+	const [wind, setWind] = useState(0)
+	
+
 	if (filteredCountries.length <= 10 && filteredCountries.length > 1) {
 		return (
 			<ul>
@@ -34,6 +44,12 @@ const CountryList = ({
 		);
 	}
 	if (filteredCountries.length === 1) {
+		axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${countryToDisplay.capital}&units=metric&APPID=${apiKey}`)
+		.then(response => {
+			setTemperature(Math.round(response.data.main.temp))
+			setWind(response.data.wind.speed)
+			setWeatherIcon(response.data.weather[0].icon)
+		})
 		let languangesArr = Object.values(countryToDisplay.languages); //tratando o objeto
 		return (
 			<div>
@@ -50,6 +66,10 @@ const CountryList = ({
 					src={countryToDisplay.flags.png}
 					alt={`Flag of ${countryToDisplay}`}
 				/>
+			<h2>Weather in {countryToDisplay.capital}</h2>
+				<p>temperature {temperature} ºC</p>
+				<img src={`http://openweathermap.org/img/wn/${weatherIcon}.png`} />
+				<p>wind {wind} m/s</p>
 			</div>
 		);
 	}
