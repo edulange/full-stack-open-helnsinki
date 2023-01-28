@@ -68,7 +68,7 @@ const CountryList = ({
 				/>
 			<h2>Weather in {countryToDisplay.capital}</h2>
 				<p>temperature {temperature} ºC</p>
-				<img src={`http://openweathermap.org/img/wn/${weatherIcon}.png`} />
+				<img src={`http://openweathermap.org/img/wn/${weatherIcon}.png`} alt="weather img" />
 				<p>wind {wind} m/s</p>
 			</div>
 		);
