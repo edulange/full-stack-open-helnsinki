@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const apiKey = '9230098fd00da4fd9c835976ddf4dbcc'
-const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&lang=pt_br&${apiKey}`
+//const apiKey = '9230098fd00da4fd9c835976ddf4dbcc'
+//const weatherAPI = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&lang=pt_br&${apiKey}`
 /*
 axios.get(weatherAPI).then((response) => {
 			setCountries(response.data);
