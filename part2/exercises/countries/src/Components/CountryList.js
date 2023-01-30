@@ -77,3 +77,5 @@ const CountryList = ({
 };
 
 export default CountryList;
+
+console.log('testando :>> ');
