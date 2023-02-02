@@ -1,3 +1,6 @@
+// https://martinfowler.com/articles/richardsonMaturityModel.html
+// pra mim ler depois
+
 const http = require('http')
 const express = require('express')
 const app = express()
