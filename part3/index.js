@@ -1,7 +1,7 @@
 // https://martinfowler.com/articles/richardsonMaturityModel.html
 // pra mim ler depois
 
-const http = require('http')
+
 const express = require('express')
 const app = express()
 
@@ -23,15 +23,25 @@ let notes = [
   }
 ]
 
-app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
+
+  app.get('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const note = notes.find(note => note.id === id)
+    console.log('note.id :>> ', note.id, typeof note.id);
+    
+    if (note) {
+      response.json(note)
+    } else {
+      response.status(404).end()
+    }
   })
   
-  app.get('/api/notes', (request, response) => {
-    response.json(notes)
+  app.delete('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    notes = notes.filter(note => note.id !== id)
+
+    response.status(204).end()
   })
-
-
 
 const PORT = 3001
 app.listen(PORT)
