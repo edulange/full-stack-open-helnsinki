@@ -1,6 +1,6 @@
 // https://martinfowler.com/articles/richardsonMaturityModel.html
 // pra mim ler depois
-
+console.log('estou testando isso aqui')
 
 const express = require('express')
 const app = express()
