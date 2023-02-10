@@ -3,8 +3,6 @@ import Note from "./components/Note";
 import noteService from "./services/notes";
 import Notification from "./components/Notification";
 
-const meuAmor = 'Sarana gostosa'
-console.log('testing 1,2,3', meuAmor)
 const Footer = () => {
 	const footerStyle = {
 	  color: 'green',
