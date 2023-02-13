@@ -93,3 +93,5 @@ const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server phonebook está rodando na porta ${PORT}`)
 })
+
+console.log('vai dar certo, trust no sistema')
