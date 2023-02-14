@@ -1,7 +1,20 @@
 const express = require('express')
+const { token } = require('morgan')
+const morgan = require('morgan')
+const moran = require('morgan')
 
 const app = express()
 app.use(express.json())
+
+
+morgan.token('body', (request, response) => request.method === 'POST' ? JSON.stringify(request.body) : '')
+app.use(morgan((tokens, request, response) => [
+    tokens.method(request, response),
+    tokens.url(request, response),
+    tokens.status(request, response),
+    tokens.res(request,response, 'content-length'), '-',
+    tokens['response-time'](request, response), 'ms',
+    tokens.body(request, response)].join(' ')))
 
 let persons = [
     { 
@@ -93,5 +106,3 @@ const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server phonebook está rodando na porta ${PORT}`)
 })
-
-console.log('vai dar certo, trust no sistema')
