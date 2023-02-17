@@ -1,39 +1,38 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-if (process.argv.length<3) {
-  console.log('give password as argument')
-  process.exit(1)
+if (process.argv.length < 3) {
+	console.log("give password as argument");
+	process.exit(1);
 }
 
-const password = 292044
+const password = 292044;
 
-const url =
-  `mongodb+srv://edugod:${password}@learningdatabase.lrmcni3.mongodb.net/noteApp?retryWrites=true&w=majority`
+const url = `mongodb+srv://edugod:${password}@learningdatabase.lrmcni3.mongodb.net/noteApp?retryWrites=true&w=majority`;
 
-mongoose.set('strictQuery',false)
-mongoose.connect(url)
+mongoose.set("strictQuery", false);
+mongoose.connect(url);
 
 const noteSchema = new mongoose.Schema({
-  content: String,
-  important: Boolean,
-})
+	content: String,
+	important: Boolean,
+});
 
-const Note = mongoose.model('Note', noteSchema)
+const Note = mongoose.model("Note", noteSchema);
 
 const note = new Note({
-  content: 'But ill overcome',
-  important: true,
-})
+	content: "But ill overcome",
+	important: true,
+});
 /*
 note.save().then(result => {
   console.log('note saved!')
   mongoose.connection.close()
-})
+}
 */
 
-Note.find({}).then(result => {
-    result.forEach(note => {
-      console.log(note)
-    })
-    mongoose.connection.close()
-  })
+Note.find({}).then((result) => {
+	result.forEach((note) => {
+		console.log(note);
+	});
+	mongoose.connection.close();
+});
