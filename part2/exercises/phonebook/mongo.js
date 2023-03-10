@@ -17,7 +17,7 @@ mongoose.connect(url);
 const phoneSchema = new mongoose.Schema({
 	name: String,
 	number: Number,
-});
+}, { versionKey: false })
 
 const Phone = mongoose.model("Note", phoneSchema);
 
