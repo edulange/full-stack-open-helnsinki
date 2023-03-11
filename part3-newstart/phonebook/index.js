@@ -1,7 +1,6 @@
 const express = require('express')
 const { token } = require('morgan')
 const morgan = require('morgan')
-const moran = require('morgan')
 
 const app = express()
 app.use(express.json())
