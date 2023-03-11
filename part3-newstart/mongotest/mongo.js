@@ -5,7 +5,7 @@ if (process.argv.length < 3) {
 	process.exit(1);
 }
 
-const password = 292044;
+const password = process.argv[2]
 
 const url = `mongodb+srv://edugod:${password}@learningdatabase.lrmcni3.mongodb.net/noteApp?retryWrites=true&w=majority`;
 
