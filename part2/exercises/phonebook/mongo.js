@@ -41,7 +41,3 @@ if( nameToAdd === undefined || numberToAdd === undefined) {
     })
 }
 
-
-/*
-
-*/
