@@ -27,5 +27,5 @@ const remove = (id, newObject) => {
     return request.then(response => response.data)
 }
 
-
-export default { getAll, create, update, remove}
+const numbersService = { getAll, create, update, remove}
+export default numbersService
