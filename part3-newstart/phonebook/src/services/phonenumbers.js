@@ -29,3 +29,5 @@ const remove = (id, newObject) => {
 
 const numbersService = { getAll, create, update, remove}
 export default numbersService
+
+ //ao menos eu descobri que é um erro do meu react, agora o que exatamente?
