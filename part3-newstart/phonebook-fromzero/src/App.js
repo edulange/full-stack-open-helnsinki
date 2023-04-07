@@ -153,6 +153,21 @@ const alertUser = () => {
       }, 3000)
     }
 
+    
+const Footer = () => {
+	const footerStyle = {
+		color: "green",
+		fontStyle: "italic",
+		fontSize: 16,
+	};
+	return (
+		<div style={footerStyle}>
+			<br />
+			<em>Eduardo Lange estudando 😊</em>
+		</div>
+	);
+};
+
     return (
       <div>
   
@@ -184,7 +199,7 @@ const alertUser = () => {
           onNumberChange={handleNumberChange}
           buttonText='ADD CONTACT'
         />
-  
+  		<Footer />
       </div>
     )
   }
