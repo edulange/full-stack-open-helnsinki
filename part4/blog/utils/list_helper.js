@@ -13,7 +13,30 @@ const dummy = (blogs) => {
     return total; // retorna o total de likes
   }
 
+  function favoriteBlog(blogArray) {
+    if (blogArray.length === 0) {
+      return null; // retorna nulo se o array for vazio
+    }
+  
+    // inicializa a variável "favorite" como o primeiro blog no array
+    let favorite = blogArray[0];
+  
+    // percorre cada blog no array, comparando suas curtidas com a do blog favorito atual
+    blogArray.forEach(blog => {
+      if (blog.likes > favorite.likes) {
+        favorite = blog; // atualiza o blog favorito se o blog atual tiver mais curtidas
+      }
+    });
+  
+    // retorna o blog favorito encontrado
+    return {
+      title: favorite.title,
+      author: favorite.author,
+      likes: favorite.likes
+    };
+  }
   module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favoriteBlog
   }
