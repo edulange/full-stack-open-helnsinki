@@ -32,3 +32,5 @@ describe("total likes", () => {
 		expect(result).toBe(10024);
 	});
 });
+
+console.log('a deca incha')
