@@ -33,6 +33,4 @@ describe("total likes", () => {
 	});
 });
 
-console.log('a deca incha')
-console.log('a deca incha')
-console.log('me preparando pro foco que domingo o bixo pega!!!')
+console.log('prepara q o pai ta chegnado')
