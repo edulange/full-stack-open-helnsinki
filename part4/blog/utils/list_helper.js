@@ -36,31 +36,67 @@ function favoriteBlog(blogArray) {
 	};
 }
 
-function mostBlogs(blogArray) {
-	if (blogArray.length === 0) {
-		return null; // retorna nulo se o array for vazio
-	}
+function mostBlogs(blogs) {
+	const authorCount = {};
 
-	// inicializa a variável "favorite" como o primeiro blog no array
-	let favorite = blogArray[0];
-
-	// percorre cada blog no array, comparando suas curtidas com a do blog favorito atual
-	blogArray.forEach((blog) => {
-		if (blog.likes > favorite.likes) {
-			favorite = blog; // atualiza o blog favorito se o blog atual tiver mais curtidas
+	blogs.forEach((blog) => {
+		if (authorCount[blog.author]) {
+			authorCount[blog.author]++;
+		} else {
+			authorCount[blog.author] = 1;
 		}
 	});
 
-	// retorna o blog favorito encontrado
+	let maxCount = 0;
+	let authorWithMaxCount = null;
+
+	Object.entries(authorCount).forEach(([author, count]) => {
+		if (count > maxCount) {
+			maxCount = count;
+			authorWithMaxCount = author;
+		}
+	});
+
 	return {
-		author: favorite.author,
-		blogs: favorite.likes,
+		author: authorWithMaxCount,
+		blogs: maxCount,
 	};
 }
+
+const mostLikes = (blogs) => {
+	const likesPerAuthor = {};
+
+	blogs.forEach((blog) => {
+		const author = blog.author;
+		const likes = blog.likes;
+
+		if (likesPerAuthor[author]) {
+			likesPerAuthor[author] += likes;
+		} else {
+			likesPerAuthor[author] = likes;
+		}
+	});
+
+	let mostLikesAuthor = "";
+	let mostLikes = 0;
+
+	Object.entries(likesPerAuthor).forEach(([author, likes]) => {
+		if (likes > mostLikes) {
+			mostLikesAuthor = author;
+			mostLikes = likes;
+		}
+	});
+
+	return {
+		author: mostLikesAuthor,
+		likes: mostLikes,
+	};
+};
 
 module.exports = {
 	dummy,
 	totalLikes,
 	favoriteBlog,
-  mostBlogs
+	mostBlogs,
+	mostLikes,
 };
