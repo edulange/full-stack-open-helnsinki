@@ -8,7 +8,7 @@ test("dummy returns one", () => {
 });
 
 describe("total likes", () => {
-	const listWithOneBlog = [
+	const listOfBlogs = [
 		{
 			_id: "6432fbdbfda0e41d0d31cd2c",
 			title: "Título",
@@ -27,10 +27,34 @@ describe("total likes", () => {
 		},
 	];
 
-	test("when list has only one blog, equals the likes of that", () => {
-		const result = listHelper.totalLikes(listWithOneBlog);
+	test("test total Likes", () => {
+		const result = listHelper.totalLikes(listOfBlogs);
 		expect(result).toBe(10024);
 	});
 });
 
-console.log('prepara q o pai ta chegnado')
+describe("Favorite Blog", () => {
+	const listOfBlogs = [
+		{
+			_id: "6432fbdbfda0e41d0d31cd2c",
+			title: "Título",
+			author: "Eduardo",
+			url: "www.teste.com.br",
+			likes: 25,
+			__v: 0,
+		},
+		{
+			_id: "643351f62536d82d84d04317",
+			title: "Segundo Título",
+			author: "Sarana Langdom",
+			url: "www.saranalinda.com.br",
+			likes: 9999,
+			__v: 0,
+		},
+	];
+
+	test("test favorite blog", () => {
+		const result = listHelper.favoriteBlog(listOfBlogs);
+		expect(result).toEqual(listOfBlogs[1]);
+	});
+});

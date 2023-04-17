@@ -30,9 +30,12 @@ const dummy = (blogs) => {
   
     // retorna o blog favorito encontrado
     return {
+      __v: favorite.__v,
+      _id: favorite._id,
       title: favorite.title,
       author: favorite.author,
-      likes: favorite.likes
+      likes: favorite.likes,
+      url: favorite.url
     };
   }
   module.exports = {

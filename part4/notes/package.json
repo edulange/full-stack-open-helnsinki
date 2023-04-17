@@ -17,7 +17,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
+        "test": "jest --verbose",
         "eject": "react-scripts eject",
         "server": "json-server -p3001 --watch db.json"
     },
@@ -40,6 +40,10 @@
         ]
     },
     "devDependencies": {
+        "jest": "^27.5.1",
         "json-server": "^0.17.1"
-    }
+    },
+    "jest": {
+        "testEnvironment": "node"
+      }
 }
