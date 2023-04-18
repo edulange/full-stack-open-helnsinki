@@ -12,3 +12,4 @@ module.exports = {
   MONGODB_URI,
   PORT
 }
+console.log('mongo is out of service LOL')
