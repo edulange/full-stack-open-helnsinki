@@ -21,11 +21,15 @@ blogsRouter.get('/', async (request, response) => {
   blogsRouter.post('/', async (request, response) => {
     const body = request.body
   
+    if (!body.title || !body.url) {
+      return response.status(400).json({ error: 'title or url missing' })
+    }
+
     const blog = new Blog({
       title: body.title,
       author: body.author,
       url: body.url,
-      likes: body.likes || 0 // Define likes como 0 se não estiver presente no objeto
+      likes: body.likes === undefined ? 0 : body.likes // Define likes como 0 se não estiver presente no objeto
     })
   
     const savedBlog = await blog.save()

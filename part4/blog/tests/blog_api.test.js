@@ -59,6 +59,54 @@ test('a valid blog can be added', async () => {
     )
   })
 
+  test('a blog post without likes defaults to 0', async () => {
+    const newBlog = {
+      title: 'Test Blog',
+      author: 'John Doe',
+      url: 'https://example.com'
+    }
+  
+    const response = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+  
+    expect(response.body.likes).toBe(0)
+  })
+
+  test('blog without title is not added', async () => {
+    const newBlog = {
+      author: 'Edudu',
+      url: 'http:meuovo',
+      likes: 20,
+    }
+  
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+  
+  test('blog without url is not added', async () => {
+    const newBlog = {
+      title: 'Valido',
+      author: 'Edudu',
+      likes: 20,
+    }
+  
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
