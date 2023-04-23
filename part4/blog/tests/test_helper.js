@@ -11,7 +11,7 @@ const initialBlogs = [
 		title: "Segundo Título",
 		author: "Sarana Langdom",
 		url: "www.saranalinda.com.br",
-		likes: 99999,
+		likes: 10,
 	},
 ];
 
