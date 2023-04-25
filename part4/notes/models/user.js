@@ -25,3 +25,6 @@ userSchema.set('toJSON', {
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
+
+console.log('hoje eu cheguei as 21h em casa')
+console.log('foda')
