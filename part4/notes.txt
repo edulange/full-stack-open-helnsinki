@@ -1,0 +1,8 @@
+administração do usuário
+Users devem ser armazenados no database
+cada note deve ser linkada em quem criou
+deletar e editar só pode ser permitido por quem criou
+
+a solução mais prática para a nossa situação é salvar uma coleção de users.
+
+parei em creating users
