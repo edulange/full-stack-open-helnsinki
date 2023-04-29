@@ -22,5 +22,3 @@ noteSchema.set('toJSON', {
 })
 
 module.exports = mongoose.model('Note', noteSchema)
-
-console.log('foi bolo doido')
