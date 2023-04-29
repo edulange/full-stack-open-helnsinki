@@ -26,4 +26,12 @@ usersRouter.get('/', async (request, response) => {
   response.json(users)
 })
 
+usersRouter.delete('/:id', async (request, response) => {
+  const userId = request.params.id
+
+  await User.findByIdAndDelete(userId)
+
+  response.status(204).end()
+})
+
 module.exports = usersRouter
