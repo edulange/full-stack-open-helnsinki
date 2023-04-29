@@ -22,7 +22,15 @@ loginRouter.post('/', async (request, response) => {
     id: user.id,
   }
 
-  const token = jwt.sign(userForToken, process.env.SECRET)
+
+  // token expires in 60*60 seconds, that is, in one hour
+  const token = jwt.sign(
+    userForToken, 
+    process.env.SECRET,
+    { expiresIn: 60*60 }
+  )
+  //assim que expirar o token, o admin precisa fazer login novamente
+  // e gerar um token novo
 
   response
     .status(200)
