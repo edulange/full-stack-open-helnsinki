@@ -36,5 +36,3 @@ module.exports = {
   notesInDb,
   usersInDb,
 }
-
-console.log('vai dar ptttt vai dar')
