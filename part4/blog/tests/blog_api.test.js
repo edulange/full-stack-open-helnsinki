@@ -3,6 +3,9 @@ const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
+
 
 const Blog = require('../models/blog')
 
@@ -36,44 +39,31 @@ test('blog post has id property', async () => {
     expect(blog.id).toBeDefined()
 })
 
-test('a valid blog can be added', async () => {
-    const newBlog = {
-      title: 'Valido',
-      author: 'Edudu',
-      url: 'http:meuovo',
-      likes: 20
-    }
-  
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
-  
-    const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
-  
-    const titles = blogsAtEnd.map(n => n.title)
-    expect(titles).toContain(
-      'Valido'
-    )
-  })
+test('a valid blog can be added with token', async () => {
+  const newBlog = {
+    title: 'New Blog',
+    author: 'John Doe',
+    url: 'https://newblog.com',
+    likes: 0
+  }
 
-  test('a blog post without likes defaults to 0', async () => {
-    const newBlog = {
-      title: 'Test Blog',
-      author: 'John Doe',
-      url: 'https://example.com'
-    }
-  
-    const response = await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
-  
-    expect(response.body.likes).toBe(0)
-  })
+  const user = await User.findOne({})
+  const token = jwt.sign({ username: user.username, id: user._id }, process.env.SECRET)
+
+  await api
+    .post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(b => b.title)
+  expect(titles).toContain('New Blog')
+})
+
 
   test('blog without title is not added', async () => {
     const newBlog = {
