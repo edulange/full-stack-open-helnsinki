@@ -2,8 +2,7 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
-
-
+const middleware = require('../utils/middleware')
 
 const getTokenFrom = request => {
   const authorization = request.get('authorization')
@@ -31,8 +30,7 @@ blogsRouter.get('/', async (request, response) => {
     }
   })
   
-  
-  blogsRouter.post('/', async (request, response) => {
+  blogsRouter.post('/', middleware.tokenExtractor, async (request, response) => {
     const body = request.body
     
   
@@ -62,10 +60,10 @@ blogsRouter.get('/', async (request, response) => {
     response.status(201).json(savedBlog)
   })
 
-  blogsRouter.delete('/:id', async (request, response) => {
+  blogsRouter.delete('/:id', middleware.tokenExtractor, async (request, response) => {
     const blog = await Blog.findById(request.params.id)
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    
+  
     if (!decodedToken.id || !blog.user || (blog.user.toString() !== decodedToken.id.toString())) {
       return response.status(401).json({ error: 'token invalid or user unauthorized' })
     }

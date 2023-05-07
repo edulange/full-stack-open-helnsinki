@@ -34,6 +34,7 @@ const tokenExtractor = (request, response, next) => {
 		request.token = authorization.substring(7);
 	} else {
 		request.token = null;
+		response.status(401).json({ error: "Token missing or invalid" });
 	}
 	next();
 };

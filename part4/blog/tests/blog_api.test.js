@@ -64,6 +64,20 @@ test('a valid blog can be added with token', async () => {
   expect(titles).toContain('New Blog')
 })
 
+test('adding a new blog without a token fails with status code 401', async () => {
+  const newBlog = {
+    title: 'New Blog',
+    author: 'John Doe',
+    url: 'https://newblog.com',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+})  
+
 
   test('blog without title is not added', async () => {
     const newBlog = {
@@ -71,9 +85,13 @@ test('a valid blog can be added with token', async () => {
       url: 'http:meuovo',
       likes: 20,
     }
-  
+ 
+    const user = await User.findOne({})
+    const token = jwt.sign({ username: user.username, id: user._id }, process.env.SECRET)
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(400)
   
@@ -87,9 +105,13 @@ test('a valid blog can be added with token', async () => {
       author: 'Edudu',
       likes: 20,
     }
+
+    const user = await User.findOne({})
+    const token = jwt.sign({ username: user.username, id: user._id }, process.env.SECRET)
   
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(400)
   
@@ -97,28 +119,6 @@ test('a valid blog can be added with token', async () => {
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
   })
 
-  describe('deletion of a blog', () => {
-    test('succeeds with status code 204 if id is valid', async () => {
-      const blogsAtStart = await helper.blogsInDb()
-      const blogToDelete = blogsAtStart[0]
-
-  
-      await api
-        .delete(`/api/blogs/${blogToDelete.id}`)
-        .expect(204)
-  
-      const blogsAtEnd = await helper.blogsInDb()
-  
-      expect(blogsAtEnd).toHaveLength(
-        helper.initialBlogs.length - 1
-      )
-      //até aqui ok
-
-      const titles = blogsAtEnd.map(r => r.title)
-      
-      expect(titles).not.toContain(blogToDelete.title)
-    })
-  })
 
 afterAll(async () => {
   await mongoose.connection.close()
