@@ -32,6 +32,11 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+
+      window.localStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      ) 
+      noteService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -122,64 +127,35 @@ const App = () => {
 
   return (
     <div>
-      <h1>Notes app</h1>
+    <h1>Notes app</h1>
+    <Notification message={errorMessage} />
 
-      <Notification message={errorMessage} />
-
-      {!user && loginForm()} 
+    {!user && loginForm()} 
     {user && <div>
-       <p>{user.name} logged in</p>
-         {noteForm()}
+      <p>{user.name} logged in</p>
+        {noteForm()}
       </div>
-    }
+    } 
 
-
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-            <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-            <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
-
-
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
-        </button>
-      </div> 
+    <div>
+      <button onClick={() => setShowAll(!showAll)}>
+        show {showAll ? 'important' : 'all' }
+      </button>
+    </div> 
+    <ul>
       <ul>
-        <ul>
-          {notesToShow.map(note => 
-            <Note
-              key={note.id}
-              note={note}
-              toggleImportance={() => toggleImportanceOf(note.id)}
-            />
-          )}
-        </ul>
+        {notesToShow.map(note => 
+          <Note
+            key={note.id}
+            note={note}
+            toggleImportance={() => toggleImportanceOf(note.id)}
+          />
+        )}
       </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>
-      <Footer />
-    </div>
+    </ul>
+
+    <Footer />
+  </div>
   )
 }
 
