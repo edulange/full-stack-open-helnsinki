@@ -1,0 +1,1 @@
+console.log('essa merda está me estressando')
