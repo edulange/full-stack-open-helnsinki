@@ -59,7 +59,7 @@ const CountryList = ({
 				<h3>Languages:</h3>
 				<ul>
 					{languangesArr.map((language) => (
-						<li key={countryToDisplay}>{language}</li>
+						<li key={language}>{language}</li>
 					))}
 				</ul>
 				<img
