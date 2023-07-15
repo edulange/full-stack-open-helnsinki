@@ -1,4 +1,46 @@
-h1 {
-    color: green;
-    font-style: italic;
+body {
+  background-color: #e0e1dd
+  }
+
+h1, h2, h3 {
+    color: #0d1b2a;
+  }
+
+p, ul {
+  color: #1b263b;
+}
+
+
+  .filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-label {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .filter-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+
+  .country-list-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .filtered-countries-container {
+    display: flex;
+    justify-content: center;
+
+    height: 100vh;
   }
