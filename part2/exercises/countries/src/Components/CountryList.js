@@ -77,7 +77,3 @@ const CountryList = ({
 };
 
 export default CountryList;
-
-console.log('testando :>> ');
-
-console.log('será que a minha namorada me odeia?')
