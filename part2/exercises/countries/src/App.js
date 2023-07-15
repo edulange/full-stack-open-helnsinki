@@ -27,6 +27,7 @@ const App = () => {
 
 	//API é chamada e dados são armazenados no estado
 	useEffect(() => {
+		document.title = "Weather App by Dudu"
 		axios.get("https://restcountries.com/v3.1/all").then((response) => {
 			setCountries(response.data);
 		});

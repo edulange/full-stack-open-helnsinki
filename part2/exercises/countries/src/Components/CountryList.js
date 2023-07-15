@@ -29,7 +29,7 @@ const CountryList = ({
 					{filteredCountries.map((country) => (
 						<li key={country.name.common}>
 							{country.name.common}
-							<button
+							<button className="button"
 								onClick={() =>
 									handleCountryClick(country.name.common)
 								}
@@ -55,6 +55,7 @@ const CountryList = ({
 		let languangesArr = Object.values(countryToDisplay.languages); //tratando o objeto
 		return (
 			<div className="country-list-container">
+				<div className="country-card">
 				<h1>{countryToDisplay.name.common}</h1>
 				<h2>Capital {countryToDisplay.capital}</h2>
 				<p>Area {countryToDisplay.area} m²</p>
@@ -68,13 +69,16 @@ const CountryList = ({
 					src={countryToDisplay.flags.png}
 					alt={`Flag of ${countryToDisplay}`}
 				/>
+				<div className="weather-info">
 				<h3>Weather in {countryToDisplay.capital}</h3>
-				<p>temperature {temperature} ºC</p>
+				<p>Temperature {temperature} ºC</p>
 				<img
 					src={`http://openweathermap.org/img/wn/${weatherIcon}.png`}
 					alt="weather img"
 				/>
-				<p>wind {wind} m/s</p>
+				<p>Wind {wind} m/s</p>
+				</div>
+				</div>
 			</div>
 		);
 	}
