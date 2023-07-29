@@ -79,6 +79,13 @@ const App = () => {
 		</form>
 	);
 
+  const newBlogs = () => (
+    <div>
+      <h2>Create new</h2>
+      Title: <input type="text" name="title" />
+    </div>
+  )
+
 	const logOutButton = () => (
 		<div>
 			<button type="submit" onClick={handleLogout}>Logout</button>
@@ -93,7 +100,7 @@ const App = () => {
 				<div>
 					<p>{user.name} logged in</p>
 					{logOutButton()}
-					{/* USAR AQUI O BOTÃO LOGOUT */}
+          {newBlogs()}
 				</div>
 			)}
 
