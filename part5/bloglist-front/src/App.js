@@ -85,6 +85,7 @@ const App = () => {
 			}
 		} catch (exception) {
 			console.log('teste')
+			console.log('foi?')
 			setErrorMessage("Falha na criação do blog");
 			setTimeout(() => {
 				setErrorMessage(null);
