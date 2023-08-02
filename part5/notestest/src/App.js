@@ -98,7 +98,7 @@ const App = () => {
           setNotes(notes.filter(n => n.id !== id))
         })
    }
-  
+   console.log('teste')
   return (
     <div>
       <h1>Notes app</h1>
@@ -123,6 +123,7 @@ const App = () => {
           </Togglable>
         </div>
       }
+   
  
       <div>
         <button onClick={() => setShowAll(!showAll)}>
