@@ -93,6 +93,9 @@ const App = () => {
       })
   }
   console.log('teste')
+  console.log('teste')
+  console.log('teste')
+  console.log('teste')
   return (
     <div>
       <h1>Notes app</h1>
