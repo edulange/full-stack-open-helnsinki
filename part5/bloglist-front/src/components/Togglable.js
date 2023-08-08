@@ -24,3 +24,5 @@ const Togglable = (props) => {
 }
 
 export default Togglable
+
+console.log('já teria que funcionar sem a droga do useRef()')
