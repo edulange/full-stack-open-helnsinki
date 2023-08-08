@@ -3,6 +3,8 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
+import BlogForm from "./components/BlogForm";
 
 const App = () => {
 	const [blogs, setBlogs] = useState([]);
@@ -55,8 +57,8 @@ const App = () => {
 		}
 	};
 
-	const handleCreateBlog = async (event) => {
-		event.preventDefault();
+	const addBlog = async (event) => {
+
 
 		const newBlog = {
 			title: newBlogTitle,
@@ -76,22 +78,31 @@ const App = () => {
 			setNewBlogTitle("");
 			setNewBlogAuthor("");
 			setNewBlogUrl("");
-			
-			if (response) { // se a response é true
-				setErrorMessage(`a new blog ${newBlog.title} by ${newBlog.author} created`)
-				setTimeout( () => {
+
+			if (response) {
+				// se a response é true
+				setErrorMessage(
+					`a new blog ${newBlog.title} by ${newBlog.author} created`
+				);
+				setTimeout(() => {
 					setErrorMessage(null);
-				}, 5000)
+				}, 5000);
 			}
 		} catch (exception) {
-			console.log('teste')
-			console.log('foi?')
 			setErrorMessage("Falha na criação do blog");
 			setTimeout(() => {
 				setErrorMessage(null);
 			}, 5000);
 		}
 	};
+
+	const blogForm = () => (
+		<Togglable buttonLabel='new blog'>
+		  <BlogForm createBlog={addBlog} />
+		</Togglable>
+	  )
+	
+
 
 	const handleLogout = (event) => {
 		window.localStorage.clear();
@@ -122,50 +133,6 @@ const App = () => {
 		</form>
 	);
 
-	const newBlogs = () => (
-		<>
-			<h2>Create a new blog</h2>
-			<form onSubmit={handleCreateBlog}>
-				<div>
-					<div>
-						Title:{" "}
-						<input
-							type="text"
-							name="Title"
-							value={newBlogTitle}
-							onChange={({ target }) =>
-								setNewBlogTitle(target.value)
-							}
-						/>
-					</div>
-					<div>
-						Author:{" "}
-						<input
-							type="text"
-							name="Author"
-							value={newBlogAuthor}
-							onChange={({ target }) =>
-								setNewBlogAuthor(target.value)
-							}
-						/>
-					</div>
-					<div>
-						Url:{" "}
-						<input
-							type="text"
-							name="Url"
-							value={newBlogUrl}
-							onChange={({ target }) =>
-								setNewBlogUrl(target.value)
-							}
-						/>
-					</div>
-					<button type="submit">Create</button>
-				</div>
-			</form>
-		</>
-	);
-
 	const logOutButton = () => (
 		<div>
 			<button type="submit" onClick={handleLogout}>
@@ -183,7 +150,10 @@ const App = () => {
 				<div>
 					<p>{user.name} logged in</p>
 					{logOutButton()}
-					{newBlogs()}
+					<Togglable buttonLabel="New Blog">
+						<BlogForm createBlog={addBlog} />
+					</Togglable>
+					{/* {newBlogs()} SUBSTITUIDO pelo BlogForm*/} 
 				</div>
 			)}
 
