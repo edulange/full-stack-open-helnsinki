@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -13,6 +13,8 @@ const App = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
+
+	const blogFormRef = useRef()
 
 	useEffect(() => {
 		blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -54,7 +56,7 @@ const App = () => {
 	};
 
 	const addBlog = async (blogObject) => {
-
+		blogFormRef.current.toggleVisibility()
 		try {
 			// faz uma chamada API para o servidorbackend para adcionar um novo blog
 			const response = await blogService.create(blogObject);
@@ -79,13 +81,6 @@ const App = () => {
 			}, 5000);
 		}
 	};
-
-	const blogForm = () => (
-		<Togglable buttonLabel='new blog'>
-		  <BlogForm createBlog={addBlog} />
-		</Togglable>
-	  )
-	
 
 
 	const handleLogout = (event) => {
