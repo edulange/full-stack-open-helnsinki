@@ -14,10 +14,6 @@ const App = () => {
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
 
-	const [newBlogTitle, setNewBlogTitle] = useState("");
-	const [newBlogAuthor, setNewBlogAuthor] = useState("");
-	const [newBlogUrl, setNewBlogUrl] = useState("");
-
 	useEffect(() => {
 		blogService.getAll().then((blogs) => setBlogs(blogs));
 	}, []);
@@ -57,32 +53,20 @@ const App = () => {
 		}
 	};
 
-	const addBlog = async (event) => {
-
-
-		const newBlog = {
-			title: newBlogTitle,
-			author: newBlogAuthor,
-			url: newBlogUrl,
-		};
+	const addBlog = async (blogObject) => {
 
 		try {
 			// faz uma chamada API para o servidorbackend para adcionar um novo blog
-			const response = await blogService.create(newBlog);
+			const response = await blogService.create(blogObject);
 			// assumindo que o API retorne o objeto blog com idfield
 
 			//atualizando o localstate para incluir o novo blog
 			setBlogs([...blogs, response]);
 
-			//limpando os campos após ser adicionado com sucesso
-			setNewBlogTitle("");
-			setNewBlogAuthor("");
-			setNewBlogUrl("");
-
 			if (response) {
 				// se a response é true
 				setErrorMessage(
-					`a new blog ${newBlog.title} by ${newBlog.author} created`
+					`a new blog ${blogObject.title} by ${blogObject.author} created`
 				);
 				setTimeout(() => {
 					setErrorMessage(null);
