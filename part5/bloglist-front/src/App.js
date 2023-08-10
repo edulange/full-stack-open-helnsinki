@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
+
 
 const App = () => {
 	const [blogs, setBlogs] = useState([]);
@@ -13,8 +14,6 @@ const App = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [user, setUser] = useState(null);
-
-	const blogFormRef = useRef()
 
 	useEffect(() => {
 		blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -56,7 +55,6 @@ const App = () => {
 	};
 
 	const addBlog = async (blogObject) => {
-		blogFormRef.current.toggleVisibility()
 		try {
 			// faz uma chamada API para o servidorbackend para adcionar um novo blog
 			const response = await blogService.create(blogObject);
@@ -81,7 +79,6 @@ const App = () => {
 			}, 5000);
 		}
 	};
-
 
 	const handleLogout = (event) => {
 		window.localStorage.clear();
@@ -132,12 +129,14 @@ const App = () => {
 					<Togglable buttonLabel="New Blog">
 						<BlogForm createBlog={addBlog} />
 					</Togglable>
-					{/* {newBlogs()} SUBSTITUIDO pelo BlogForm*/} 
+					{/* {newBlogs()} SUBSTITUIDO pelo BlogForm*/}
 				</div>
 			)}
 
 			{blogs.map((blog) => (
-				<Blog key={blog.id} blog={blog} />
+			
+					<Blog key={blog.id} blog={blog} />
+				
 			))}
 		</div>
 	);
