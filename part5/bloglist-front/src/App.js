@@ -6,7 +6,6 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import BlogForm from "./components/BlogForm";
 
-
 const App = () => {
 	const [blogs, setBlogs] = useState([]);
 	const [errorMessage, setErrorMessage] = useState(null);
@@ -134,9 +133,7 @@ const App = () => {
 			)}
 
 			{blogs.map((blog) => (
-			
-					<Blog key={blog.id} blog={blog} />
-				
+				<Blog key={blog.id} blog={blog} />
 			))}
 		</div>
 	);
