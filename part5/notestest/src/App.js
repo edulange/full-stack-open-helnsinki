@@ -58,6 +58,7 @@ const App = () => {
     }
   }
 console.log('teste')
+console.log('testandooo')
   const addNote = (noteObject) => {
     noteFormRef.current.toggleVisibility()
     noteService
