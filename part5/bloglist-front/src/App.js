@@ -27,56 +27,65 @@ const App = () => {
 		}
 	}, []);
 
-	const handleLogin = async (event) => {
+	const updateLikes = (id, newLikes) => {
+		blogService.update(id, { likes: newLikes }).then((updatedBlog) => {
+		  setBlogs((prevBlogs) =>
+			prevBlogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+		  );
+		});
+	  };
+	
+	const handleLogin = (event) => {
 		event.preventDefault();
-
-		try {
-			const user = await loginService.login({
-				username,
-				password,
-			});
-
+	
+		loginService.login({
+			username,
+			password,
+		})
+		.then((user) => {
 			window.localStorage.setItem(
 				"loggedNoteappUser",
 				JSON.stringify(user)
 			);
-
+	
 			blogService.setToken(user.token);
 			setUser(user);
 			setUsername("");
 			setPassword("");
-		} catch (exception) {
+		})
+		.catch((exception) => {
 			setErrorMessage("wrong username or password");
 			setTimeout(() => {
 				setErrorMessage(null);
 			}, 5000);
-		}
+		});
 	};
+	
 
-	const addBlog = async (blogObject) => {
-		try {
-			// faz uma chamada API para o servidorbackend para adcionar um novo blog
-			const response = await blogService.create(blogObject);
-			// assumindo que o API retorne o objeto blog com idfield
-
-			//atualizando o localstate para incluir o novo blog
-			setBlogs([...blogs, response]);
-
-			if (response) {
-				// se a response é true
-				setErrorMessage(
-					`a new blog ${blogObject.title} by ${blogObject.author} created`
-				);
+	const addBlog = (blogObject) => {
+		blogService.create(blogObject)
+			.then((response) => {
+				// assumindo que o API retorne o objeto blog com idfield
+				
+				// atualizando o localstate para incluir o novo blog
+				setBlogs([...blogs, response]);
+	
+				if (response) {
+					// se a response é true
+					setErrorMessage(
+						`a new blog ${blogObject.title} by ${blogObject.author} created`
+					);
+					setTimeout(() => {
+						setErrorMessage(null);
+					}, 5000);
+				}
+			})
+			.catch((exception) => {
+				setErrorMessage("Falha na criação do blog");
 				setTimeout(() => {
 					setErrorMessage(null);
 				}, 5000);
-			}
-		} catch (exception) {
-			setErrorMessage("Falha na criação do blog");
-			setTimeout(() => {
-				setErrorMessage(null);
-			}, 5000);
-		}
+			});
 	};
 
 	const handleLogout = (event) => {
@@ -133,7 +142,7 @@ const App = () => {
 			)}
 
 			{blogs.map((blog) => (
-				<Blog key={blog.id} blog={blog} />
+				<Blog key={blog.id} blog={blog} updateLikes={updateLikes}/>
 			))}
 		</div>
 	);
