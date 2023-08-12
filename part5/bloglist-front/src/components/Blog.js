@@ -1,7 +1,7 @@
 import { useState } from "react";
 import View from "./View";
 
-const Blog = ({ blog, updateLikes }) => {
+const Blog = ({ blog, updateLikes, handleRemoveBlog }) => {
 	const [likes, setLikes] = useState(blog.likes); //estado pra controalr número de likes
 
 	const blogStyle = {
@@ -38,6 +38,7 @@ const Blog = ({ blog, updateLikes }) => {
 						<button onClick={handleLike}>Like</button>
 					</p>
 				</View>
+				<button onClick={() => handleRemoveBlog(blog.id)}>Delete</button>
 			</div>
 		</div>
 	);

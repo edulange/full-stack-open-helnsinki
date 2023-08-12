@@ -37,7 +37,8 @@ const App = () => {
 		  );
 		});
 	  };
-	
+
+
 	const handleLogin = (event) => {
 		event.preventDefault();
 	
@@ -91,6 +92,18 @@ const App = () => {
 			});
 	};
 
+	const handleRemoveBlog = (id) => {
+		if (window.confirm("Do you really want to delete this blog?")) {
+		  blogService.remove(id)
+			.then(() => {
+			  // Atualizar o estado para refletir a exclusão do blog
+			  setBlogs(blogs.filter(blog => blog.id !== id));
+			})
+			.catch(error => {
+			  console.error("Error deleting blog:", error);
+			});
+		}
+	  };
 	const handleLogout = (event) => {
 		window.localStorage.clear();
 		setUser(null);
@@ -145,7 +158,7 @@ const App = () => {
 			)}
 
 			{blogs.map((blog) => (
-				<Blog key={blog.id} blog={blog} updateLikes={updateLikes}/>
+				<Blog key={blog.id} blog={blog} updateLikes={updateLikes} handleRemoveBlog={handleRemoveBlog}/>
 			))}
 		</div>
 	);
