@@ -8,7 +8,7 @@ import BlogForm from "./components/BlogForm";
 
 const App = () => {
 	const [blogs, setBlogs] = useState([]);
-	const [errorMessage, setErrorMessage] = useState(null);
+	const [message, setErrorMessage] = useState(null);
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -29,6 +29,17 @@ const App = () => {
 			blogService.setToken(user.token);
 		}
 	}, []);
+
+
+	  //seta mensagem de erro no status
+	  //depois de 2 segs limpa
+  
+	  const showMessage = (message) => {
+		setErrorMessage(message)
+		setTimeout(() => {
+		  setErrorMessage(null)
+		}, 3000)
+	  }
 
 	const updateLikes = (id, newLikes) => {
 		blogService.update(id, { likes: newLikes }).then((updatedBlog) => {
@@ -58,10 +69,8 @@ const App = () => {
 			setPassword("");
 		})
 		.catch((exception) => {
-			setErrorMessage("wrong username or password");
-			setTimeout(() => {
-				setErrorMessage(null);
-			}, 5000);
+			showMessage("wrong username or password");
+			console.log(exception)
 		});
 	};
 	
@@ -76,24 +85,20 @@ const App = () => {
 	
 				if (response) {
 					// se a response é true
-					setErrorMessage(
+					showMessage(
 						`a new blog ${blogObject.title} by ${blogObject.author} created`
 					);
-					setTimeout(() => {
-						setErrorMessage(null);
-					}, 5000);
 				}
 			})
 			.catch((exception) => {
-				setErrorMessage("Falha na criação do blog");
-				setTimeout(() => {
-					setErrorMessage(null);
-				}, 5000);
+				showMessage("Falha na criação do blog");
+				console.log('exception :>> ', exception);
 			});
 	};
 
 	const handleRemoveBlog = (id) => {
-		if (window.confirm("Do you really want to delete this blog?")) {
+		const blogToDelete = blogs.find(blog => blog.id === id)
+		if (window.confirm(`Do you really want to delete ${blogToDelete.title} this blog?`)) {
 		  blogService.remove(id)
 			.then(() => {
 			  // Atualizar o estado para refletir a exclusão do blog
@@ -144,7 +149,7 @@ const App = () => {
 	return (
 		<div>
 			<h2>Blogs</h2>
-			<Notification message={errorMessage} />
+			<Notification message={message} />
 			{!user && loginForm()}
 			{user && (
 				<div>
