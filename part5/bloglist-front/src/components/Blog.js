@@ -1,8 +1,8 @@
 import { useState } from "react";
 import View from "./View";
 
-const Blog = ({ blog, updateLikes, handleRemoveBlog }) => {
-	const [likes, setLikes] = useState(blog.likes); //estado pra controalr número de likes
+const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
+	const [likes, setLikes] = useState(blog.likes);
 
 	const blogStyle = {
 		paddingTop: 10,
@@ -19,11 +19,10 @@ const Blog = ({ blog, updateLikes, handleRemoveBlog }) => {
 	};
 
 	const handleLike = () => {
-		console.log("Clicado");
 		const newLikes = likes + 1;
 		setLikes(newLikes);
-		updateLikes(blog.id, newLikes); // Certifique-se de chamar a função de atualização aqui
-	  };
+		updateLikes(blog.id, newLikes);
+	};
 
 	return (
 		<div style={blogStyle}>
@@ -34,13 +33,16 @@ const Blog = ({ blog, updateLikes, handleRemoveBlog }) => {
 					<p>{blog.title}</p>
 					<p>{blog.author}</p>
 					<p>
-						Likes {blog.likes}{" "}
-						<button onClick={handleLike}>Like</button>
+						Likes {likes} <button onClick={handleLike}>Like</button>
 					</p>
 				</View>
-				<button onClick={() => handleRemoveBlog(blog.id)}>Delete</button>
+				{/* Conditionally render the delete button */}
+				{user && blog.user && user.username === blog.user.username && (
+	<button onClick={() => handleRemoveBlog(blog.id)}>Delete</button>
+)}
 			</div>
 		</div>
 	);
 };
+
 export default Blog;

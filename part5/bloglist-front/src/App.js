@@ -16,8 +16,8 @@ const App = () => {
 
 	useEffect(() => {
 		blogService.getAll().then((blogs) => {
-			const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
-			setBlogs(sortedBlogs)
+			const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes);
+			setBlogs(sortedBlogs);
 		});
 	}, []);
 
@@ -30,59 +30,60 @@ const App = () => {
 		}
 	}, []);
 
+	//seta mensagem de erro no status
+	//depois de 2 segs limpa
 
-	  //seta mensagem de erro no status
-	  //depois de 2 segs limpa
-  
-	  const showMessage = (message) => {
-		setErrorMessage(message)
+	const showMessage = (message) => {
+		setErrorMessage(message);
 		setTimeout(() => {
-		  setErrorMessage(null)
-		}, 3000)
-	  }
+			setErrorMessage(null);
+		}, 3000);
+	};
 
 	const updateLikes = (id, newLikes) => {
 		blogService.update(id, { likes: newLikes }).then((updatedBlog) => {
-		  setBlogs((prevBlogs) =>
-			prevBlogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
-		  );
+			setBlogs((prevBlogs) =>
+				prevBlogs.map((blog) =>
+					blog.id === updatedBlog.id ? updatedBlog : blog
+				)
+			);
 		});
-	  };
-
+	};
 
 	const handleLogin = (event) => {
 		event.preventDefault();
-	
-		loginService.login({
-			username,
-			password,
-		})
-		.then((user) => {
-			window.localStorage.setItem(
-				"loggedNoteappUser",
-				JSON.stringify(user)
-			);
-	
-			blogService.setToken(user.token);
-			setUser(user);
-			setUsername("");
-			setPassword("");
-		})
-		.catch((exception) => {
-			showMessage("wrong username or password");
-			console.log(exception)
-		});
+
+		loginService
+			.login({
+				username,
+				password,
+			})
+			.then((user) => {
+				window.localStorage.setItem(
+					"loggedNoteappUser",
+					JSON.stringify(user)
+				);
+
+				blogService.setToken(user.token);
+				setUser(user);
+				setUsername("");
+				setPassword("");
+			})
+			.catch((exception) => {
+				showMessage("wrong username or password");
+				console.log(exception);
+			});
 	};
-	
 
 	const addBlog = (blogObject) => {
-		blogService.create(blogObject)
+		blogService
+			.create(blogObject)
 			.then((response) => {
 				// assumindo que o API retorne o objeto blog com idfield
-				
+
 				// atualizando o localstate para incluir o novo blog
 				setBlogs([...blogs, response]);
-	
+
 				if (response) {
 					// se a response é true
 					showMessage(
@@ -92,23 +93,28 @@ const App = () => {
 			})
 			.catch((exception) => {
 				showMessage("Falha na criação do blog");
-				console.log('exception :>> ', exception);
+				console.log("exception :>> ", exception);
 			});
 	};
 
 	const handleRemoveBlog = (id) => {
-		const blogToDelete = blogs.find(blog => blog.id === id)
-		if (window.confirm(`Do you really want to delete ${blogToDelete.title} this blog?`)) {
-		  blogService.remove(id)
-			.then(() => {
-			  // Atualizar o estado para refletir a exclusão do blog
-			  setBlogs(blogs.filter(blog => blog.id !== id));
-			})
-			.catch(error => {
-			  console.error("Error deleting blog:", error);
-			});
+		const blogToDelete = blogs.find((blog) => blog.id === id);
+		if (
+			window.confirm(
+				`Do you really want to delete ${blogToDelete.title} this blog?`
+			)
+		) {
+			blogService
+				.remove(id)
+				.then(() => {
+					// Atualizar o estado para refletir a exclusão do blog
+					setBlogs(blogs.filter((blog) => blog.id !== id));
+				})
+				.catch((error) => {
+					console.error("Error deleting blog:", error);
+				});
 		}
-	  };
+	};
 	const handleLogout = (event) => {
 		window.localStorage.clear();
 		setUser(null);
@@ -163,7 +169,13 @@ const App = () => {
 			)}
 
 			{blogs.map((blog) => (
-				<Blog key={blog.id} blog={blog} updateLikes={updateLikes} handleRemoveBlog={handleRemoveBlog}/>
+				<Blog
+					key={blog.id}
+					blog={blog}
+					user={user}
+					updateLikes={updateLikes}
+					handleRemoveBlog={handleRemoveBlog}
+				/>
 			))}
 		</div>
 	);
