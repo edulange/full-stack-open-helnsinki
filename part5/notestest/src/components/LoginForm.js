@@ -39,5 +39,3 @@ LoginForm.propTypes = {
 }
 
 export default LoginForm
-
-console.log('teste')
