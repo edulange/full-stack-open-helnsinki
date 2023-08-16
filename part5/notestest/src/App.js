@@ -9,8 +9,6 @@ import noteService from './services/notes'
 import loginService from './services/login'
 
 
-console.log('hoje eu estudei no trabalho, então valeuu')
-
 const App = () => {
   const [notes, setNotes] = useState([])
   const [showAll, setShowAll] = useState(true)
