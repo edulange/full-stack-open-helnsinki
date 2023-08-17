@@ -16,7 +16,7 @@ test('renders content', () => {
 
   screen.debug()
 
-  const element = screen.getByText(
+  const element = screen.findByText(
     'Component testing is done with react-testing-library'
   )
   expect(element).toBeDefined()
@@ -54,3 +54,14 @@ test('renders content', () => {
   expect(element).toBeDefined()
 })
 
+test('does not render this', () => {
+  const note = {
+    content: 'This is a reminder',
+    important: true
+  }
+
+  render(<Note note={note} />)
+
+  const element = screen.queryByText('do not want this thing to be rendered')
+  expect(element).toBeNull()
+})
