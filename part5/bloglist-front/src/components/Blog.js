@@ -46,3 +46,5 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
 }
 
 export default Blog
+
+console.log(`teste`)
