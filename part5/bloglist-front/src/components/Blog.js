@@ -25,10 +25,10 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       {blog.title} {blog.author}
       <div style={listStyle}>
-        <View buttonLabel="View">
+        <View buttonLabel='View'>
           <p>{blog.url}</p>
           <p>{blog.title}</p>
           <p>{blog.author}</p>
@@ -46,5 +46,3 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
 }
 
 export default Blog
-
-console.log(`teste`)
