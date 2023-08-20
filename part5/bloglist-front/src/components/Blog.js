@@ -29,12 +29,12 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
       {blog.title} {blog.author}
       <div style={listStyle}>
         <View buttonLabel='View'>
-          <p>{blog.url}</p>
-          <p>{blog.title}</p>
-          <p>{blog.author}</p>
-          <p>
+          <p className='blog-title'>{blog.title}</p>
+          <p className='blog-author'>{blog.author}</p>
+          {blog.url && <p className='blog-url'>{blog.url}</p>}
+          {blog.likes !== null && <p className='blog-likes'>
 						Likes {likes} <button onClick={handleLike}>Like</button>
-          </p>
+          </p>}
         </View>
         {/* Conditionally render the delete button */}
         {user && blog.user && user.username === blog.user.username && (

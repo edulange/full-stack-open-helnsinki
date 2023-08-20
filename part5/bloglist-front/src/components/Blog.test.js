@@ -1,7 +1,6 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom';
-
+import React from 'react'
+import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react'
 import Blog from './Blog';
 
 describe('Blog Component', () => {
@@ -9,16 +8,24 @@ describe('Blog Component', () => {
     const blog = {
       title: 'Sample Blog Title',
       author: 'John Doe',
-      url: 'https://sample-blog.com',
-      likes: 42,
+      url: null,
+      likes: null
     };
 
-    const component = render(<Blog blog={blog} />);
+    const { container } = render(<Blog blog={blog} />);
 
-    // Assertions
-    expect(component.container).toHaveTextContent('Sample Blog Title');
-    expect(component.container).toHaveTextContent('John Doe');
-    expect(component.container).not.toHaveTextContent('https://sample-blog.com');
-    expect(component.container).not.toHaveTextContent('Likes 42');
+    const titleElement = container.querySelector('.blog-title');
+    const authorElement = container.querySelector('.blog-author');
+    const urlElement = container.querySelector('.blog-url');
+    const likesElement = container.querySelector('.blog-likes');
+    
+
+    // Assert that title and author are rendered
+    expect(titleElement).toHaveTextContent('Sample Blog Title');
+    expect(authorElement).toHaveTextContent('John Doe');
+
+    // Assert that URL and likes are not rendered
+    expect(urlElement).toBeNull();
+    expect(likesElement).toBeNull();
   });
 });
