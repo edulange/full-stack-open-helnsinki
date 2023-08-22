@@ -100,7 +100,7 @@ const App = () => {
     })
   }
 
-
+console.log('teste')
   const addBlog = (blogObject) => {
     blogService
       .create(blogObject)
