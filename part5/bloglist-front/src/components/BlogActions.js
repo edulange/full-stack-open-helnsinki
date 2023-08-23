@@ -5,16 +5,21 @@ import blogService from '../services/blogs'
 
 // uses blogService to add a like to blog
 // and shows a success messagge (or error message)
-export const addLike = (blog, setLikes, showSuccessMessage, showErrorMessage) => {
-  blogService
-    .updateLike(blog.id, blog)
-    .then(returnedBlog => {
-      setLikes(returnedBlog.likes)
-      showSuccessMessage(`You liked blog "${returnedBlog.title}" which has now ${returnedBlog.likes} likes in total!`)
-    })
-    .catch(error => {
-      showErrorMessage('sorry, something went wrong: ' + error.response.data.error)
-    })
+export const addLike = async (blog, setLikes, showSuccessMessage, showErrorMessage) => {
+  try {
+    const updatedLikes = blog.likes + 1
+
+    // Atualiza o estado com o novo valor de likes antes de fazer a chamada à API
+    setLikes(updatedLikes)
+    console.log('Updated Likes:', updatedLikes) // Add this line
+
+    // Faz a chamada à API para atualizar os likes
+    const returnedBlog = await blogService.updateLike(blog.id, { ...blog, likes: updatedLikes })
+
+    showSuccessMessage(`You liked blog "${returnedBlog.title}" which has now ${returnedBlog.likes} likes in total!`)
+  } catch (error) {
+    showErrorMessage('sorry, something went wrong: ' + error.response.data.error)
+  }
 }
 
 // uses blogService to remove a blog

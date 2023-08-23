@@ -47,7 +47,10 @@ export const BlogDetails = ({ blog, blogs, setBlogs, user, showSuccessMessage, s
       <Button
         className='likeButton'
         type='button'
-        onClick={() => addLike(blog, setLikes, showSuccessMessage, showErrorMessage)}
+        onClick={() => {
+          console.log('Button Clicked') // Add this line
+          addLike(blog, setLikes, showSuccessMessage, showErrorMessage)
+        }}
         text=' LIKE '
       />
     </li>
