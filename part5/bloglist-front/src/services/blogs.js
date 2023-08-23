@@ -59,7 +59,7 @@ const updateLike = async (id, blogObject) => {
   const config = {
     headers: { Authorization: token }
   }
-  const request = axios.put(`${baseUrl}/like/${id}`, blogObject, config)
+  const request = axios.put(`${baseUrl}/${id}`, blogObject, config)
   const response = await request
   return response.data
 }
