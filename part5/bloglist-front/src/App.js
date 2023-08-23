@@ -144,29 +144,7 @@ const App = () => {
     )
   }
 
-  //***************************************************************************************
-  // BLOG VIEW, SHOWING BLOG LIST, ADDING BLOG
 
-  // creating a variable called blogFormRef
-  // blogFormRef is assigned to be a reference object.
-  // Reference object has only one property called current.
-  // here, no initial value is given as parameter to useRef,
-  // so  at first the blogFormRef.current is 'undefined'.
-  // reference is created because we want to access
-  // a specific Togglabe component (and call it's function) from addBlog
-  const blogFormRef = useRef()
-
-  // Adding a new blog to the bloglist.
-  // Uses blogService to create the blog.
-  // The returned blog is added to the list of blogs stored in state
-  // and a success message is showed for the user.
-  // If there is a error (for example data missing) an error message is shown.
-  // Success or error, the blog form is closed anyway.
-  // To close the blog form automatically after submitting it,
-  // we access the reference node with blogFormRef.current
-  // and call it's handle (the "togglableHandle") as a function
-  // In other words,when addBlog is called
-  // also toggleVisibility is called for the Togglable component
   const addBlog = (blogObject) => {
     blogFormRef.current.togglableHandle()
 
