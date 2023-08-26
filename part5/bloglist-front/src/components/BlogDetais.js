@@ -15,7 +15,7 @@ export const BlogDetails = ({ blog, blogs, setBlogs, user, showSuccessMessage, s
     }
   }, [user.username, blog])
 
-console.log('foiiii')
+console.log('nao deu hjoe.')
   const renderAuthor = (
     <li>
       <b> Author: </b> {blog.author}
