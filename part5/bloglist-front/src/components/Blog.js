@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import View from './View'
 
 const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
   const [likes, setLikes] = useState(blog.likes)
+  const [detail, setDetail] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
@@ -12,10 +12,18 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
     marginBottom: 5,
   }
 
-  const listStyle = {
-    border: '1px solid #ccc',
-    padding: '10px',
-    marginTop: '2px',
+  // const listStyle = {
+  //   border: '1px solid #ccc',
+  //   padding: '10px',
+  //   marginTop: '2px',
+  // }
+
+  const deleteStyle = {
+    color: 'red'
+  }
+
+  const toggleDetail = () => {
+    setDetail(!detail)
   }
 
   const handleLike = () => {
@@ -24,25 +32,25 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
     updateLikes(blog.id, newLikes)
   }
 
-  return (
-    <div className='blog' style={blogStyle}>
-      {blog.title} {blog.author}
-      <div style={listStyle}>
-        <View buttonLabel='View'>
-          <p className='blog-title'>{blog.title}</p>
-          <p className='blog-author'>{blog.author}</p>
-          {blog.url && <p className='blog-url'>{blog.url}</p>}
-          {blog.likes !== null && <p className='blog-likes'>
-						Likes {likes} <button onClick={handleLike}>Like</button>
-          </p>}
-        </View>
-        {/* Conditionally render the delete button */}
-        {user && blog.user && user.username === blog.user.username && (
-          <button onClick={() => handleRemoveBlog(blog.id)}>Delete</button>
-        )}
-      </div>
-    </div>
-  )
+  if(user !== null) {
+    return (
+      <>
+        {!detail ?
+          <div style={blogStyle} className='blog'>
+            {blog.title} {blog.author}
+            <button onClick={toggleDetail}>view</button>
+          </div> :
+          <div style={blogStyle} className='blogDetail'>
+            {blog.title} <button onClick={toggleDetail}>hide</button> <br />
+            {blog.url} <br />
+              Likes {blog.likes} <button onClick={() => handleLike(blog.id)} className='like'>like</button> <br />
+            {blog.author}
+            {<p><button style={deleteStyle} onClick={() => handleRemoveBlog(blog.id, blog.title, blog.author)} className='delete'>delete</button></p>}
+          </div>
+        }
+      </>
+    )
+  }
 }
 
 export default Blog
