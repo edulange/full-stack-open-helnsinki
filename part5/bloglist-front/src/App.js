@@ -18,7 +18,6 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  console.log('blogs: ', blogs)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -105,6 +104,7 @@ const App = () => {
   }
 
   const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     blogService
       .create(blogObject)
       .then((response) => {
@@ -115,7 +115,7 @@ const App = () => {
 
         if (response) {
           // se a response é true
-          showErrorMessage(
+          showSuccessMessage(
             `a new blog ${blogObject.title} by ${blogObject.author} created`
           )
         }
@@ -187,7 +187,7 @@ const App = () => {
         <div>
           <p>{user.name} logged in</p>
           {logOutButton()}
-          <Togglable buttonLabel="New Blog">
+          <Togglable buttonLabel="New Blog" ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
           {/* {newBlogs()} SUBSTITUIDO pelo BlogForm*/}
