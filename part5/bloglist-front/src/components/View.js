@@ -22,3 +22,5 @@ const View = (props) => {
     </div>
   )
 }
+
+export default View

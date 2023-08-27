@@ -1,59 +1,34 @@
 import { useState, useEffect, useRef } from 'react'
-
-import { Blog } from './components/Blog'
-import { LoginForm } from './components/LoginForm'
-import { BlogForm } from './components/BlogForm'
-import { Togglable } from './components/Togglable'
-import { Button } from './components/FormHelper'
-import { ErrorNotification, SuccessNotification } from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+import Blog from './components/Blog'
+import { SuccessNotification, ErrorNotification } from './components/Notification'
+import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
+
 const App = () => {
-
-  //***********************************************************************************
-  // APP STATES
-
-
-  // List of blogs, the user logged in, and messages
-  // are stored in app state.
-  // At first empty list or null is used for state.
   const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
-  //***********************************************************************************
-  // APP EFFECTS
-  //
-  // useEffects run when React renders App component or if their dependency changes
-  // The first argument is the function which we want the to run.
-  // UseEffect can be given a second argument:
-  // 1) if no argument is given, useEffect will run every time the component is rendered
-  // 2) if an empty array is given as argument, then the useEffect will be run only once
-  //     on first component rendering (like we do here)
-  // 3) Inside the array we could also add the values that the useEffect depends on.
-  // If any of those values would change, only then the effect would run again.
+  const blogFormRef = useRef()
 
-  // The effect gets all the blogs (from backend using blogService)
-  // and sets them as blogs to the state.
+  console.log('blogs: ', blogs)
+
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(initialBlogs =>
-        setBlogs(initialBlogs)
-      )
+    blogService.getAll().then((blogs) => {
+      const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(sortedBlogs)
+    })
   }, [])
 
-  // The effect takes the user from browser's web storage
-  // and saves the user in state.
-  // The effect also saves the token for blogService to use later, if needed
-  // The user is saved in web storage as json string,
-  // and we parse it back to object before setting the it as user.
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
-
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
@@ -62,11 +37,7 @@ const App = () => {
   }, [])
 
 
-  //***********************************************************************************
-  // SETTING MESSAGE FOR NOTIFICATION
-
-  // Sets a success message to state
-  // and clears it after three seconds
+  //************************************************* Setting messages */
   const showSuccessMessage = (message) => {
     setSuccessMessage(message)
     setTimeout(() => {
@@ -74,8 +45,6 @@ const App = () => {
     }, 3000)
   }
 
-  // Sets a error message to state
-  // and clears it after three seconds
   const showErrorMessage = (message) => {
     setErrorMessage(message)
     setTimeout(() => {
@@ -83,15 +52,9 @@ const App = () => {
     }, 3000)
   }
 
-
   //**********************************************************************************
   // LOGIN VIEW, LOGGING IN and LOGGING OUT
 
-
-  // logout is handled by
-  // setting the token of the user to null
-  // setting the user to null
-  // and clearing the web storage
   const handleLogout = async (event) => {
     event.preventDefault()
 
@@ -106,171 +69,140 @@ const App = () => {
 
   }
 
-  // Handles the login attempt of the user.
-  // loginService and blogService (to reach backend) are used for logging the user in.
-  // The returned User object is saved as user in state,
-  // and the user is also stored as json to web storage with key "loggedBloglistUser".
-  // With failed login, shows a error message.
-  //
-  // Web storage stores data locally to the user's browser.
-  // Data that has been saved to web storage has no expiration date.
-  const loginUser = (userObject) => {
+  const loginUser = (event) => {
+    event.preventDefault()
+
     loginService
-      .login(userObject)
-      .then(returnedUser => {
-        setUser(returnedUser)
-        blogService.setToken(returnedUser.token)
+      .login({
+        username,
+        password,
+      })
+      .then((user) => {
         window.localStorage.setItem(
-          'loggedBloglistUser', JSON.stringify(returnedUser)
+          'loggedNoteappUser',
+          JSON.stringify(user)
         )
-        showSuccessMessage(`Welcome ${returnedUser.name}`)
+        showSuccessMessage(`Welcome ${user.name}`)
+        blogService.setToken(user.token)
+        setUser(user)
+        setUsername('')
+        setPassword('')
       })
-      .catch(() => {
-        showErrorMessage('wrong credentials')
+      .catch((exception) => {
+        showErrorMessage('wrong username or password')
+        console.log(exception)
       })
   }
 
-  // returns the view with login functions
-  // shows a button that toggles showing the login form
-  // passes the loginUser as loginHelper to the component LoginForm
-  //
-  const loginView = () => {
-    return (
-      <div>
-        <Togglable buttonLabel='PLEASE LOG IN'>
-          <LoginForm loginUser={loginUser} />
-        </Togglable>
-      </div>
-    )
+  const updateLikes = (id, newLikes) => {
+    blogService.update(id, { likes: newLikes }).then((updatedBlog) => {
+      setBlogs((prevBlogs) =>
+        prevBlogs.map((blog) =>
+          blog.id === updatedBlog.id ? updatedBlog : blog
+        )
+      )
+    })
   }
-
 
   const addBlog = (blogObject) => {
-    blogFormRef.current.togglableHandle()
-
     blogService
       .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        showSuccessMessage(`New blog "${returnedBlog.title}" by ${returnedBlog.author} added`)
+      .then((response) => {
+        // assumindo que o API retorne o objeto blog com idfield
+
+        // atualizando o localstate para incluir o novo blog
+        setBlogs([...blogs, response])
+
+        if (response) {
+          // se a response é true
+          showErrorMessage(
+            `a new blog ${blogObject.title} by ${blogObject.author} created`
+          )
+        }
       })
-      .catch(error => {
-        showErrorMessage('Sorry, something went wrong: ' + error.response.data.error)
+      .catch((exception) => {
+        showErrorMessage('Falha na criação do blog')
+        console.log('exception :>> ', exception)
       })
   }
 
+  const handleRemoveBlog = (id) => {
+    const blogToDelete = blogs.find((blog) => blog.id === id)
+    if (
+      window.confirm(
+        `Do you really want to delete ${blogToDelete.title} this blog?`
+      )
+    ) {
+      blogService
+        .remove(id)
+        .then(() => {
+          // Atualizar o estado para refletir a exclusão do blog
+          setBlogs(blogs.filter((blog) => blog.id !== id))
+        })
+        .catch((error) => {
+          console.error('Error deleting blog:', error)
+        })
+    }
+  }
 
-  // Returns the view with blog functions (available for user after login).
-  // The Togglable component is used for the toggling.
-  // Togglable has both opening and closing tags,
-  // so here the Togglable components are given child components for rendering,
-  //
-  // Blog view contains three sections:
-  // 1) info for the logged in user is showed (showLoggedUser() is called)
-  // 2) add new blog (togglable with button)
-  // 3) view all the blogs (togglable with button).
-  //
-  // 2) If user wants to add new blog, the blog form is showed and
-  // addBlog is passed to the BlogForm component as createBlog.
-  // Also, we pass the created reference object (blogFormRef) as "ref" to this Togglable component.
-  //
-  // 3) If user wants to view the list of all blogs, showBlogs() is called.
-  // However, if there are no blogs added in the app, a info text is shown instead.
-  //
-  const blogView = () => {
-    return (
+  const handleLogin = () => (
+    <form onSubmit={loginUser}>
       <div>
-        {showLoggedUser()}
+				username
+        <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+      </div>
+      <div>
+				password
+        <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </div>
+      <button type="submit">login</button>
+    </form>
+  )
 
-        <Togglable buttonLabel='ADD A NEW BLOG' ref={blogFormRef}>
-          <BlogForm addBlog={addBlog} />
-        </Togglable>
-
-        <Togglable buttonLabel='SHOW ALL BLOGS'>
-          {blogs.length === 0 ?
-            'Sorry, no blogs added at the moment' :
-            showBlogs()
-          }
-        </Togglable>
-
-      </div >
-    )
-  }
-
-  // Returns the name of the user that is logged in,
-  // (name is retrieved from the user saved in state)
-  // and a button for logging out.
-  const showLoggedUser = () => (
+  const logOutButton = () => (
     <div>
-
-      {user.name} logged in {' '}
-
-      <Button
-        style={{ cursor: 'pointer' }}
-        type='button'
-        onClick={handleLogout}
-        text='LOGOUT'
-      />
-
+      <button type="submit" onClick={handleLogout}>
+				Logout
+      </button>
     </div>
   )
 
-  // Returns the blogs saved in state, sorted by likes.
-  // Uses Blog component for rendering individual blogs.
-  const showBlogs = () => {
-    blogs.sort((a, b) => b.likes - a.likes)
-
-    return (
-      <div>
-        <h3> Click blog name for more details</h3>
-        {blogs
-          .map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              blogs={blogs}
-              setBlogs={setBlogs}
-              user={user}
-              showSuccessMessage={showSuccessMessage}
-              showErrorMessage={showErrorMessage}
-            />)
-        }
-
-      </div>
-    )
-  }
-
-  //***************************************************************************************
-  // THE APP RENDERING
-
-  // Returns the app view.
-  // After the header the notifications are showed (if some message is set in state at that moment).
-  // If there is no user in state, that means there is no logged in user
-  // and then the loginView is showed.
-  // For the logged in user the blogView is showed instead.
-  // Uses Notification component for rendering the messages.
-  //
-  // The ? and : is the ternary conditional operator.
-  // After the condition is given (user === null) with a question mark ?
-  // then we give the expression what happens
-  // if condition is truthy (if user is null, show the login view)
-  // and after the colon :  we give the expression
-  // if the condition is falsy (there is a user, show the blog view).
-  // In javascript every value is "truthy", if it is not
-  // null, undefined, false, NaN, 0, -0, 0n, or "", which are the falsy ones.
   return (
     <div>
-
-      <h2>BLOGS</h2>
-
+      <h2>Blogs</h2>
       <ErrorNotification message={errorMessage} />
       <SuccessNotification message={successMessage} />
+      {!user && handleLogin()}
+      {user && (
+        <div>
+          <p>{user.name} logged in</p>
+          {logOutButton()}
+          <Togglable buttonLabel="New Blog">
+            <BlogForm createBlog={addBlog} />
+          </Togglable>
+          {/* {newBlogs()} SUBSTITUIDO pelo BlogForm*/}
+        </div>
+      )}
 
-      {user === null ?
-        loginView() :
-        blogView()
-      }
-
+      {blogs.map((blog) => (
+        <Blog
+          key={blog.id}
+          blog={blog}
+          user={user}
+          updateLikes={updateLikes}
+          handleRemoveBlog={handleRemoveBlog}
+        />
+      ))}
     </div>
   )
 }
