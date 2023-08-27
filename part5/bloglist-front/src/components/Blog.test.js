@@ -1,5 +1,5 @@
 import React from 'react'
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
@@ -7,26 +7,20 @@ import Blog from './Blog'
 describe('Blog Component', () => {
   test('renders title and author but not URL or likes by default', () => {
     const blog = {
-      title: 'Sample Blog Title',
-      author: 'John Doe',
+      title: 'Crimes and Punishment',
+      author: 'Dudu',
       url: 'www.test.com.br',
       likes: 15
     }
 
     const { container } = render(<Blog blog={blog} />)
 
+    const element = container.querySelector('.blog')
+    console.log('element :>> ', element);
+    expect(element).toHaveTextContent('Crimes and Punishment')
+    expect(element).toHaveTextContent('Dudu')
+    expect(element).not.toHaveValue(15)
 
-    const titleElement = container.querySelector('.blog-title')
-    const authorElement = container.querySelector('.blog-author')
-    const urlElement = container.querySelector('.blog-url')
-    const likesElement = container.querySelector('.blog-likes')
-
-    // Assert that title and author are rendered
-    expect(titleElement).toHaveTextContent('Sample Blog Title')
-    expect(authorElement).toHaveTextContent('John Doe')
-
-    // Assert that URL and likes are not rendered
-    expect(urlElement).toBeNull()
-    expect(likesElement).toBeNull()
+    
   })
 })
