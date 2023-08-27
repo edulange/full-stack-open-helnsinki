@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render, screen } from '@testing-library/react'
+import { render, screen  } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
@@ -48,6 +48,6 @@ const blogUser = {
   
     const user = userEvent.setup()
     const button = container.querySelector('.like')
-    await user.click(button)
+    await user.dblClick(button)
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
