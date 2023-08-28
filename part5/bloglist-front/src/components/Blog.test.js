@@ -51,3 +51,5 @@ const blogUser = {
     await user.dblClick(button)
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
+
+  console.log('testando')
