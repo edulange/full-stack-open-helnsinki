@@ -41,7 +41,7 @@ const blogUser = {
   test('calls twice', async () => {
     const mockHandler = jest.fn()
     render(<Blog blog={blog} user={blogUser}>
-      <button onClick={() => mockHandler(blog.id)} className='like'>
+      <button onClick={() => mockHandler(blog.id)}>
         like
       </button>
     </Blog>)
