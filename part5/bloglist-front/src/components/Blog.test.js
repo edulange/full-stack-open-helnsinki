@@ -40,16 +40,14 @@ const blogUser = {
 
   test('calls twice', async () => {
     const mockHandler = jest.fn()
-    const { container } = render(<Blog blog={blog} user={blogUser}>
+    render(<Blog blog={blog} user={blogUser}>
       <button onClick={() => mockHandler(blog.id)} className='like'>
         like
       </button>
     </Blog>)
   
     const user = userEvent.setup()
-    const button = container.querySelector('.like')
+    const button = screen.getByRole('button')
     await user.dblClick(button)
     expect(mockHandler.mock.calls).toHaveLength(2)
   })
-
-  console.log('testando')
