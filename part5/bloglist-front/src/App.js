@@ -7,6 +7,8 @@ import { SuccessNotification, ErrorNotification } from './components/Notificatio
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 
+console.log('eu estou fazendo testes em um arquivo separado e eu VOU FAZER DAR CERTO PORRA')
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
