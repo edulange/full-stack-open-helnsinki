@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import PropTypes from 'prop-types'
 
 const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
   const [likes, setLikes] = useState(blog.likes)
@@ -13,11 +12,6 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
     marginBottom: 5,
   }
 
-  // const listStyle = {
-  //   border: '1px solid #ccc',
-  //   padding: '10px',
-  //   marginTop: '2px',
-  // }
 
   const deleteStyle = {
     color: 'red'
@@ -38,13 +32,14 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
       <>
         {!detail ?
           <div style={blogStyle} className='blog'>
-            {blog.title} {blog.author}
-            <button onClick={toggleDetail}>view</button>
+            <span className='title'>{blog.title} - </span>
+            <span className='author'>{blog.author}</span>{' '}
+            <button id='view-btn' onClick={toggleDetail}>view</button>
           </div> :
-          <div style={blogStyle} className='blogDetail'>
+          <div style={blogStyle} className='blog-details'>
             {blog.title} <button onClick={toggleDetail}>hide</button> <br />
             {blog.url} <br />
-              Likes {blog.likes} <button onClick={() => handleLike(blog.id)} className='like'>like</button> <br />
+              Likes {blog.likes} <button onClick={() => handleLike(blog.id)} className='like-btn'>like</button> <br />
             {blog.author}
             {<p><button style={deleteStyle} onClick={() => handleRemoveBlog(blog.id, blog.title, blog.author)} className='delete'>delete</button></p>}
           </div>
@@ -54,9 +49,5 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
   }
 }
 
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  setBlogs: PropTypes.func.isRequired
-}
 
 export default Blog
