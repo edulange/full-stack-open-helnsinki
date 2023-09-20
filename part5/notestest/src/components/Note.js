@@ -10,5 +10,3 @@ const Note = ({ note, toggleImportance }) => {
 }
 
 export default Note
-
-console.log('yeah boysss')
