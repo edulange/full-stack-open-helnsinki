@@ -109,7 +109,7 @@ describe("Blog app", function () {
     it('shouldnt show the button', function () {
       cy.get('#logout-btn').click()
 
-			cy.login({ username: "teste", password: "teste" })
+			cy.login({ username: "edugod", password: "292044" })
     })
   })
 
