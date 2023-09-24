@@ -22,10 +22,19 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
   }
 
   const handleLike = () => {
+    if (user.username === blog.user.username) {
+      console.log('TRUEE')
+    } else {
+      console.log('FALSEE')
+    }
+    console.log('user :>> ', user)
+    console.log('blog :>> ', blog.id)
     const newLikes = likes + 1
     setLikes(newLikes)
     updateLikes(blog.id, newLikes)
   }
+
+  //eslint --disable-rule=no-console --disable-rule=no-alert
 
   if(user !== null) {
     return (

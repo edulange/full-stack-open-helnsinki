@@ -57,7 +57,7 @@ describe("Blog app", function () {
 			cy.createBlog({
 				title: "a blog created by cypress",
 				author: "Cypress",
-				url: "https://www.test.com/"
+				url: "https://www.test.com/",
 			})
 
 			cy.contains("a blog created by cypress")
@@ -97,34 +97,49 @@ describe("Blog app", function () {
 			cy.get(".delete").click()
 		})
 
-		describe('And several blogs exist', function() {
+		describe("And several blogs exist", function () {
 			beforeEach(function () {
 				cy.createBlog({
-					title: 'First blog',
-					author: 'Cypress',
-					url: 'https://www.test.com/'
+					title: "First blog",
+					author: "Cypress",
+					url: "https://www.test.com/",
 				})
 				cy.createBlog({
-					title: 'Second blog',
-					author: 'Cypress',
-					url: 'https://www.test.com/'
+					title: "Second blog",
+					author: "Cypress",
+					url: "https://www.test.com/",
 				})
 				cy.createBlog({
-					title: 'Third blog',
-					author: 'Cypress',
-					url: 'https://www.test.com/'
+					title: "Third blog",
+					author: "Cypress",
+					url: "https://www.test.com/",
 				})
 			})
 
 			it("one of those can be liked", function () {
-				cy.contains("Third blog").parent().find("button").click();
-				cy.get(".like-btn").click();
-			  });
+				cy.contains("Third blog").parent().find("button").click()
+				cy.get(".like-btn").click()
+			})
 
-			  it("one of those can be deleted", function () {
-				cy.contains("Second blog").parent().find('button').click()
-				cy.get('.delete').click()
-			  })
+			it("one of those can be deleted", function () {
+				cy.contains("Second blog").parent().find("button").click()
+				cy.get(".delete").click()
+			})
+
+			it("fails with wrong credentials", function () {
+				// Tente fazer logout (se você tiver essa funcionalidade)
+				cy.get("#logout-btn").click()
+
+				// Agora, você pode criar um novo usuário e fazer login com ele
+				const newUser = {
+					name: "Novo Usuário",
+					username: "novousuario",
+					password: "novasenha",
+				}
+
+				cy.request("POST", `${Cypress.env("BACKEND")}/users`, newUser)
+				cy.login({ username: "novousuario", password: "novasenha" })
+			})
 		})
 	})
 
