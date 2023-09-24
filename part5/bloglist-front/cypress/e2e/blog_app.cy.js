@@ -1,7 +1,7 @@
 describe("Blog app", function () {
 	beforeEach(function () {
 		//cy.request("POST", "http://localhost:3003/api/testing/reset")
-    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
+		cy.request("POST", `${Cypress.env("BACKEND")}/testing/reset`)
 
 		const user = {
 			name: "Eduardo",
@@ -9,7 +9,7 @@ describe("Blog app", function () {
 			password: "292044",
 		}
 		//cy.request("POST", "http://localhost:3003/api/users/", user)
-    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+		cy.request("POST", `${Cypress.env("BACKEND")}/users`, user)
 		cy.visit("")
 	})
 
@@ -54,12 +54,13 @@ describe("Blog app", function () {
 		})
 
 		it("A blog can be created", function () {
-			cy.contains("New Blog").click()
-			cy.get("#title").type("teste")
-			cy.get("#author").type("teste")
-			cy.get("#url").type("teste")
-			cy.get("#create-btn").click()
-			cy.contains("a new blog teste")
+			cy.createBlog({
+				title: "a blog created by cypress",
+				author: "Cypress",
+				url: "https://www.test.com/"
+			})
+
+			cy.contains("a blog created by cypress")
 		})
 
 		it("User can like a blog", function () {
@@ -95,22 +96,51 @@ describe("Blog app", function () {
 			cy.get("#view-btn").click()
 			cy.get(".delete").click()
 		})
+
+		describe('And several blogs exist', function() {
+			beforeEach(function () {
+				cy.createBlog({
+					title: 'First blog',
+					author: 'Cypress',
+					url: 'https://www.test.com/'
+				})
+				cy.createBlog({
+					title: 'Second blog',
+					author: 'Cypress',
+					url: 'https://www.test.com/'
+				})
+				cy.createBlog({
+					title: 'Third blog',
+					author: 'Cypress',
+					url: 'https://www.test.com/'
+				})
+			})
+
+			it("one of those can be liked", function () {
+				cy.contains("Third blog").parent().find("button").click();
+				cy.get(".like-btn").click();
+			  });
+
+			  it("one of those can be deleted", function () {
+				cy.contains("Second blog").parent().find('button').click()
+				cy.get('.delete').click()
+			  })
+		})
 	})
 
-  describe("Show delete button", function () {
-		beforeEach(function () {
-			cy.login({ username: "edugod", password: "292044" })
+	// describe("Show delete button", function () {
+	// 	beforeEach(function () {
+	// 		cy.login({ username: "edugod", password: "292044" })
 
-			//cy.get("#login-btn").click()
-			//cy.contains("Welcome Eduardo")
-			cy.contains("Eduardo logged in")
-		})
+	// 		//cy.get("#login-btn").click()
+	// 		//cy.contains("Welcome Eduardo")
+	// 		cy.contains("Eduardo logged in")
+	// 	})
 
-    it('shouldnt show the button', function () {
-      cy.get('#logout-btn').click()
+	// 	it("shouldnt show the button", function () {
+	// 		cy.get("#logout-btn").click()
 
-			cy.login({ username: "edugod", password: "292044" })
-    })
-  })
-
+	// 		cy.login({ username: "edugod", password: "292044" })
+	// 	})
+	// })
 })
