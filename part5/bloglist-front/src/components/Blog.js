@@ -22,13 +22,6 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
   }
 
   const handleLike = () => {
-    if (user.username === blog.user.username) {
-      console.log('TRUEE')
-    } else {
-      console.log('FALSEE')
-    }
-    console.log('user :>> ', user)
-    console.log('blog :>> ', blog.id)
     const newLikes = likes + 1
     setLikes(newLikes)
     updateLikes(blog.id, newLikes)
@@ -46,11 +39,11 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
             <button id='view-btn' onClick={toggleDetail}>view</button>
           </div> :
           <div style={blogStyle} className='blog-details'>
-            {blog.title} <button onClick={toggleDetail}>hide</button> <br />
+            {blog.title} <button className='hide-btn' onClick={toggleDetail}>hide</button> <br />
             {blog.url} <br />
               Likes {blog.likes} <button onClick={() => handleLike(blog.id)} className='like-btn'>like</button> <br />
             {blog.author}
-            {<p><button style={deleteStyle} onClick={() => handleRemoveBlog(blog.id, blog.title, blog.author)} className='delete'>delete</button></p>}
+            {user.username === 'edugod' && <p><button style={deleteStyle} onClick={() => handleRemoveBlog(blog.id, blog.title, blog.author)} className='delete'>delete</button></p>}
           </div>
         }
       </>

@@ -126,36 +126,50 @@ describe("Blog app", function () {
 				cy.get(".delete").click()
 			})
 
-			it("fails with wrong credentials", function () {
-				// Tente fazer logout (se você tiver essa funcionalidade)
-				cy.get("#logout-btn").click()
+			describe("Different user", function () {
+				it("different user logged in", function () {
+					const newUser = {
+						name: "Novo Usuário",
+						username: "novousuario",
+						password: "novasenha",
+					}
+		
+					cy.request("POST", `${Cypress.env("BACKEND")}/users`, newUser)
+					cy.login({ username: "novousuario", password: "novasenha" })
+				})
+				it('Button delete is not shown', function () {
+					const newUser = {
+						name: "Novo Usuário",
+						username: "novousuario",
+						password: "novasenha",
+					}
+		
+					cy.request("POST", `${Cypress.env("BACKEND")}/users`, newUser)
+					cy.login({ username: "novousuario", password: "novasenha" })
 
-				// Agora, você pode criar um novo usuário e fazer login com ele
-				const newUser = {
-					name: "Novo Usuário",
-					username: "novousuario",
-					password: "novasenha",
-				}
-
-				cy.request("POST", `${Cypress.env("BACKEND")}/users`, newUser)
-				cy.login({ username: "novousuario", password: "novasenha" })
+					cy.contains("Second blog").parent().find("button").click()
+					cy.get("delete").should("not.exist")
+				}) 
+				it("they are ordered by the number of likes in descending order", async function () {
+					cy.contains("Third blog").parent().find("button").click();
+					cy.get(".like-btn").click().wait(500).click().wait(500);
+					cy.get('.hide-btn').click()
+			
+					cy.contains("Second blog").parent().find("button").click();
+					cy.get(".like-btn")
+					  .click()
+					  .wait(500)
+					  .click()
+					  .wait(500)
+					  .click()
+					  .wait(500);
+			
+					cy.get(".blog").eq(0).should("contain", "Second blog");
+					cy.get(".blog").eq(1).should("contain", "Third blog");
+					cy.get(".blog").eq(2).should("contain", "First blog");
+				  });
 			})
 		})
+		
 	})
-
-	// describe("Show delete button", function () {
-	// 	beforeEach(function () {
-	// 		cy.login({ username: "edugod", password: "292044" })
-
-	// 		//cy.get("#login-btn").click()
-	// 		//cy.contains("Welcome Eduardo")
-	// 		cy.contains("Eduardo logged in")
-	// 	})
-
-	// 	it("shouldnt show the button", function () {
-	// 		cy.get("#logout-btn").click()
-
-	// 		cy.login({ username: "edugod", password: "292044" })
-	// 	})
-	// })
 })
