@@ -2,7 +2,6 @@ import { createNote, toggleImportanceOf } from './reducers/noteReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const App = () => {
-  console.log('teste')
   const dispatch = useDispatch()
   const notes = useSelector(state => state)
 
