@@ -1,6 +1,11 @@
 import { useSelector, useDispatch } from 'react-redux'
 
+
 const App = () => {
+
+  const teste = () => {
+    console.log('testando')
+  }
   const anecdotes = useSelector(state => state)
   const dispatch = useDispatch()
 
