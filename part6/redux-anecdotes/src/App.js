@@ -1,6 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { vote, createAnecdote } from './actions/anecdoteActions'
 
+
+console.log('teste')
 const App = () => {
   const anecdotes = useSelector(state => state)
   // eslint-disable-next-line
