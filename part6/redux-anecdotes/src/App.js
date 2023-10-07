@@ -3,6 +3,8 @@ import { vote, createAnecdote } from './actions/anecdoteActions'
 
 
 console.log('teste')
+console.log('teste')
+console.log('teste')
 const App = () => {
   const anecdotes = useSelector(state => state)
   // eslint-disable-next-line
