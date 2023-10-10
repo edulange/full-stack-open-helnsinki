@@ -52,3 +52,5 @@ export const toggleImportanceOf = (id) => {
 }  
 
 export default noteReducer
+
+console.log('amanhã bora?')
