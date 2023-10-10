@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux"
+
 const Notification = () => {
+  const notification = useSelector((state) => state.notification); // Replace 'notification' with the actual key in your Redux store
+
   const style = {
     border: 'solid',
     padding: 10,
