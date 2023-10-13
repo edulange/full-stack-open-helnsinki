@@ -16,3 +16,5 @@ const Notification = () => {
 }
 
 export default Notification
+
+const teste = console.log('teste')
