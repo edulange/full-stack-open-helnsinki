@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import anecdotesReducer from './reducers/anecdoteReducer'; // Importe o reducer de suas anedotas
 import filterReducer from './reducers/filterReducer'; // Importe o reducer do filtro
+import notificationReducer from './reducers/notificationReducer'
 
 const store = configureStore({
   reducer: {
     anecdotes: anecdotesReducer,
     filter: filterReducer,
+    notification: notificationReducer,
   },
 });
 
