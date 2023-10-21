@@ -13,5 +13,3 @@ const Notification = () => {
 }
 
 export default Notification
-console.log('bumbouuu')
-console.log('n bumbouuu')
