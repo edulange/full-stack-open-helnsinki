@@ -49,9 +49,14 @@ export const createAnecdote = content => {
 	}
 }
 
+export const voteAnecdote = (id) => {
+	return async (dispatch) => {
+		const updatedAnecdote = await anecdoteService.updateVote(id)
+		dispatch(vote(updatedAnecdote.id))
+	}
+}
 
-// parei aquim tenho que fazer esse export const vote e também fazer um update no service para atualizar o backend
-//export const vote
+
 export default anecdoteSlice.reducer
 
 /*
