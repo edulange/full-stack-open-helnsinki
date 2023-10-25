@@ -14,4 +14,5 @@ const createNew = async (content) => {
     return response.data
   }
 
+  // eslint-disable-next-line 
 export default { getAll, createNew }

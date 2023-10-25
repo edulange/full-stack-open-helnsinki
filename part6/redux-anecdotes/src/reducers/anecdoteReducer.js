@@ -49,6 +49,9 @@ export const createAnecdote = content => {
 	}
 }
 
+
+// parei aquim tenho que fazer esse export const vote e também fazer um update no service para atualizar o backend
+//export const vote
 export default anecdoteSlice.reducer
 
 /*
