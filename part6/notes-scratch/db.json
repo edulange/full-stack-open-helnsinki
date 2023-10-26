@@ -11,24 +11,19 @@
       "id": 2
     },
     {
-      "content": "asdadads",
+      "content": "state is stored in the backend",
       "important": false,
       "id": 3
     },
     {
-      "content": "teste",
+      "content": "testing",
       "important": false,
       "id": 4
     },
     {
-      "content": "fgdfg",
-      "important": true,
+      "content": "koetos",
+      "important": false,
       "id": 5
-    },
-    {
-      "content": "asdasd",
-      "important": true,
-      "id": 6
     }
   ]
 }
