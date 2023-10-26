@@ -1,13 +1,13 @@
 import React from "react"
 import { useDispatch } from "react-redux"
-import { setFilter } from "../reducers/filterReducer" // Importe a ação diretamente do slice
+import { setFilter } from "../reducers/filterReducer"
 
 const Filter = (props) => {
 	const dispatch = useDispatch()
 
 	const handleChange = (event) => {
 		const filterValue = event.target.value
-		dispatch(setFilter(filterValue)) // Despache a ação do slice
+		dispatch(setFilter(filterValue)) 
 	}
 
 	const style = {
