@@ -1,35 +1,43 @@
 import AnecdoteForm from "./components/AnecdoteForm"
 import Notification from "./components/Notification"
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { getAnecdotes, createAnecdote, updateAnecdote } from "./requests"
 
 const App = () => {
-	console.log('começou')
-  const queryClient = useQueryClient()
 
+	const queryClient = useQueryClient()
+
+	const updateAnecdoteMutation = useMutation(
+		(data) => updateAnecdote({ content: data.content, id: data.id, votes: data.votes }),
+		{
+		  onSettled: () => {
+			// Revalidação automática após a mutação
+			queryClient.invalidateQueries(['anecdotes']);
+		  },
+		}
+	  );
+	  
+	
 	const handleVote = (anecdote) => {
 		console.log("vote")
+		updateAnecdoteMutation.mutate({
+			content: anecdote.content,
+			id: anecdote.id,
+			votes: anecdote.votes + 1
+		})
 	}
-
-
-  const updateAnecdoteMutatition = useMutation(updateAnecdote, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('anecdotes')
-    },
-  })
-
 
 	const result = useQuery({
 		queryKey: ["anecdotes"],
 		queryFn: getAnecdotes,
-    retry: false,
-        refetchOnWindowFocus: false
+		retry: false,
+		refetchOnWindowFocus: false,
 	})
 	console.log(JSON.parse(JSON.stringify(result)))
 
-  if (result.isLoading) {
-    return <div>Carregando dados</div>
-  }
+	if (result.isLoading) {
+		return <div>Carregando dados</div>
+	}
 	if (result.isError) {
 		return <div>anecdote service is not available</div>
 	}
