@@ -1,7 +1,7 @@
 import AnecdoteForm from "./components/AnecdoteForm"
 import Notification from "./components/Notification"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { getAnecdotes, createAnecdote, updateAnecdote } from "./requests"
+import { getAnecdotes, updateAnecdote } from "./requests"
 
 const App = () => {
 
