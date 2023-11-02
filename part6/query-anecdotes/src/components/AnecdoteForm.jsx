@@ -12,11 +12,13 @@ const AnecdoteForm = () => {
     }
   })
   
+  const getId = () => Number(100000 * Math.random()).toFixed(0)
+
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate({ content, votes: 0})
+    newAnecdoteMutation.mutate({ content, id: getId(), votes: 0})
 }
 
   return (
