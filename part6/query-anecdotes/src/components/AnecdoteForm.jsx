@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { createAnecdote } from "../requests"
 import { useNotificationDispatch } from '../NotificationContext'
 
@@ -10,26 +10,29 @@ const AnecdoteForm = () => {
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes']);
       queryClient.setQueryData(['anecdotes'], [...anecdotes, newAnecdote]);
-    },
-    onError: () => {
-      dispatch({ type: 'ERROR', payload: `too short anecdote, must have legnth 5 or more`})
-      setTimeout(() => {
-        dispatch({ type: 'hideNotification'})
-      }, 5000)
     }
   })
   
   const getId = () => Number(100000 * Math.random()).toFixed(0)
 
-  const onCreate = async (event) => {
+  const onCreate =  (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-      newAnecdoteMutation.mutate({ content, id: getId(), votes: 0})
-      await dispatch({ type: 'showNotification', payload: `you added ${content} !`})
-    setTimeout(() => {
-      dispatch({ type: 'hideNotification'})
-    }, 5000)
+      newAnecdoteMutation.mutate({ content, id: getId(), votes: 0}, {
+        onSuccess: () => {
+          dispatch({ type: 'showNotification', payload: `you added ${content} !`})
+          setTimeout(() => {
+            dispatch({ type: 'hideNotification'})
+          }, 5000)
+        },
+        onError: () => {
+          dispatch({ type: 'ERROR', payload: `too short anecdote, must have legnth 5 or more`})
+          setTimeout(() => {
+            dispatch({ type: 'hideNotification'})
+          }, 5000)
+        }
+      })
 }
 
   return (
