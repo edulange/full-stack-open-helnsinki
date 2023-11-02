@@ -6,6 +6,8 @@ const notificationReducer = (state, action) => {
         return action.payload
     case "hideNotification":
         return ''
+    case 'ERROR':
+      return action.payload
     default:
         return state
   }
@@ -14,7 +16,7 @@ const notificationReducer = (state, action) => {
 const NotificationContext = createContext()
 
 export const NotificationContextProvider = (props) => {
-  const [notification, notificationDispatch] = useReducer(notificationReducer, ' ')
+  const [notification, notificationDispatch] = useReducer(notificationReducer, '')
 
   return (
     <NotificationContext.Provider value={[notification, notificationDispatch] }>
