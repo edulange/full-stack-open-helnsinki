@@ -5,7 +5,7 @@ const middlewares = jsonServer.defaults()
 
 const validator = (request, response, next) => {
   const { content } = request.body;
-
+  
   console.log('Validating content:', content)
 
   if (request.method === 'POST' && (!content || content.length < 5)) {
@@ -14,7 +14,7 @@ const validator = (request, response, next) => {
       error: 'too short anecdote, must have length 5 or more'
     });
   } else {
-    console.log('Validation passed')
+    console.log('Validation passed') 
     next();
   }
 };

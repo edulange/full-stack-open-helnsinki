@@ -1,7 +1,7 @@
 import AnecdoteForm from "./components/AnecdoteForm"
 import Notification from "./components/Notification"
 import { useQuery, useMutation, useQueryClient } from "react-query"
-import { getAnecdotes, updateAnecdote } from "./requests"
+import { getAnecdotes, updateAnecdote } from "./request"
 import { useNotificationDispatch } from "./NotificationContext"
 
 const App = () => {
@@ -9,26 +9,36 @@ const App = () => {
 	const dispatch = useNotificationDispatch()
 
 	const updateAnecdoteMutation = useMutation(
-		(data) => updateAnecdote({ content: data.content, id: data.id, votes: data.votes }),
+		(data) =>
+			updateAnecdote({
+				content: data.content,
+				id: data.id,
+				votes: data.votes,
+			}),
 		{
-		  onSettled: () => {
-			// Revalidação automática após a mutação
-			queryClient.invalidateQueries(['anecdotes']);
-		  },
+			onSettled: () => {
+				// Revalidação automática após a mutação
+				queryClient.invalidateQueries(["anecdotes"])
+			},
 		}
-	  );
-	  
-	
+	)
+
 	const handleVote = async (anecdote) => {
 		/*updateAnecdoteMutation.mutate({
 			content: anecdote.content,
 			id: anecdote.id,
 			votes: anecdote.votes + 1
 		}) MESMA COISAAAAA*/
-		updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes + 1})
-		await dispatch({ type: 'showNotification', payload: `you voted ${anecdote.content}`})
+		updateAnecdoteMutation.mutate({
+			...anecdote,
+			votes: anecdote.votes + 1,
+		})
+		await dispatch({
+			type: "showNotification",
+			payload: `you voted ${anecdote.content}`,
+		})
 		setTimeout(() => {
-			dispatch({ type: 'hideNotification'})
+			dispatch({ type: "hideNotification" })
 		}, 5000)
 	}
 
