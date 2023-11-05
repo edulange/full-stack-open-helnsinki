@@ -103,11 +103,19 @@ const CreateNew = (props) => {
 		navigate("/")
 	}
 
-  const handleReset = () => {
-    content.reset()
-    author.reset()
-    info.reset()
-  }
+	const handleReset = () => {
+		content.reset()
+		author.reset()
+		info.reset()
+	}
+
+	const getFieldProps = (field) => {
+		// Create a new object with only the properties you want to spread
+		const { type, value, onChange } = field
+		return { type, value, onChange }
+	}
+	// estou utilizando isso aqui pq? para conseguir utilizar o useField
+	// e assim eu posso utilizar o useField só as propriedades que eu quero
 
 	return (
 		<div>
@@ -115,18 +123,20 @@ const CreateNew = (props) => {
 			<form onSubmit={handleSubmit}>
 				<div>
 					content
-					<input {...content} />
+					<input {...getFieldProps(content)} />
 				</div>
 				<div>
 					author
-					<input {...author} />
+					<input {...getFieldProps(author)} />
 				</div>
 				<div>
 					url for more info
-					<input {...info} />
+					<input {...getFieldProps(info)} />
 				</div>
 				<button>create</button>
-				<button type="button" onClick={handleReset}>reset</button>
+				<button type="button" onClick={handleReset}>
+					reset
+				</button>
 			</form>
 		</div>
 	)
