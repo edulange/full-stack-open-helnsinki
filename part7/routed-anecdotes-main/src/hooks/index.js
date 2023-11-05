@@ -25,11 +25,3 @@ export const useField = (type) => {
 export const useAnotherHook = () => {
   // ...
 }
-
-export const getFieldProps = (field) => {
-    // Create a new object with only the properties you want to spread
-    const { type, value, onChange } = field;
-    return { type, value, onChange };
-  }
-// estou utilizando isso aqui pq? para conseguir utilizar o useField
-// e assim eu posso utilizar o useField só as propriedades que eu quero
