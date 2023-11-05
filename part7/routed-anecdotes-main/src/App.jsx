@@ -3,7 +3,7 @@ import { useState } from 'react'
 import {
   BrowserRouter as Router,
   useParams,
-  Routes, Route, Link
+  Routes, Route, Link, useNavigate
 } from 'react-router-dom'
 import Anecdote from './components/Anecdote'
 
@@ -62,6 +62,7 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -71,7 +72,10 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+
+    navigate('/')
   }
+
 
   return (
     <div>
@@ -119,6 +123,12 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+
+    setNotification(`Anecdote ${anecdote.content} was added to the list`)
+
+    setTimeout( () => {
+      setNotification('')
+    }, 3000)
   }
 
   const anecdoteById = (id) =>
@@ -141,6 +151,7 @@ const App = () => {
       <div>
         <h1>Software anecdotes</h1>
         <Menu />
+        {notification && <p> {notification} </p>}
           <Routes>
             <Route path="/" element={<AnecdoteList anecdotes={anecdotes}/>} />
             <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes}/>} />
