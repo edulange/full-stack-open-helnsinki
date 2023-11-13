@@ -93,17 +93,19 @@ const CountryList = ({
   };
 
   return (
-    <div className="country-list-container">
-      {filteredCountries.length > 1 &&
-      filteredCountries.length <= 10 &&
-      !countryDetails
-        ? renderCountryList()
-        : null}
-
-      {filteredCountries.length === 1 && countryDetails
-        ? renderCountryDetails()
-        : null}
-    </div>
+	<div className="country-list-container">
+	  {filteredCountries.length > 1 && filteredCountries.length <= 10 && !countryDetails ? (
+		renderCountryList()
+	  ) : null}
+  
+	  {filteredCountries.length === 1 && countryDetails ? (
+		renderCountryDetails()
+	  ) : null}
+  
+	  {filteredCountries.length === 0 && !countryDetails ? (
+		<p>Not Found...</p>
+	  ) : null}
+	</div>
   );
 };
 
