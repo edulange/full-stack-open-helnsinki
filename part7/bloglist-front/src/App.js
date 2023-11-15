@@ -13,6 +13,7 @@ import BlogForm from './components/BlogForm'
 import { useDispatch } from 'react-redux'
 import { loginUser as loginUserAction, clearUser } from './reducers/userReducer';
 import { useSelector } from 'react-redux';
+import useUserInitialization from './components/userInitialization'
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   //const [user, setUser] = useState(null)
+  //não é mais necessário pois estou utilizando userReducer
 
   const blogFormRef = useRef()
   
@@ -37,24 +39,8 @@ const App = () => {
     })
   }, [])
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
-        if (loggedUserJSON) {
-          const user = JSON.parse(loggedUserJSON);
-          console.log('Token retrieved from localStorage:', user.token);
-          blogService.setToken(user.token);
-          dispatch(loginUserAction(user));
-        }
-      } catch (error) {
-        console.error('Error during user initialization:', error);
-      }
-    };
-  
-    init();
-  }, [dispatch]);
-
+  useUserInitialization()
+  //aqui era o useEffect que cuida da inicialização
 
   //************************************************* Setting messages */
   const showSuccessMessage = (message) => {
