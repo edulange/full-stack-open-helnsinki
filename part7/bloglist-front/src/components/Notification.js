@@ -1,27 +1,34 @@
 // helpers to render error and success messages
 // the styles can be found from index.css
+/* eslint-disable */
 
-export const ErrorNotification = ({ message }) => {
-  if (message === null) {
-    return null
-  } else {
-    return (
-      <div className="error">
-        {message}
-      </div>
-    )
+import React from "react"
+import { useSelector } from "react-redux"
+
+export const ErrorNotification = () => {
+  const errorMessage = useSelector(state => state.notifications.error);
+
+  if (!errorMessage) {
+    return null;
   }
+
+  return (
+    <div className="error">
+      {errorMessage}
+    </div>
+  );
 }
 
+export const SuccessNotification = () => {
+  const successMessage = useSelector(state => state.notifications.successMessage);
 
-export const SuccessNotification = ({ message }) => {
-  if (message === null) {
-    return null
-  } else {
-    return (
-      <div className="success">
-        {message}
-      </div>
-    )
+  if (!successMessage) {
+    return null;
   }
+
+  return (
+    <div className="success">
+      {successMessage}
+    </div>
+  );
 }

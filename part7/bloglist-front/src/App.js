@@ -15,11 +15,11 @@ import { loginUser as loginUserAction, clearUser } from './reducers/userReducer'
 import { useSelector } from 'react-redux';
 import useUserInitialization from './components/userInitialization'
 
+import { setSuccessMessage, setErrorMessage, clearNotification } from './reducers/notificationReducer'
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -28,8 +28,9 @@ const App = () => {
 
   const blogFormRef = useRef()
   
-  const user = useSelector(state => state.user.user);
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user.user);
+  const notifications = useSelector((state) => state.notifications)
 
 
   useEffect(() => {
@@ -44,17 +45,17 @@ const App = () => {
 
   //************************************************* Setting messages */
   const showSuccessMessage = (message) => {
-    setSuccessMessage(message)
+    dispatch(setSuccessMessage(message));
     setTimeout(() => {
-      setSuccessMessage(null)
-    }, 3000)
+      dispatch(clearNotification());
+    }, 3000);
   }
-
+  
   const showErrorMessage = (message) => {
-    setErrorMessage(message)
+    dispatch(setErrorMessage(message));
     setTimeout(() => {
-      setErrorMessage(null)
-    }, 3000)
+      dispatch(clearNotification());
+    }, 3000);
   }
 
   //**********************************************************************************
@@ -77,7 +78,6 @@ const App = () => {
 
   const loginUser = (event) => {
     event.preventDefault()
-
 
     loginService
       .login({
@@ -191,8 +191,8 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <ErrorNotification message={errorMessage} />
-      <SuccessNotification message={successMessage} />
+      <ErrorNotification message={notifications.errorMessage} />
+      <SuccessNotification message={notifications.successMessage} />
       {!user && handleLogin()}
       {user && (
         <div>

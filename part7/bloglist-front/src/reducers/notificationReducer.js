@@ -1,30 +1,33 @@
 /* eslint-disable */
-import { createSlice } from "@reduxjs/toolkit";
 
-const notificationSlice = createSlice({
-  name: "notification",
-  initialState: null,
-  reducers: {
-    setNotification(state, action) {
-      return action.payload;
-    },
-  },
-});
+const initiaState = {
+    successMessage: null,
+    errorMessage: null
+}
 
-export const { setNotification } = notificationSlice.actions;
-
-let timeoutId = null;
-
-export const createNotification = (message, delay) => {
-  return async (dispatch) => {
-    dispatch(setNotification(message));
-
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+const notificationReducer = (state = initiaState, action) => {
+    switch (action.type) {
+        case 'SET_SUCCESS_MESSAGE':
+            return { ...state, successMessage: action.data }
+        case 'SET_ERROR_MESSAGE':
+            return { ...state, errorMessage: action.data }
+        case 'CLEAR_NOTIFICATION':
+            return {...initiaState}
+        default:
+            return state
     }
+}
 
-    timeoutId = setTimeout(() => dispatch(setNotification(null)), delay * 1000);
-  };
-};
+export const setSuccessMessage = (message) => ({
+    type: 'SET_SUCCESS_MESSAGE',
+    data: message
+})
+export const setErrorMessage = (message) => ({
+    type: 'SET_ERROR_MESSAGE',
+    data: message
+})
+export const clearNotification = () => ({
+    type: 'CLEAR_NOTIFICATION'
+})
 
-export default notificationSlice.reducer;
+export default notificationReducer

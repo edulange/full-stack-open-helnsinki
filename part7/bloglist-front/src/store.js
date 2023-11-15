@@ -1,13 +1,15 @@
 /* eslint-disable */
-import { configureStore } from "@reduxjs/toolkit"
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
+import thunk from 'redux-thunk'
 import userReducer from "./reducers/userReducer"
 import notificationReducer from "./reducers/notificationReducer"
 
 const store = configureStore({
     reducer: {
         user: userReducer,
-        notification: notificationReducer,
-    }
+        notifications: notificationReducer
+    },
+    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), thunk], // Use o callback diretamente
 })
 
 export default store
