@@ -7,6 +7,14 @@ import { SuccessNotification, ErrorNotification } from './components/Notificatio
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 
+
+/* eslint-disable */
+
+import { useDispatch } from 'react-redux'
+import { loginUser as loginUserAction, clearUser } from './reducers/userReducer';
+import { useSelector } from 'react-redux';
+
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
@@ -14,9 +22,12 @@ const App = () => {
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  //const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
+  
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch()
 
 
   useEffect(() => {
@@ -27,13 +38,22 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
+    const init = async () => {
+      try {
+        const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
+        if (loggedUserJSON) {
+          const user = JSON.parse(loggedUserJSON);
+          console.log('Token retrieved from localStorage:', user.token);
+          blogService.setToken(user.token);
+          dispatch(loginUserAction(user));
+        }
+      } catch (error) {
+        console.error('Error during user initialization:', error);
+      }
+    };
+  
+    init();
+  }, [dispatch]);
 
 
   //************************************************* Setting messages */
@@ -61,15 +81,17 @@ const App = () => {
       showSuccessMessage(`Goodbye ${user.name}`)
       window.localStorage.clear()
       blogService.setToken(null)
-      setUser(null)
+      dispatch(clearUser())
     } catch (exception) {
       showErrorMessage('something went wrong, try to logout again')
     }
 
   }
 
+
   const loginUser = (event) => {
     event.preventDefault()
+
 
     loginService
       .login({
@@ -78,12 +100,13 @@ const App = () => {
       })
       .then((user) => {
         window.localStorage.setItem(
-          'loggedNoteappUser',
+          'loggedBlogAppUser',
           JSON.stringify(user)
         )
         showSuccessMessage(`Welcome ${user.name}`)
         blogService.setToken(user.token)
-        setUser(user)
+
+        dispatch(loginUserAction(user));
         setUsername('')
         setPassword('')
       })

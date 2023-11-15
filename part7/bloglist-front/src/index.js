@@ -1,6 +1,15 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css' // Importa o arquivo CSS
+/* eslint-disable */
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+import React from "react"
+import ReactDOM from "react-dom/client"
+import "./index.css" // Importa o arquivo CSS
+import { Provider } from "react-redux"
+import store from "./store"
+
+import App from "./App"
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+	<Provider store={store}>
+		<App />
+	</Provider>
+)
