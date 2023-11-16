@@ -10,6 +10,11 @@ import BlogForm from './components/BlogForm'
 
 /* eslint-disable */
 
+//preciso tirar 
+//const [username, setUsername] = useState('')
+//const [password, setPassword] = useState('')
+//hj eu fdiz varias coisas, mas voltei tudo pq n deu certo XDD
+
 import { useDispatch } from 'react-redux'
 import { loginUser as loginUserAction, clearUser } from './reducers/userReducer';
 import { useSelector } from 'react-redux';
