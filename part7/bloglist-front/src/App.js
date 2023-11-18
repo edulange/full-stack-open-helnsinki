@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -9,18 +10,17 @@ import BlogForm from './components/BlogForm'
 
 
 /* eslint-disable */
+import { useEffect, useRef } from 'react'
 
 
-import { useDispatch } from 'react-redux'
-import { loginUser as loginUserAction, clearUser, setPassword, setUsername } from './reducers/userReducer';
-import { useSelector } from 'react-redux';
 import useUserInitialization from './components/userInitialization'
 
+import { loginUser as loginUserAction, clearUser, setPassword, setUsername } from './reducers/userReducer';
 import { setSuccessMessage, setErrorMessage, clearNotification } from './reducers/notificationReducer'
+import { setBlogs, addBlog, updateBlog, removeBlog } from './reducers/blogReducer'
 
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
 
   //const [username, setUsername] = useState('')
   //const [password, setPassword] = useState('')
@@ -30,20 +30,21 @@ const App = () => {
   const blogFormRef = useRef()
   
   const dispatch = useDispatch()
+
   const user = useSelector(state => state.user.user);
   const notifications = useSelector((state) => state.notifications)
-
+  const { username, password } = useSelector(state => state.user);
+  const blogs = useSelector((state => state.blog.blogs))
   //const username = useSelector(state => state.user.username);
   //const password = useSelector(state => state.user.password);
-  const { username, password } = useSelector(state => state.user);
 
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
       const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(sortedBlogs)
+      dispatch(setBlogs(sortedBlogs));
     })
-  }, [])
+  }, [dispatch])
 
   useUserInitialization()
   //aqui era o useEffect que cuida da inicialização
@@ -101,8 +102,10 @@ const App = () => {
         blogService.setToken(user.token)
 
         dispatch(loginUserAction(user));
-        setUsername('')
-        setPassword('')
+         //aqui tinha o setUsername('')
+         //aqui tinha o setPassword('')
+         //eu tirei e o código continuou funcionando, aparentemente está tudo ok.
+         //não faz sentido deletar o username, pois ele é necessário
       })
       .catch((exception) => {
         showErrorMessage('wrong username or password')
@@ -206,11 +209,10 @@ const App = () => {
           <Togglable buttonLabel="New Blog" ref={blogFormRef}>
             <BlogForm createBlog={addBlog} />
           </Togglable>
-          {/* {newBlogs()} SUBSTITUIDO pelo BlogForm*/}
         </div>
       )}
 
-      {blogs
+      {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
           <Blog
