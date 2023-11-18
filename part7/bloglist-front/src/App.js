@@ -12,7 +12,7 @@ import BlogForm from './components/BlogForm'
 
 
 import { useDispatch } from 'react-redux'
-import { loginUser as loginUserAction, clearUser } from './reducers/userReducer';
+import { loginUser as loginUserAction, clearUser, setPassword, setUsername } from './reducers/userReducer';
 import { useSelector } from 'react-redux';
 import useUserInitialization from './components/userInitialization'
 
@@ -22,8 +22,8 @@ import { setSuccessMessage, setErrorMessage, clearNotification } from './reducer
 const App = () => {
   const [blogs, setBlogs] = useState([])
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  //const [username, setUsername] = useState('')
+  //const [password, setPassword] = useState('')
   //const [user, setUser] = useState(null)
   //não é mais necessário pois estou utilizando userReducer
 
@@ -32,6 +32,10 @@ const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user.user);
   const notifications = useSelector((state) => state.notifications)
+
+  //const username = useSelector(state => state.user.username);
+  //const password = useSelector(state => state.user.password);
+  const { username, password } = useSelector(state => state.user);
 
 
   useEffect(() => {
@@ -121,11 +125,8 @@ const App = () => {
     blogService
       .create(blogObject)
       .then((response) => {
-        // assumindo que o API retorne o objeto blog com idfield
-
         // atualizando o localstate para incluir o novo blog
         setBlogs([...blogs, response])
-
         if (response) {
           // se a response é true
           showSuccessMessage(
@@ -167,8 +168,8 @@ const App = () => {
           type="text"
           value={username}
           name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
+          onChange={({ target }) => dispatch(setUsername(target.value))}
+          />
       </div>
       <div>
 				password
@@ -177,8 +178,8 @@ const App = () => {
           type="password"
           value={password}
           name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
+          onChange={({ target }) => dispatch(setPassword(target.value))}
+          />
       </div>
       <button id='login-btn' type="submit">login</button>
     </form>
