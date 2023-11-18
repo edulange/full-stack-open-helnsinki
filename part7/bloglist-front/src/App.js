@@ -37,13 +37,12 @@ const App = () => {
   //const username = useSelector(state => state.user.username);
   //const password = useSelector(state => state.user.password);
 
-
   useEffect(() => {
     blogService.getAll().then((blogs) => {
       const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
       dispatch(setBlogs(sortedBlogs));
     })
-  }, [dispatch])
+  }, [])
 
   useUserInitialization()
   //aqui era o useEffect que cuida da inicialização
@@ -113,15 +112,19 @@ const App = () => {
   }
 
   const updateLikes = (id, newLikes) => {
-    blogService.update(id, { likes: newLikes }).then((updatedBlog) => {
-      setBlogs((prevBlogs) =>
-        prevBlogs.map((blog) =>
-          blog.id === updatedBlog.id ? updatedBlog : blog
-        )
-      )
-    })
-  }
-
+    dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
+  
+    // Atualize o blog no servidor usando o seu serviço (se necessário)
+    blogService.update(id, { likes: newLikes })
+      .then((updatedBlog) => {
+        // Aqui você pode tratar a resposta se necessário
+      })
+      .catch((error) => {
+        // Trate erros se necessário
+        console.error('Error updating likes:', error);
+      });
+  };
+  
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
     blogService

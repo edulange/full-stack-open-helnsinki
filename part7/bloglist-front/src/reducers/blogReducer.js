@@ -17,7 +17,10 @@ const blogSlice = createSlice({
     },
     updateBlog: (state, action) => {
       const { id, updatedBlog } = action.payload;
-      state.blogs = state.blogs.map((blog) => (blog.id === id ? updatedBlog : blog));
+      const index = state.blogs.findIndex(blog => blog.id === id);
+      if (index !== -1) {
+        state.blogs[index] = { ...state.blogs[index], ...updatedBlog };
+      }
     },
     removeBlog: (state, action) => {
       const idToRemove = action.payload;
