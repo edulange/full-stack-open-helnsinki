@@ -63,19 +63,22 @@ const App = () => {
   // LOGIN VIEW, LOGGING IN and LOGGING OUT
 
   const handleLogout = async (event) => {
-    event.preventDefault()
-
+    event.preventDefault();
+  
     try {
-      showSuccessMessage(`Goodbye ${user.name}`)
-      window.localStorage.clear()
-      blogService.setToken(null)
-      dispatch(clearUser())
+      if (user) {
+        showSuccessMessage(`Goodbye ${user.name}`);
+      } else {
+        showSuccessMessage('Logout successful');
+      }
+  
+      window.localStorage.clear();
+      blogService.setToken(null);
+      dispatch(clearUser());
     } catch (exception) {
-      showErrorMessage('something went wrong, try to logout again')
+      showErrorMessage('Something went wrong, try to logout again');
     }
-
-  }
-
+  };
 
   const loginUser = (event) => {
     event.preventDefault()
