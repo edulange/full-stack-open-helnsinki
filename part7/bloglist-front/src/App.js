@@ -1,19 +1,18 @@
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import useUserInitialization from './components/userInitialization'
 
 import Blog from './components/Blog'
-import { SuccessNotification, ErrorNotification } from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
+import { SuccessNotification, ErrorNotification } from './components/Notification'
 
 
 /* eslint-disable */
-import { useEffect, useRef } from 'react'
 
 
-import useUserInitialization from './components/userInitialization'
 
 import { loginUser as loginUserAction, clearUser, setPassword, setUsername } from './reducers/userReducer';
 import { setSuccessMessage, setErrorMessage, clearNotification } from './reducers/notificationReducer'
