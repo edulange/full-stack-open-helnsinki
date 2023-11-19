@@ -1,38 +1,38 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
-import userService from '../services/users';
+import { useEffect } from "react"
+import userService from "../services/users"
+import { useDispatch, useSelector } from "react-redux"
+import { setAllUsers } from "../reducers/allUsersReducer"
 
 const Users = () => {
-    const [users, setUsers] = useState([]);
+	const dispatch = useDispatch()
+	const allUsers = useSelector((state) => state.allUsers.allUsers)
 
+	useEffect(() => {
+		const fetchUsers = async () => {
+			try {
+				const response = await userService.getAll()
+				dispatch(setAllUsers(response))
+			} catch (error) {
+				console.error("Error fetching users:", error)
+			}
+		}
 
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const response = await userService.getAll();
-      console.log('Users from API:', response);
-      setUsers(response);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
+		fetchUsers()
+	}, [dispatch])
 
-  fetchUsers();
-}, []);
-console.log('users :>> ', users);
+	return (
+		<div>
+			<h2>Users</h2>
+			<ul>
+				{allUsers.map((user) => (
+					<li key={user.id}>
+						{user.name} ({user.username}) 
+					</li>
+				))}
+			</ul>
+		</div>
+	)
+}
 
-  return (
-    <div>
-      <h2>Users</h2>
-      <ul>
-        {users.map(user => (
-          <li key={user.id}>
-            {user.name} ({user.username})
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default Users;
+export default Users
