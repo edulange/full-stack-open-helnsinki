@@ -9,7 +9,7 @@ const store = configureStore({
     reducer: {
         user: userReducer,
         notifications: notificationReducer,
-        blog: blogReducer
+        blog: blogReducer,
     },
     middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), thunk], // Use o callback diretamente
 })
