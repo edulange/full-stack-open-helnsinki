@@ -21,18 +21,27 @@ const Users = () => {
 		fetchUsers()
 	}, [dispatch])
 
-	return (
-		<div>
-			<h2>Users</h2>
-			<ul>
-				{allUsers.map((user) => (
-					<li key={user.id}>
-						{user.name} ({user.username}) 
-					</li>
-				))}
-			</ul>
-		</div>
-	)
-}
+    return (
+        <div>
+          <h2>Users</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Blogs Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.name} ({user.username})</td>
+                  <td>{user.blogs.length}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    };
 
 export default Users
