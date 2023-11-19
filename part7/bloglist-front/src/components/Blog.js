@@ -1,13 +1,13 @@
 /* eslint-disable */
 
 import { useState } from 'react'
-import { updateBlog } from '../reducers/blogReducer'
+import { updateBlog, removeBlog } from '../reducers/blogReducer'
 import blogService from '../services/blogs'
 import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, user, handleRemoveBlog }) => {
-  //const [likes, setLikes] = useState(blog.likes)
+const Blog = ({ blog, user }) => {
   const [detail, setDetail] = useState(false)
+  const dispatch = useDispatch()
 
   const blogStyle = {
     paddingTop: 10,
@@ -24,8 +24,6 @@ const Blog = ({ blog, user, handleRemoveBlog }) => {
   const toggleDetail = () => {
     setDetail(!detail)
   }
-
-  const dispatch = useDispatch()
 
   const handleUpdateLikes = (id, newLikes) => {
     console.log('veio do componente blog')
@@ -44,7 +42,18 @@ const Blog = ({ blog, user, handleRemoveBlog }) => {
     updateLikes(blog.id, newLikes)
   } */
 
-  //eslint --disable-rule=no-console --disable-rule=no-alert
+
+  const handleDelete = async () => {
+    console.log('veio do componente blog')
+    if (window.confirm(`Do you really want to delete ${blog.title} this blog?`)) {
+      try {
+        await blogService.remove(blog.id);
+        dispatch(removeBlog(blog.id));
+      } catch (error) {
+        console.error('Error deleting blog:', error);
+      }
+    }
+  };
 
   if(user !== null) {
     return (
@@ -60,7 +69,7 @@ const Blog = ({ blog, user, handleRemoveBlog }) => {
             {blog.url} <br />
             Likes {blog.likes} <button onClick={() => handleUpdateLikes(blog.id, blog.likes + 1)} className='like-btn'>like</button> <br />
             {blog.author}
-            {user.username === 'edugod' && <p><button style={deleteStyle} onClick={() => handleRemoveBlog(blog.id, blog.title, blog.author)} className='delete'>delete</button></p>}
+            {user.username === 'edugod' && <p><button style={deleteStyle} onClick={handleDelete} className='delete'>delete</button></p>}
           </div>
         }
       </>

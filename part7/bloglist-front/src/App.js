@@ -111,39 +111,9 @@ const App = () => {
       })
   }
 
-  /*const updateLikes = (id, newLikes) => {
-    blogService.update(id, { likes: newLikes })
-    .then((updatedBlog) => {
-      dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
-      })
-      .catch((error) => {
-        console.error('Error updating likes:', error);
-      });
-  }; 
-  FOI PARA O COMPONENTE BLOG
-  */
-  
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    blogService
-      .create(blogObject)
-      .then((response) => {
-        dispatch(adicionarBlog(response))
-        //dispatch(setBlogs([...blogs, response]))  -> dava na mesma
-        //no entanto não teria um reducer específico
-        if (response) {
-          showSuccessMessage(
-            `a new blog ${blogObject.title} by ${blogObject.author} created`
-          )
-        }
-      })
-      .catch((exception) => {
-        showErrorMessage('Falha na criação do blog')
-        console.log('exception :>> ', exception)
-      })
-  }
+  /*   FOI PARA O COMPONENTE BLOG
 
-  const handleRemoveBlog = (id) => {
+    const handleRemoveBlog = (id) => {
     const blogToDelete = blogs.find((blog) => blog.id === id)
     if (
       window.confirm(
@@ -161,6 +131,38 @@ const App = () => {
         })
     }
   }
+
+  const updateLikes = (id, newLikes) => {
+    blogService.update(id, { likes: newLikes })
+    .then((updatedBlog) => {
+      dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
+      })
+      .catch((error) => {
+        console.error('Error updating likes:', error);
+      });
+  }; 
+  */
+  
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
+    blogService
+      .create(blogObject)
+      .then((response) => {
+        dispatch(adicionarBlog(response))
+        //dispatch(setBlogs([...blogs, response]))  -> dava na mesma
+        //no entanto não teria um reducer específico
+        if (response) {
+          showSuccessMessage(
+            `a new blog ${blogObject.title} by ${blogObject.author} created`
+          )
+        }
+      })
+      .catch((exception) => {
+        showErrorMessage('Falha na criação do blog', exception)
+      })
+  }
+
+
 
   const handleLogin = () => (
     <form onSubmit={loginUser}>
@@ -219,7 +221,6 @@ const App = () => {
             key={blog.id}
             blog={blog}
             user={user}
-            handleRemoveBlog={handleRemoveBlog}
           />
         ))}
     </div>
