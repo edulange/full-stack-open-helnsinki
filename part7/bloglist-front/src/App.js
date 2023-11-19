@@ -5,8 +5,9 @@ import loginService from './services/login'
 import useUserInitialization from './components/userInitialization'
 
 import Blog from './components/Blog'
-import Togglable from './components/Togglable'
+import Users from './components/Users'
 import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import { SuccessNotification, ErrorNotification } from './components/Notification'
 
 
@@ -223,6 +224,7 @@ const App = () => {
             user={user}
           />
         ))}
+        <Users />
     </div>
   )
 }
