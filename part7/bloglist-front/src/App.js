@@ -16,7 +16,7 @@ import { SuccessNotification, ErrorNotification } from './components/Notificatio
 
 import { loginUser as loginUserAction, clearUser, setPassword, setUsername } from './reducers/userReducer';
 import { setSuccessMessage, setErrorMessage, clearNotification } from './reducers/notificationReducer'
-import { setBlogs, addBlog, updateBlog, removeBlog } from './reducers/blogReducer'
+import { setBlogs, addBlog as adicionarBlog, updateBlog, removeBlog } from './reducers/blogReducer'
 
 
 const App = () => {
@@ -112,15 +112,11 @@ const App = () => {
   }
 
   const updateLikes = (id, newLikes) => {
-    dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
-  
-    // Atualize o blog no servidor usando o seu serviço (se necessário)
     blogService.update(id, { likes: newLikes })
-      .then((updatedBlog) => {
-        // Aqui você pode tratar a resposta se necessário
+    .then((updatedBlog) => {
+      dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
       })
       .catch((error) => {
-        // Trate erros se necessário
         console.error('Error updating likes:', error);
       });
   };
@@ -130,10 +126,10 @@ const App = () => {
     blogService
       .create(blogObject)
       .then((response) => {
-        // atualizando o localstate para incluir o novo blog
-        setBlogs([...blogs, response])
+        dispatch(adicionarBlog(response))
+        //dispatch(setBlogs([...blogs, response]))  -> dava na mesma
+        //no entanto não teria um reducer específico
         if (response) {
-          // se a response é true
           showSuccessMessage(
             `a new blog ${blogObject.title} by ${blogObject.author} created`
           )
@@ -156,7 +152,7 @@ const App = () => {
         .remove(id)
         .then(() => {
           // Atualizar o estado para refletir a exclusão do blog
-          setBlogs(blogs.filter((blog) => blog.id !== id))
+          dispatch(removeBlog(id))
         })
         .catch((error) => {
           console.error('Error deleting blog:', error)
