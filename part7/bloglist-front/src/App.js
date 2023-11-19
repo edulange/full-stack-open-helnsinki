@@ -111,7 +111,7 @@ const App = () => {
       })
   }
 
-  const updateLikes = (id, newLikes) => {
+  /*const updateLikes = (id, newLikes) => {
     blogService.update(id, { likes: newLikes })
     .then((updatedBlog) => {
       dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
@@ -119,7 +119,9 @@ const App = () => {
       .catch((error) => {
         console.error('Error updating likes:', error);
       });
-  };
+  }; 
+  FOI PARA O COMPONENTE BLOG
+  */
   
   const addBlog = (blogObject) => {
     blogFormRef.current.toggleVisibility()
@@ -217,7 +219,6 @@ const App = () => {
             key={blog.id}
             blog={blog}
             user={user}
-            updateLikes={updateLikes}
             handleRemoveBlog={handleRemoveBlog}
           />
         ))}

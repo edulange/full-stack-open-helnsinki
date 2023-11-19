@@ -1,7 +1,12 @@
-import { useState } from 'react'
+/* eslint-disable */
 
-const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
-  const [likes, setLikes] = useState(blog.likes)
+import { useState } from 'react'
+import { updateBlog } from '../reducers/blogReducer'
+import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+
+const Blog = ({ blog, user, handleRemoveBlog }) => {
+  //const [likes, setLikes] = useState(blog.likes)
   const [detail, setDetail] = useState(false)
 
   const blogStyle = {
@@ -12,7 +17,6 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
     marginBottom: 5,
   }
 
-
   const deleteStyle = {
     color: 'red'
   }
@@ -21,11 +25,24 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
     setDetail(!detail)
   }
 
-  const handleLike = () => {
-    const newLikes = likes + 1
-    setLikes(newLikes)
+  const dispatch = useDispatch()
+
+  const handleUpdateLikes = (id, newLikes) => {
+    console.log('veio do componente blog')
+    blogService.update(id, { likes: newLikes })
+      .then((updatedBlog) => {
+        dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
+      })
+      .catch((error) => {
+        console.error('Error updating likes:', error);
+      });
+  };
+
+  /*const handleLike = () => {
+    const newLikes = blog.likes + 1
+    //setLikes(newLikes)
     updateLikes(blog.id, newLikes)
-  }
+  } */
 
   //eslint --disable-rule=no-console --disable-rule=no-alert
 
@@ -41,7 +58,7 @@ const Blog = ({ blog, user, updateLikes, handleRemoveBlog }) => {
           <div style={blogStyle} className='blog-details'>
             {blog.title} <button className='hide-btn' onClick={toggleDetail}>hide</button> <br />
             {blog.url} <br />
-              Likes {blog.likes} <button onClick={() => handleLike(blog.id)} className='like-btn'>like</button> <br />
+            Likes {blog.likes} <button onClick={() => handleUpdateLikes(blog.id, blog.likes + 1)} className='like-btn'>like</button> <br />
             {blog.author}
             {user.username === 'edugod' && <p><button style={deleteStyle} onClick={() => handleRemoveBlog(blog.id, blog.title, blog.author)} className='delete'>delete</button></p>}
           </div>
