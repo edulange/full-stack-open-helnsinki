@@ -4,9 +4,11 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import useUserInitialization from './components/userInitialization'
 
+//import AuthenticationSection from './components/AuthenticationSection'
+//import BlogSection from './components/BlogSection'
 import Blog from './components/Blog'
-import Users from './components/Users'
 import BlogForm from './components/BlogForm'
+import Users from './components/Users'
 import Togglable from './components/Togglable'
 import { SuccessNotification, ErrorNotification } from './components/Notification'
 
@@ -17,7 +19,7 @@ import { SuccessNotification, ErrorNotification } from './components/Notificatio
 
 import { loginUser as loginUserAction, clearUser, setPassword, setUsername } from './reducers/userReducer';
 import { setSuccessMessage, setErrorMessage, clearNotification } from './reducers/notificationReducer'
-import { setBlogs, addBlog as adicionarBlog, updateBlog, removeBlog } from './reducers/blogReducer'
+import { setBlogs, addBlog as adicionarBlog } from './reducers/blogReducer'
 
 
 const App = () => {
@@ -33,10 +35,10 @@ const App = () => {
 
   const user = useSelector(state => state.user.user);
   const notifications = useSelector((state) => state.notifications)
-  const { username, password } = useSelector(state => state.user);
   const blogs = useSelector((state => state.blog.blogs))
+  const { username, password } = useSelector(state => state.user); //mesma coisa que as duas linhas de baixo
   //const username = useSelector(state => state.user.username);
-  //const password = useSelector(state => state.user.password);
+  //const password = useSelector(state => state.user.password); 
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -49,68 +51,52 @@ const App = () => {
   //aqui era o useEffect que cuida da inicialização
 
   //************************************************* Setting messages */
-  const showSuccessMessage = (message) => {
-    dispatch(setSuccessMessage(message));
+  const showNotification = (message, isError = false) => {
+    const action = isError ? setErrorMessage : setSuccessMessage;
+    dispatch(action(message));
     setTimeout(() => {
       dispatch(clearNotification());
     }, 3000);
-  }
-  
-  const showErrorMessage = (message) => {
-    dispatch(setErrorMessage(message));
-    setTimeout(() => {
-      dispatch(clearNotification());
-    }, 3000);
-  }
+  };
 
   //**********************************************************************************
   // LOGIN VIEW, LOGGING IN and LOGGING OUT
 
-  const handleLogout = async (event) => {
+  const handleLogout = async event => {
     event.preventDefault();
-  
+
     try {
-      if (user) {
-        showSuccessMessage(`Goodbye ${user.name}`);
-      } else {
-        showSuccessMessage('Logout successful');
-      }
-  
+      const goodbyeMessage = user
+        ? `Goodbye ${user.name}`
+        : 'Logout successful';
+
+      showNotification(goodbyeMessage);
       window.localStorage.clear();
       blogService.setToken(null);
       dispatch(clearUser());
     } catch (exception) {
-      showErrorMessage('Something went wrong, try to logout again');
+      showNotification('Something went wrong, try to logout again', true);
     }
   };
 
-  const loginUser = (event) => {
-    event.preventDefault()
+  const loginUser = event => {
+    event.preventDefault();
 
     loginService
-      .login({
-        username,
-        password,
-      })
-      .then((user) => {
-        window.localStorage.setItem(
-          'loggedBlogAppUser',
-          JSON.stringify(user)
-        )
-        showSuccessMessage(`Welcome ${user.name}`)
-        blogService.setToken(user.token)
+      .login({ username, password })
+      .then(user => {
+        window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user));
+        showNotification(`Welcome ${user.name}`);
+        blogService.setToken(user.token);
 
         dispatch(loginUserAction(user));
-         //aqui tinha o setUsername('')
-         //aqui tinha o setPassword('')
-         //eu tirei e o código continuou funcionando, aparentemente está tudo ok.
-         //não faz sentido deletar o username, pois ele é necessário
       })
-      .catch((exception) => {
-        showErrorMessage('wrong username or password')
-        console.log(exception)
-      })
-  }
+      .catch(exception => {
+        showNotification('wrong username or password', true);
+        console.log(exception);
+      });
+  };
+
 
   /*   FOI PARA O COMPONENTE BLOG
 
@@ -144,24 +130,24 @@ const App = () => {
   }; 
   */
   
-  const addBlog = (blogObject) => {
-    blogFormRef.current.toggleVisibility()
+  const addBlog = blogObject => {
+    blogFormRef.current.toggleVisibility();
     blogService
       .create(blogObject)
-      .then((response) => {
-        dispatch(adicionarBlog(response))
-        //dispatch(setBlogs([...blogs, response]))  -> dava na mesma
-        //no entanto não teria um reducer específico
+      .then(response => {
+        dispatch(adicionarBlog(response));
         if (response) {
-          showSuccessMessage(
-            `a new blog ${blogObject.title} by ${blogObject.author} created`
-          )
+          showNotification(
+            `A new blog ${blogObject.title} by ${blogObject.author} created`
+          );
         }
       })
-      .catch((exception) => {
-        showErrorMessage('Falha na criação do blog', exception)
-      })
-  }
+      .catch(exception => {
+        showNotification('Falha na criação do blog', true);
+        console.error(exception);
+      });
+  };
+
 
 
 
