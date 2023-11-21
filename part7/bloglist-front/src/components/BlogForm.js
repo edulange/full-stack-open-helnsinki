@@ -13,7 +13,6 @@ const BlogForm = ({ createBlog }) => {
       url: newBlogUrl,
     })
 
-    console.log('veio do blogform')
     setNewBlogTitle('')
     setNewBlogAuthor('')
     setNewBlogUrl('')

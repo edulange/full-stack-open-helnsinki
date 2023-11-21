@@ -7,6 +7,7 @@ import useUserInitialization from './components/userInitialization'
 import AuthenticationSection from './components/AuthenticationSection'
 import BlogSection from './components/BlogSection'
 import Users from './components/Users'
+import UserBlogs from './components/UserBlogs'
 import {
   SuccessNotification,
   ErrorNotification,
@@ -41,6 +42,7 @@ const App = () => {
 	const blogFormRef = useRef()
 
 	const dispatch = useDispatch()
+
 
 	const user = useSelector((state) => state.user.user)
 	const notifications = useSelector((state) => state.notifications)
@@ -203,41 +205,45 @@ const App = () => {
 	}
 
 	return (
-		<div>
-			{user ? (
-			<div>
-				<Link style={padding} to='/'>Home</Link>
-				<Link style={padding} to='/'>Blogs</Link>
-				<Link style={padding} to='/users'>Users</Link>
-			</div>
-			) : null}
-		  <h2>Blogs</h2>
-		  <ErrorNotification message={notifications.errorMessage} />
-		  <SuccessNotification message={notifications.successMessage} />
-		  <AuthenticationSection
-			user={user}
-			handleLogin={handleLogin}
-			logOutButton={logOutButton}
-		  />
-		  <Routes>
-			<Route
-			  path='/'
-			  element={
-				<BlogSection
-				  blogs={blogs}
-				  user={user}
-				  blogFormRef={blogFormRef}
-				  addBlog={addBlog}
-				/>
-			  }
-			/>
-			{user ? (
-			  <Route path='/users' element={<Users />} />
-			) : (
-			  <Route path='/users' element={<Navigate to='/' />} />
-			)}
-		  </Routes>
-		</div>
+	    <div>
+      {user ? (
+        <div>
+          <Link style={padding} to='/'>Home</Link>
+          <Link style={padding} to='/'>Blogs</Link>
+          <Link style={padding} to='/users'>Users</Link>
+        </div>
+      ) : null}
+      <h2>Blogs</h2>
+      <ErrorNotification message={notifications.errorMessage} />
+      <SuccessNotification message={notifications.successMessage} />
+      <AuthenticationSection
+        user={user}
+        handleLogin={handleLogin}
+        logOutButton={logOutButton}
+      />
+      <Routes>
+        <Route
+          path='/'
+          element={
+            <BlogSection
+              blogs={blogs}
+              user={user}
+              blogFormRef={blogFormRef}
+              addBlog={addBlog}
+            />
+          }
+        />
+        <Route
+          path='/users'
+          element={<Users />}
+        />
+        <Route
+          path='/users/:id'
+          element={<UserBlogs />}
+        />
+        {user ? null : <Route path='/users' element={<Navigate to='/' />} />}
+      </Routes>
+    </div>
 	  );
 }
 
