@@ -75,7 +75,7 @@ const App = () => {
 
 	const handleLogout = async (event) => {
 		event.preventDefault()
-
+		
 		try {
 			const goodbyeMessage = user
 				? `Goodbye ${user.name}`
