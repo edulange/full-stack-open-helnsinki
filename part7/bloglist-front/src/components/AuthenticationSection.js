@@ -1,14 +1,11 @@
 /* eslint-disable */
-import React from "react"
-import Togglable from "./Togglable"
-import BlogForm from "./BlogForm"
+import React from 'react'
+
 
 const AuthenticationSection = ({
 	user,
 	handleLogin,
 	logOutButton,
-	blogFormRef,
-	addBlog,
 }) => (
 	<>
 		{!user && handleLogin()}
@@ -16,9 +13,6 @@ const AuthenticationSection = ({
 			<div>
 				<p>{user.name} logged in</p>
 				{logOutButton()}
-				<Togglable buttonLabel="New Blog" ref={blogFormRef}>
-					<BlogForm createBlog={addBlog} />
-				</Togglable>
 			</div>
 		)}
 	</>

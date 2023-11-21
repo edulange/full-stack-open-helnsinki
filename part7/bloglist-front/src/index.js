@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import React from "react"
 import ReactDOM from "react-dom/client"
 import "./index.css" // Importa o arquivo CSS
@@ -8,8 +9,12 @@ import store from "./store"
 
 import App from "./App"
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<Provider store={store}>
+	  <Router>
 		<App />
+	  </Router>
 	</Provider>
-)
+  );
+  
