@@ -216,32 +216,12 @@ const App = () => {
       <h2>Blogs</h2>
       <ErrorNotification message={notifications.errorMessage} />
       <SuccessNotification message={notifications.successMessage} />
-      <AuthenticationSection
-        user={user}
-        handleLogin={handleLogin}
-        logOutButton={logOutButton}
-      />
+      <AuthenticationSection user={user} handleLogin={handleLogin} logOutButton={logOutButton}/>
       <Routes>
-        <Route
-          path='/'
-          element={
-            <BlogSection
-              blogs={blogs}
-              user={user}
-              blogFormRef={blogFormRef}
-              addBlog={addBlog}
-            />
-          }
-        />
-        <Route
-          path='/users'
-          element={<Users />}
-        />
-        <Route
-          path='/users/:id'
-          element={<UserBlogs />}
-        />
-        {user ? null : <Route path='/users' element={<Navigate to='/' />} />}
+        <Route path='/' element={<BlogSection blogs={blogs} user={user} blogFormRef={blogFormRef} addBlog={addBlog}/>}/>
+        <Route path='/users'element={<Users />}/>
+        <Route path='/users/:id'element={<UserBlogs />}/>
+        {user ? null : <Route path='/users' element={<Navigate to='/'/>}/>}
       </Routes>
     </div>
 	  );

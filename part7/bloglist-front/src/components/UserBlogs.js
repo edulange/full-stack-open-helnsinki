@@ -26,16 +26,15 @@ const UserBlogs = () => {
 	}, [id, dispatch])
 
 	const userBlogs = allBlogs.filter((blog) => blog.user.id === id)
+    const userName = userBlogs.length > 0 ? userBlogs[0].user.name : 'Unknown User';
 
 	return (
 		<div>
-			<h2>User Blogs</h2>
+			<h2>{userName} Blogs</h2>
             <ul>
 			{userBlogs.map((blog) => (
 				<div key={blog.id}>
 					<li>{blog.title}</li>
-				
-                    {console.log(blog)}
 				</div>
 			))}
             </ul>
