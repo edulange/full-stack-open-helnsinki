@@ -10,8 +10,9 @@ import {
 import blogService from '../services/blogs';
 import loginService from '../services/login';
 import { setErrorMessage, setSuccessMessage, clearNotification } from '../reducers/notificationReducer';
+import { Link } from 'react-router-dom';
 
-const AuthenticationSection = () => {
+const Login = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   const { username, password } = useSelector((state) => state.user);
@@ -114,4 +115,4 @@ const handleLogin = () => (
   );
 };
 
-export default AuthenticationSection;
+export default Login;

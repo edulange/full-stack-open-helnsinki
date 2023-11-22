@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import blogService from './services/blogs'
 import useUserInitialization from './components/userInitialization'
 
-import AuthenticationSection from './components/AuthenticationSection'
+import Login from './components/Login'
 import BlogSection from './components/BlogSection'
 import Users from './components/Users'
 import UserBlogs from './components/UserBlogs'
@@ -11,6 +11,8 @@ import {
   SuccessNotification,
   ErrorNotification,
 } from './components/Notification'
+
+
 /* eslint-disable */
 
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
@@ -46,7 +48,6 @@ const App = () => {
 	const padding = {
 		padding: 5,
 	}
-
 	return (
 	    <div>
       {user ? (
@@ -59,8 +60,9 @@ const App = () => {
       <h2>Blogs</h2>
       <ErrorNotification message={notifications.errorMessage} />
       <SuccessNotification message={notifications.successMessage} />
-      <AuthenticationSection/>
+      <Login/>
       <Routes>
+	
         <Route path='/' element={<BlogSection/>}/>
         <Route path='/users'element={<Users />}/>
         <Route path='/users/:id'element={<UserBlogs />}/>
