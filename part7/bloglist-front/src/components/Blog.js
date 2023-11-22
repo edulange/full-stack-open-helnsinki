@@ -35,12 +35,6 @@ const Blog = ({ blog, user }) => {
       });
   };
 
-  /*const handleLike = () => {
-    const newLikes = blog.likes + 1
-    //setLikes(newLikes)
-    updateLikes(blog.id, newLikes)
-  } */
-
 
   const handleDelete = async () => {
     console.log('veio do componente blog')

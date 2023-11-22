@@ -1,5 +1,3 @@
-// helpers to render error and success messages
-// the styles can be found from index.css
 /* eslint-disable */
 
 import React from "react"

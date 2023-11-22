@@ -16,6 +16,8 @@ const BlogForm = ({ createBlog }) => {
     setNewBlogTitle('')
     setNewBlogAuthor('')
     setNewBlogUrl('')
+    console.log('veio do componente BlogForm')
+
   }
   return (
     <div>
