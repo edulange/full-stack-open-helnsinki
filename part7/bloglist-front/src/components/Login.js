@@ -10,12 +10,14 @@ import {
 import blogService from '../services/blogs';
 import loginService from '../services/login';
 import { setErrorMessage, setSuccessMessage, clearNotification } from '../reducers/notificationReducer';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   const { username, password } = useSelector((state) => state.user);
+  const navigate = useNavigate()
+
 
   const showNotification = (message, isError = false) => {
 	const action = isError ? setErrorMessage : setSuccessMessage
@@ -26,7 +28,7 @@ const Login = () => {
 }
 
   const handleLogout = async (event) => {
-	event.preventDefault()
+	  event.preventDefault()
 	
 	try {
 		const goodbyeMessage = user
@@ -37,6 +39,7 @@ const Login = () => {
 		window.localStorage.clear()
 		blogService.setToken(null)
 		dispatch(clearUser())
+		navigate('/')
 	} catch (exception) {
 		showNotification('Something went wrong, try to logout again', true)
 	}
