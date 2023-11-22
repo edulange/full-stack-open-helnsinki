@@ -64,7 +64,7 @@ const Blog = ({ blog, user }) => {
             {blog.author}
             {user.username === blog.user.username && (
             <p><button style={deleteStyle} onClick={handleDelete} className='delete'>delete</button></p>
-          )}          </div>
+          )}</div>
         }
       </>
     )

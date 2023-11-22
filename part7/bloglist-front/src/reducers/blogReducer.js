@@ -1,13 +1,9 @@
 /* eslint-disable */
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  blogs: [],
-};
-
 const blogSlice = createSlice({
   name: 'blog',
-  initialState,
+  initialState: {blogs: []},
   reducers: {
     setBlogs: (state, action) => {
       state.blogs = action.payload;

@@ -1,5 +1,33 @@
 /* eslint-disable */
 
+import { createSlice } from '@reduxjs/toolkit';
+
+const notificationSlice = createSlice({
+  name: 'notifications',
+  initialState: {
+    successMessage: null,
+    errorMessage: null,
+  },
+  reducers: {
+    setSuccessMessage: (state, action) => {
+      state.successMessage = action.payload;
+    },
+    setErrorMessage: (state, action) => {
+      state.errorMessage = action.payload;
+    },
+    clearNotification: (state) => {
+      state.successMessage = null;
+      state.errorMessage = null;
+    },
+  },
+});
+
+export const { setSuccessMessage, setErrorMessage, clearNotification } = notificationSlice.actions;
+
+export default notificationSlice.reducer;
+
+
+/*
 const initiaState = {
     successMessage: null,
     errorMessage: null
@@ -31,3 +59,4 @@ export const clearNotification = () => ({
 })
 
 export default notificationReducer
+*/

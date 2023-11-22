@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { createSlice } from '@reduxjs/toolkit';
 
+//assim é mais fácil de ler
 const initialState = {
   user: null,
   username: '',

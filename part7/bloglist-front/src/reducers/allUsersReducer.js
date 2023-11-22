@@ -1,13 +1,9 @@
 /* eslint-disable */
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    allUsers: []
-}
-
 const allUsersSlice = createSlice({
     name: 'allUsers',
-    initialState,
+    initialState: {allUsers: []},
     reducers: {
         setAllUsers: (state, action) => {
             state.allUsers = action.payload
