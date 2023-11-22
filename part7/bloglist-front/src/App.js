@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
 import blogService from './services/blogs'
-import loginService from './services/login'
 import useUserInitialization from './components/userInitialization'
 
 import AuthenticationSection from './components/AuthenticationSection'
@@ -70,78 +69,6 @@ const App = () => {
 		}, 3000)
 	}
 
-	//**********************************************************************************
-	// LOGIN VIEW, LOGGING IN and LOGGING OUT
-
-	const handleLogout = async (event) => {
-		event.preventDefault()
-		
-		try {
-			const goodbyeMessage = user
-				? `Goodbye ${user.name}`
-				: 'Logout successful'
-
-			showNotification(goodbyeMessage)
-			window.localStorage.clear()
-			blogService.setToken(null)
-			dispatch(clearUser())
-		} catch (exception) {
-			showNotification('Something went wrong, try to logout again', true)
-		}
-	}
-
-	const loginUser = (event) => {
-		event.preventDefault()
-
-		loginService
-			.login({ username, password })
-			.then((user) => {
-				window.localStorage.setItem(
-					'loggedBlogAppUser',
-					JSON.stringify(user)
-				)
-				showNotification(`Welcome ${user.name}`)
-				blogService.setToken(user.token)
-
-				dispatch(loginUserAction(user))
-			})
-			.catch((exception) => {
-				showNotification('wrong username or password', true)
-				console.log(exception)
-			})
-	}
-
-	/*   FOI PARA O COMPONENTE BLOG
-
-    const handleRemoveBlog = (id) => {
-    const blogToDelete = blogs.find((blog) => blog.id === id)
-    if (
-      window.confirm(
-        `Do you really want to delete ${blogToDelete.title} this blog?`
-      )
-    ) {
-      blogService
-        .remove(id)
-        .then(() => {
-          // Atualizar o estado para refletir a exclusão do blog
-          dispatch(removeBlog(id))
-        })
-        .catch((error) => {
-          console.error('Error deleting blog:', error)
-        })
-    }
-  }
-
-  const updateLikes = (id, newLikes) => {
-    blogService.update(id, { likes: newLikes })
-    .then((updatedBlog) => {
-      dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
-      })
-      .catch((error) => {
-        console.error('Error updating likes:', error);
-      });
-  }; 
-  */
 
 	const addBlog = (blogObject) => {
 		blogFormRef.current.toggleVisibility()
@@ -161,45 +88,6 @@ const App = () => {
 			})
 	}
 
-	const handleLogin = () => (
-		<form onSubmit={loginUser}>
-			<div>
-				username
-				<input
-					id='username'
-					type='text'
-					value={username}
-					name='Username'
-					onChange={({ target }) =>
-						dispatch(setUsername(target.value))
-					}
-				/>
-			</div>
-			<div>
-				password
-				<input
-					id='password'
-					type='password'
-					value={password}
-					name='Password'
-					onChange={({ target }) =>
-						dispatch(setPassword(target.value))}
-				/>
-			</div>
-			<button id='login-btn' type='submit'>
-				login
-			</button>
-		</form>
-	)
-
-	const logOutButton = () => (
-		<div>
-			<button id='logout-btn' type='submit' onClick={handleLogout}>
-				Logout
-			</button>
-		</div>
-	)
-
 	const padding = {
 		padding: 5,
 	}
@@ -216,7 +104,7 @@ const App = () => {
       <h2>Blogs</h2>
       <ErrorNotification message={notifications.errorMessage} />
       <SuccessNotification message={notifications.successMessage} />
-      <AuthenticationSection user={user} handleLogin={handleLogin} logOutButton={logOutButton}/>
+      <AuthenticationSection/>
       <Routes>
         <Route path='/' element={<BlogSection blogs={blogs} user={user} blogFormRef={blogFormRef} addBlog={addBlog}/>}/>
         <Route path='/users'element={<Users />}/>
