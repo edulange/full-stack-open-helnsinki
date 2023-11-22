@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import blogService from '../services/blogs'
 import { setBlogs } from '../reducers/blogReducer'
+import { Link } from 'react-router-dom'
 
 const UserBlogs = () => {
 	const { id } = useParams()
@@ -34,7 +35,7 @@ const UserBlogs = () => {
             <ul>
 			{userBlogs.map((blog) => (
 				<div key={blog.id}>
-					<li>{blog.title}</li>
+					<li><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></li>
 				</div>
 			))}
             </ul>
