@@ -25,7 +25,7 @@ const Blog = ({ blog, user }) => {
   }
 
   const handleUpdateLikes = (id, newLikes) => {
-    console.log('veio do componente blog')
+    console.log('o like do componente blog')
     blogService.update(id, { likes: newLikes })
       .then((updatedBlog) => {
         dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
@@ -64,7 +64,7 @@ const Blog = ({ blog, user }) => {
             {blog.author}
             {user.username === blog.user.username && (
             <p><button style={deleteStyle} onClick={handleDelete} className='delete'>delete</button></p>
-          )}</div>
+          )} </div>
         }
       </>
     )
