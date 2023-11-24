@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useRef } from 'react';
-import Blog from './Blog';
+import Blog from './BlogList';
 import Togglable from './Togglable';
 import BlogForm from './BlogForm';
 import { useDispatch, useSelector } from 'react-redux';

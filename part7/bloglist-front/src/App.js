@@ -18,7 +18,7 @@ import {
 import { Routes, Route, Link, Navigate } from 'react-router-dom'
 
 import { setBlogs} from './reducers/blogReducer'
-import Blog from './components/Blog'
+import View from './components/View'
 
 const App = () => {
 	//const [username, setUsername] = useState('')
@@ -68,7 +68,7 @@ const App = () => {
         <Route path='/' element={<BlogSection/>}/>
         <Route path='/users'element={<Users />}/>
         <Route path='/users/:id'element={<UserBlogs />}/>
-		{/* <Route path='/blogs/:id' element={<Blog />} /> */}
+		<Route path='/blogs/:id' element={<View/>} />
         {user ? null : <Route path='/users' element={<Navigate to='/'/>}/>}
       </Routes>
     </div>

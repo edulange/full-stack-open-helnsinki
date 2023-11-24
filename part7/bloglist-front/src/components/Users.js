@@ -8,7 +8,7 @@ import { setAllUsers } from "../reducers/allUsersReducer";
 const Users = () => {
   const dispatch = useDispatch();
   const allUsers = useSelector((state) => state.allUsers.allUsers);
-
+  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
