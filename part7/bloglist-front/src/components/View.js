@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
 import { updateBlog, removeBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
+import userService from '../services/users'
+import { setAllUsers } from '../reducers/allUsersReducer'
 
 const BlogDetails = ({ toggleDetail }) => {
 	const { id } = useParams()
@@ -23,6 +25,19 @@ const BlogDetails = ({ toggleDetail }) => {
 		borderWidth: 1,
 		marginBottom: 5,
 	}
+  
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await userService.getAll();
+        dispatch(setAllUsers(response));
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [dispatch]);
 
 	useEffect(() => {
 		blogService
@@ -65,6 +80,7 @@ const BlogDetails = ({ toggleDetail }) => {
 		const foundUser = allUsers.find((u) => u.username === user.user.username)
 		return foundUser.id
 	}
+  console.log('allUsers :>> ', allUsers);
 
 	return (
 		<div style={blogStyle} className='blog-details'>
