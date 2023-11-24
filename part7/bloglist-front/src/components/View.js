@@ -1,5 +1,4 @@
 /* eslint-disable */
-// Seu componente BlogDetails.js
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
@@ -40,9 +39,7 @@ const BlogDetails = ({ toggleDetail }) => {
 		blogService
 			.update(id, { likes: newLikes })
 			.then((updatedBlog) => {
-				dispatch(
-					updateBlog({ id, updatedBlog: { id, likes: newLikes } })
-				)
+				dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }))
 			})
 			.catch((error) => {
 				console.error('Error updating likes:', error)
@@ -50,11 +47,7 @@ const BlogDetails = ({ toggleDetail }) => {
 	}
 
 	const handleDelete = async () => {
-		if (
-			window.confirm(
-				`Do you really want to delete ${blog.title} this blog?`
-			)
-		) {
+		if (window.confirm(`Do you really want to delete ${blog.title} this blog?`)) {
 			try {
 				await blogService.remove(blog.id)
 				dispatch(removeBlog(blog.id))
@@ -67,7 +60,6 @@ const BlogDetails = ({ toggleDetail }) => {
 	if (!blog) {
 		return <p>Loading...</p>
 	}
-
 
 	function findUser() {
 		const foundUser = allUsers.find((u) => u.username === user.user.username)
@@ -83,21 +75,14 @@ const BlogDetails = ({ toggleDetail }) => {
 			<br />
 			{blog.url} <br />
 			Likes {blog.likes}{' '}
-			<button
-				onClick={() => handleUpdateLikes(blog.id, blog.likes + 1)}
-				className='like-btn'
-			>
+			<button onClick={() => handleUpdateLikes(blog.id, blog.likes + 1)} className='like-btn'>
 				like
 			</button>{' '}
 			<br />
 			{blog.author}
 			{findUser() === blog.user && (
 				<p>
-					<button
-						style={deleteStyle}
-						onClick={handleDelete}
-						className='delete'
-					>
+					<button style={deleteStyle} onClick={handleDelete} className='delete'>
 						delete
 					</button>
 				</p>
