@@ -26,6 +26,8 @@ const BlogDetails = ({ toggleDetail }) => {
 		marginBottom: 5,
 	}
   
+	console.log('nao vai dar hj =(')
+
 	useEffect(() => {
 		blogService
 			.getSingleBlog(id)
