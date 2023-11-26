@@ -27,6 +27,7 @@ const BlogDetails = ({ toggleDetail }) => {
 	}
   
 	console.log('nao vai dar hj =(')
+	console.log('ou será q vai dar?')
 
 	useEffect(() => {
 		blogService
