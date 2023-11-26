@@ -59,10 +59,10 @@ const App = () => {
           <Link style={padding} to='/users'>Users</Link>
         </div>
       ) : null}
-      <h2>Blogs</h2>
       <ErrorNotification message={notifications.errorMessage} />
       <SuccessNotification message={notifications.successMessage} />
       <Login/>
+      {user ? <h2>Blogs</h2> : null}
       <Routes>
 	
         <Route path='/' element={<BlogSection/>}/>

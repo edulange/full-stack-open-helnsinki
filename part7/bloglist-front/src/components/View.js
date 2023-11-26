@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
 import { updateBlog, removeBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
-import userService from '../services/users'
-import { setAllUsers } from '../reducers/allUsersReducer'
 
-const BlogDetails = ({ toggleDetail }) => {
+const BlogDetails = () => {
 	const { id } = useParams()
 	const [blog, setBlog] = useState(null)
 	const dispatch = useDispatch()
@@ -25,9 +23,7 @@ const BlogDetails = ({ toggleDetail }) => {
 		borderWidth: 1,
 		marginBottom: 5,
 	}
-  
-	console.log('nao vai dar hj =(')
-	console.log('ou será q vai dar?')
+
 
 	useEffect(() => {
 		blogService
@@ -40,16 +36,16 @@ const BlogDetails = ({ toggleDetail }) => {
 			})
 	}, [id])
 
-	const handleUpdateLikes = (id, newLikes) => {
-		blogService
-			.update(id, { likes: newLikes })
-			.then((updatedBlog) => {
-				dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }))
-			})
-			.catch((error) => {
-				console.error('Error updating likes:', error)
-			})
-	}
+	const handleUpdateLikes = async (id, newLikes) => {
+		try {
+		  const updatedBlog = await blogService.update(id, { likes: newLikes });
+		  setBlog(updatedBlog); // Atualiza o estado local do blog
+		  dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
+		} catch (error) {
+		  console.error('Error updating likes:', error);
+		}
+	  };
+	  
 
 	const handleDelete = async () => {
 		if (window.confirm(`Do you really want to delete ${blog.title} this blog?`)) {
@@ -70,14 +66,10 @@ const BlogDetails = ({ toggleDetail }) => {
 		const foundUser = allUsers.find((u) => u.username === user.user.username)
 		return foundUser.id
 	}
-  console.log('allUsers :>> ', allUsers);
 
 	return (
 		<div style={blogStyle} className='blog-details'>
 			{blog.title}{' '}
-			<button className='hide-btn' onClick={toggleDetail}>
-				hide
-			</button>{' '}
 			<br />
 			{blog.url} <br />
 			Likes {blog.likes}{' '}
