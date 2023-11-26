@@ -11,6 +11,8 @@ const BlogDetails = () => {
 	const dispatch = useDispatch()
 	const user = useSelector((state) => state.user)
 	const allUsers = useSelector((state) => state.allUsers.allUsers)
+	const [newComm, setNewComment] = useState('');
+	const [comms, setComments] = useState([]);
 
 	const deleteStyle = {
 		color: 'red',
@@ -67,6 +69,28 @@ const BlogDetails = () => {
 		return foundUser.id
 	}
 
+	const handleAddComment = async () => {
+		try {
+		  const newCommentText = newComm.trim();
+		  if (newCommentText === '') return;
+	  
+		  const updatedBlog = await blogService.addComment(blog.id, newCommentText);
+		  console.log('Updated Blog after adding comment:', updatedBlog);
+	  
+	  
+		  // Certifique-se de verificar se a propriedade comments existe antes de atualizar o estado
+		  if (updatedBlog && updatedBlog.comments) {
+			setComments(updatedBlog.comments);
+		  } else {
+			console.error('Invalid blog structure after adding comment:', updatedBlog);
+		  }
+	  
+		  setNewComment('');
+		} catch (error) {
+		  console.error('Error adding comment:', error);
+		}
+	  };
+
 	return (
 		<div style={blogStyle} className='blog-details'>
 			{blog.title}{' '}
@@ -85,6 +109,18 @@ const BlogDetails = () => {
 					</button>
 				</p>
 			)}
+      <h3>Comments</h3>
+      <input
+        type='text'
+        value={newComm}
+        onChange={({ target }) => setNewComment(target.value)}
+      />
+      <button onClick={handleAddComment}>add comment</button>
+      <ul>
+        {comms.map((comment, index) => (
+          <li key={index}>{comment}</li>
+        ))}
+      </ul>
 		</div>
 	)
 }

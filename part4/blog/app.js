@@ -1,4 +1,4 @@
-// o responsável epla conexão ao banco de dados foi é do app.js
+// o responsável epla conexão ao banco de dados é do app.js
 // o blog.js vai ser responsável apenas para definir o schema dos blogs
 
 const config = require('./utils/config')
@@ -31,7 +31,7 @@ app.use(express.static('build'))
 app.use(express.json())
 app.use(middleware.requestLogger)
 
-app.use('/api/blogs', middleware.userExtractor,blogsRouter)
+app.use('/api/blogs', middleware.userExtractor, blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 

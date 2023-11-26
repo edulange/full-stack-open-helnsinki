@@ -86,4 +86,38 @@ blogsRouter.get('/', async (request, response) => {
     response.json(updatedBlog)
   })
 
+  blogsRouter.post('/:id/comments', middleware.tokenExtractor, async (request, response) => {
+    try {
+      const { id } = request.params;
+      const { comment } = request.body;
+  
+      console.log('Blog ID:', id);
+      console.log('Comment:', comment);
+  
+      const blog = await Blog.findById(id);
+  
+      if (!blog) {
+        console.error('Blog not found');
+        return response.status(404).json({ error: 'Blog not found' });
+      }
+  
+      // Certifique-se de que o array de comentários seja inicializado
+      blog.comments = blog.comments || [];
+  
+      // Agora você pode usar o método concat sem problemas
+      blog.comments = blog.comments.concat(comment);
+  
+      const updatedBlog = await blog.save();
+  
+      console.log('Blog updated:', updatedBlog);
+  
+      response.status(201).json(updatedBlog);
+    } catch (error) {
+      console.error('Unhandled error:', error);
+      response.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  
+
   module.exports = blogsRouter
