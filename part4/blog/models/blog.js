@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 
+const commentSchema = new mongoose.Schema({
+  text: String,
+});
+
 
 const blogSchema = new mongoose.Schema({
     url: String,
@@ -9,7 +13,9 @@ const blogSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     },
-    likes: Number
+    likes: Number,
+    comments: [commentSchema]  // Adicionando a propriedade de comentários
+
   })
 
   blogSchema.set('toJSON', {
@@ -17,6 +23,7 @@ const blogSchema = new mongoose.Schema({
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
+      console.log('returnedObject :>> ', returnedObject);
     }
   })
 

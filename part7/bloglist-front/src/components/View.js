@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import blogService from '../services/blogs'
 import { updateBlog, removeBlog } from '../reducers/blogReducer'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+
 
 const BlogDetails = () => {
 	const { id } = useParams()
@@ -11,8 +12,10 @@ const BlogDetails = () => {
 	const dispatch = useDispatch()
 	const user = useSelector((state) => state.user)
 	const allUsers = useSelector((state) => state.allUsers.allUsers)
-	const [newComm, setNewComment] = useState('');
-	const [comms, setComments] = useState([]);
+	const [commentText, setCommentText] = useState('')
+	const [comments, setComments] = useState([])
+
+	const navigate = useNavigate()
 
 	const deleteStyle = {
 		color: 'red',
@@ -25,6 +28,8 @@ const BlogDetails = () => {
 		borderWidth: 1,
 		marginBottom: 5,
 	}
+
+
 
 
 	useEffect(() => {
@@ -54,6 +59,7 @@ const BlogDetails = () => {
 			try {
 				await blogService.remove(blog.id)
 				dispatch(removeBlog(blog.id))
+				navigate('/')
 			} catch (error) {
 				console.error('Error deleting blog:', error)
 			}
@@ -69,25 +75,18 @@ const BlogDetails = () => {
 		return foundUser.id
 	}
 
-	const handleAddComment = async () => {
+    const handleCommentSubmit = async (event) => {
+		event.preventDefault();
+	
 		try {
-		  const newCommentText = newComm.trim();
-		  if (newCommentText === '') return;
-	  
-		  const updatedBlog = await blogService.addComment(blog.id, newCommentText);
-		  console.log('Updated Blog after adding comment:', updatedBlog);
-	  
-	  
-		  // Certifique-se de verificar se a propriedade comments existe antes de atualizar o estado
-		  if (updatedBlog && updatedBlog.comments) {
-			setComments(updatedBlog.comments);
-		  } else {
-			console.error('Invalid blog structure after adding comment:', updatedBlog);
-		  }
-	  
-		  setNewComment('');
+		  await blogService.addComment(blog.id, commentText);
+		  // Atualize o estado dos comentários após adicionar um comentário
+		  const updatedBlog = await blogService.getSingleBlog(blog.id);
+		  setComments(updatedBlog.comments || []);
+		  // Limpe o campo de texto do comentário após a submissão
+		  setCommentText('');
 		} catch (error) {
-		  console.error('Error adding comment:', error);
+		  console.error('Erro ao adicionar comentário:', error.message);
 		}
 	  };
 
@@ -109,19 +108,25 @@ const BlogDetails = () => {
 					</button>
 				</p>
 			)}
-      <h3>Comments</h3>
-      <input
-        type='text'
-        value={newComm}
-        onChange={({ target }) => setNewComment(target.value)}
-      />
-      <button onClick={handleAddComment}>add comment</button>
-      <ul>
-        {comms.map((comment, index) => (
-          <li key={index}>{comment}</li>
-        ))}
-      </ul>
-		</div>
+    <h3>Comentários</h3>
+
+      <form onSubmit={handleCommentSubmit}>
+        <input
+          type="text"
+          id="commentText"
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+		  />
+        <button type="submit">add comment</button>
+      </form>
+		  <ul>
+			{comments.map((comment) => (
+			  <li key={comment.id}>
+				<strong>{comment.user}</strong>: {comment.text}
+			  </li>
+			))}
+		  </ul>
+    </div>
 	)
 }
 

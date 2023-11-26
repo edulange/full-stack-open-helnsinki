@@ -79,7 +79,7 @@ blogsRouter.get('/', async (request, response) => {
       title: body.title,
       author: body.author,
       url: body.url,
-      likes: body.likes || 0
+      likes: body.likes || 0,
     }
   
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
@@ -87,37 +87,29 @@ blogsRouter.get('/', async (request, response) => {
   })
 
   blogsRouter.post('/:id/comments', middleware.tokenExtractor, async (request, response) => {
-    try {
-      const { id } = request.params;
-      const { comment } = request.body;
+    const blogId = request.params.id;
+    const body = request.body;
   
-      console.log('Blog ID:', id);
-      console.log('Comment:', comment);
-  
-      const blog = await Blog.findById(id);
-  
-      if (!blog) {
-        console.error('Blog not found');
-        return response.status(404).json({ error: 'Blog not found' });
-      }
-  
-      // Certifique-se de que o array de comentários seja inicializado
-      blog.comments = blog.comments || [];
-  
-      // Agora você pode usar o método concat sem problemas
-      blog.comments = blog.comments.concat(comment);
-  
-      const updatedBlog = await blog.save();
-  
-      console.log('Blog updated:', updatedBlog);
-  
-      response.status(201).json(updatedBlog);
-    } catch (error) {
-      console.error('Unhandled error:', error);
-      response.status(500).json({ error: 'Internal Server Error' });
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' });
     }
+  
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+      return response.status(404).json({ error: 'blog not found' });
+    }
+  
+    // Adiciona o comentário ao array de comentários do blog
+    blog.comments.push({
+      text: body.text
+    });
+  
+    const updatedBlog = await blog.save();
+  
+    response.status(201).json(updatedBlog);
   });
-  
-  
+
+
 
   module.exports = blogsRouter

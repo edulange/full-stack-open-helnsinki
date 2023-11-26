@@ -41,12 +41,12 @@ const remove = (id) => {
   return request.then((response) => response.data)
 }
 
-const addComment = async (blogId, comment) => {
+const addComment = async (blogId, text) => {
   const config = {
     headers: { Authorization: token }
   }
 
-  const response = await axios.post(`${baseUrl}/${blogId}/comments`, { comment }, config)
+  const response = await axios.post(`${baseUrl}/${blogId}/comments`, { text }, config)
   return response.data
 }
 
