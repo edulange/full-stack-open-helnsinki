@@ -50,6 +50,7 @@ const App = () => {
 		padding: 5,
 	}
 	
+	console.log('estudei no trabalho hoje, só não lancei no github')
 	return (
 		
 	    <div>
