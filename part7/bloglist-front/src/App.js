@@ -51,6 +51,7 @@ const App = () => {
 	}
 	
 	console.log('estudei no trabalho hoje, só não lancei no github')
+	console.log('estudei no trabalho hoje, só não lancei no github')
 	return (
 		
 	    <div>
