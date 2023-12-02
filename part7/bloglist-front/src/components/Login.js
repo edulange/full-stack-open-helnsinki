@@ -95,7 +95,7 @@ const Login = () => {
 
 	const logOutButton = () => (
 		<div>
-			<button id='logout-btn' type='submit' onClick={handleLogout}>
+			<button type='submit' onClick={handleLogout}>
 				Logout
 			</button>
 		</div>

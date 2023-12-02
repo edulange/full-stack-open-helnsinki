@@ -50,7 +50,6 @@ const App = () => {
 		padding: 5,
 	}
 	
-console.log('test')
 	return (
 		
 	    <div>
