@@ -31,17 +31,19 @@ const BlogDetails = () => {
 
 
 
-
 	useEffect(() => {
-		blogService
-			.getSingleBlog(id)
-			.then((retrievedBlog) => {
-				setBlog(retrievedBlog)
-			})
-			.catch((error) => {
-				console.error('Error fetching blog details:', error)
-			})
-	}, [id])
+		const fetchData = async () => {
+		  try {
+			const retrievedBlog = await blogService.getSingleBlog(id);
+			setBlog(retrievedBlog);
+			setComments(retrievedBlog.comments || []);
+		  } catch (error) {
+			console.error('Error fetching blog details:', error);
+		  }
+		};
+	  
+		fetchData();
+	  }, [id]);
 
 	const handleUpdateLikes = async (id, newLikes) => {
 		try {
@@ -75,18 +77,19 @@ const BlogDetails = () => {
 		return foundUser.id
 	}
 
-    const handleCommentSubmit = async (event) => {
+	const handleCommentSubmit = async (event) => {
 		event.preventDefault();
-	
+	  
 		try {
 		  await blogService.addComment(blog.id, commentText);
-		  // Atualize o estado dos comentários após adicionar um comentário
+		  // Fetch the updated blog details with comments
 		  const updatedBlog = await blogService.getSingleBlog(blog.id);
+		  // Append the new comment to the existing comments
 		  setComments(updatedBlog.comments || []);
-		  // Limpe o campo de texto do comentário após a submissão
+		  // Clear the comment text
 		  setCommentText('');
 		} catch (error) {
-		  console.error('Erro ao adicionar comentário:', error.message);
+		  console.error('Error adding comment:', error.message);
 		}
 	  };
 
