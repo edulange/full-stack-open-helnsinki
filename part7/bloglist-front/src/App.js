@@ -31,8 +31,8 @@ const App = () => {
 
 	const user = useSelector((state) => state.user.user)
 	const notifications = useSelector((state) => state.notifications)
-	const blogs = useSelector((state) => state.blog.blogs)
-	const { username, password } = useSelector((state) => state.user) //mesma coisa que as duas linhas de baixo
+	//const blogs = useSelector((state) => state.blog.blogs)
+	//const { username, password } = useSelector((state) => state.user) //mesma coisa que as duas linhas de baixo
 	//const username = useSelector(state => state.user.username);
 	//const password = useSelector(state => state.user.password);
 
@@ -44,7 +44,7 @@ const App = () => {
 	}, [])
 
 	useUserInitialization()
-	//aqui era o useEffect que cuida da inicialização
+	//aqui era o useEffect que cuidava da inicialização
 
 	const padding = {
 		padding: 5,

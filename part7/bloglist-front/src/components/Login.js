@@ -13,13 +13,20 @@ const Login = () => {
 	const { username, password } = useSelector((state) => state.user)
 	const navigate = useNavigate()
 
-	const showNotification = (message, isError = false) => {
-		const action = isError ? setErrorMessage : setSuccessMessage
-		dispatch(action(message))
-		setTimeout(() => {
-			dispatch(clearNotification())
-		}, 3000)
-	}
+const showNotification = (message, isError = false) => {
+    console.log('showNotification called with message:', message, 'isError:', isError);
+    
+    const action = isError ? setErrorMessage : setSuccessMessage;
+    
+    console.log('Dispatching action:', action);
+    dispatch(action(message));
+
+    setTimeout(() => {
+        console.log('Dispatching clearNotification');
+        dispatch(clearNotification());
+    }, 3000);
+};
+
 
 	const handleLogout = async (event) => {
 		event.preventDefault()
@@ -50,6 +57,7 @@ const Login = () => {
 				dispatch(loginUserAction(user))
 			})
 			.catch((exception) => {
+				console.log('chegou aqui')
 				showNotification('wrong username or password', true)
 				console.log(exception)
 			})
@@ -93,9 +101,13 @@ const Login = () => {
 		</form>
 	)
 
-	const logOutButton = () => (
-		<div>
-			<button type='submit' onClick={handleLogout}>
+	const LogOutButton = () => (
+		<div className='file:'>
+			<button
+				type='submit'
+				onClick={handleLogout}
+				className='bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring focus:border-red-300'
+			>
 				Logout
 			</button>
 		</div>
@@ -105,10 +117,14 @@ const Login = () => {
 		<>
 			{!user && handleLogin()}
 			{user && (
-				<div>
-					<p>{user.name} logged in</p>
-					{logOutButton()}
-				</div>
+			 <div className="mt-4 flex items-center">
+			 <p className="text-lg text-gray-800 mr-2">
+			   <span className="font-bold">{user.name}</span> logged in
+			 </p>
+			 <div className="align-middle">
+			   <LogOutButton />
+			 </div>
+		   </div>
 			)}
 		</>
 	)
