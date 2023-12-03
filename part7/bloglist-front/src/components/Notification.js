@@ -19,10 +19,10 @@ const Notification = ({ message, bgColor }) => {
 
 export const ErrorNotification = () => {
   const errorMessage = useSelector(state => state.notifications.errorMessage);
-  return <Notification message={errorMessage} bgColor="red" />;
+  return <Notification bgColor="red" message={errorMessage}  />;
 }
 
 export const SuccessNotification = () => {
   const successMessage = useSelector(state => state.notifications.successMessage);
-  return <Notification message={successMessage} bgColor="green" />;
+  return <Notification bgColor="green" message={successMessage}  />;
 }
