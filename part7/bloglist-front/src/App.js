@@ -58,7 +58,6 @@ const App = () => {
       <ErrorNotification message={notifications.errorMessage} />
       <SuccessNotification message={notifications.successMessage} />
       <Login/>
-      {user ? <h2>Blogs</h2> : null}
       <Routes>
         <Route path='/' element={<BlogSection/>}/>
         <Route path='/users'element={<Users />}/>

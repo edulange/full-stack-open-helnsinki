@@ -75,7 +75,6 @@ const BlogDetails = () => {
 
 	const handleCommentSubmit = async (event) => {
 		event.preventDefault()
-
 		try {
 			await blogService.addComment(blog.id, commentText)
 			// Fetch the updated blog details with comments

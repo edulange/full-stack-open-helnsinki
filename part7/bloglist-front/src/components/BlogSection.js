@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useRef } from 'react'
-import Blog from './BlogList'
+import BlogList from './BlogList'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,21 +41,24 @@ const BlogSection = () => {
 	}
 
 	return (
-		<>
-			{user && (
-				<Togglable buttonLabel='New Blog' ref={blogFormRef}>
-					<BlogForm
-						createBlog={addBlog}
-						toggleVisibility={() => blogFormRef.current.toggleVisibility()}
-					/>
-				</Togglable>
-			)}
-			{[...blogs]
-				.sort((a, b) => b.likes - a.likes)
-				.map((blog) => (
-					<Blog key={blog.id} blog={blog} user={user} />
-				))}
-		</>
-	)
+		<div className="p-4">
+		  {user && (
+			      <div className="flex justify-center"> {/* Adicionado contêiner flexível para centralizar */}
+
+			<Togglable buttonLabel="New Blog" ref={blogFormRef}>
+			  <BlogForm
+				createBlog={addBlog}
+				toggleVisibility={() => blogFormRef.current.toggleVisibility()}
+			  />
+			</Togglable>
+			</div>
+		  )}
+		  {[...blogs]
+			.sort((a, b) => b.likes - a.likes)
+			.map((blog) => (
+			  <BlogList key={blog.id} blog={blog} user={user} />
+			))}
+		</div>
+	  );
 }
 export default BlogSection
