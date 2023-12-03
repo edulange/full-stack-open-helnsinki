@@ -24,7 +24,7 @@ const showNotification = (message, isError = false) => {
     setTimeout(() => {
         console.log('Dispatching clearNotification');
         dispatch(clearNotification());
-    }, 3000);
+    }, 5000);
 };
 
 

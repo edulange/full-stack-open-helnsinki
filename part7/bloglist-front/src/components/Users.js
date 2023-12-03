@@ -23,22 +23,22 @@ const Users = () => {
   }, [dispatch]);
 
   return (
-    <div>
-      <h2>Users</h2>
-      <table>
+    <div className="p-4 text-center" >
+      <h2 className="text-2xl font-bold mb-4">Users</h2>
+      <table className="w-full border">
         <thead>
-          <tr>
-            <th>User</th>
-            <th>Blogs Count</th>
+          <tr className="bg-gray-200">
+            <th className="border p-2">Username</th>
+            <th className="border p-2">Blogs Count</th>
           </tr>
         </thead>
         <tbody>
           {allUsers.map((user) => (
-            <tr key={user.id}>
-              <td>
-                <Link to={`/users/${user.id}`}>{user.username}</Link>
+            <tr key={user.id} className="border">
+              <td className="border p-2">
+                <Link to={`/users/${user.id}`} className="text-blue-500 hover:underline font-bold">{user.username}</Link>
               </td>
-              <td>{user.blogs.length}</td>
+              <td className="border p-2">{user.blogs.length}</td>
             </tr>
           ))}
         </tbody>

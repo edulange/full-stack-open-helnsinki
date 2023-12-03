@@ -30,14 +30,16 @@ const UserBlogs = () => {
     const userName = userBlogs.length > 0 ? userBlogs[0].user.name : 'Unknown User';
 
 	return (
-		<div>
-			<h2>{userName} Blogs</h2>
-            <ul>
+		<div className='p-4 text-center'>
+			<h2 className='text-2xl font-bold mb-4'>{userName}'s Blogs</h2>
+            <ul className='list-disc pl-4'>
 			{userBlogs.map((blog) => (
-				<div key={blog.id}>
-					<li><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></li>
-				</div>
-			))}
+					<li key={blog.id} className="mb-2">
+						<Link to={`/blogs/${blog.id}`} className="text-blue-500 hover:underline">
+							{blog.title}
+						</Link>
+					</li>
+				))}
             </ul>
 		</div>
 	)
