@@ -16,18 +16,6 @@ const BlogDetails = () => {
 
 	const navigate = useNavigate()
 
-	const deleteStyle = {
-		color: 'red',
-	}
-
-	const blogStyle = {
-		paddingTop: 10,
-		paddingLeft: 2,
-		border: 'solid',
-		borderWidth: 1,
-		marginBottom: 5,
-	}
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -89,41 +77,50 @@ const BlogDetails = () => {
 	}
 
 	return (
-		<div style={blogStyle} className='blog-details'>
-			{blog.title} <br />
-			{blog.url} <br />
-			Likes {blog.likes}{' '}
-			<button onClick={() => handleUpdateLikes(blog.id, blog.likes + 1)} className='like-btn'>
-				like
-			</button>{' '}
-			<br />
-			{blog.author}
-			{findUser() === blog.user && (
-				<p>
-					<button style={deleteStyle} onClick={handleDelete} className='delete'>
-						delete
+		<div className='flex items-center justify-center h-full'>
+			<div className='p-4 border rounded-md shadow-md'>
+				<h2 className='text-xl font-bold mb-4'>{blog.title}</h2>
+				<p className='mb-2 italic'>{blog.url}</p>
+				<p className='mb-2'>
+					Likes {blog.likes}{' '}
+					<button
+						onClick={() => handleUpdateLikes(blog.id, blog.likes + 1)}
+						className='bg-blue-500 text-white px-2 py-1 rounded-md'
+					>
+						Like 👍
 					</button>
 				</p>
-			)}
-			<h3>Comentários</h3>
-			<form onSubmit={handleCommentSubmit}>
-				<input
-					type='text'
-					id='commentText'
-					value={commentText}
-					onChange={(e) => setCommentText(e.target.value)}
-				/>
-				<button type='submit'>add comment</button>
-			</form>
-			<ul>
-				{comments.map((comment) => {
-					return (
-						<li key={comment._id}> {/* eu tive qeu colocar._id por casua do schema dele */}
-							<strong>{comment.user}</strong>: {comment.text}
-						</li>
-					)
-				})}
-			</ul>
+				<p className='mb-2'>{blog.author}</p>
+				{findUser() === blog.user && (
+					<p>
+						<button onClick={handleDelete} className='bg-red-500 text-white px-2 py-1 rounded-md'>
+							delete
+						</button>
+					</p>
+				)}
+				<h3 className='text-lg font-bold mb-2'>Comments</h3>
+				<form onSubmit={handleCommentSubmit} className='mb-4'>
+					<input
+						type='text'
+						value={commentText}
+						onChange={(e) => setCommentText(e.target.value)}
+						className='border rounded-md p-2 mr-2'
+					/>
+					<button type='submit' className='bg-green-500 text-white px-2 py-1 rounded-md'>
+						add comment
+					</button>
+				</form>
+				<ul>
+					{comments.map((comment) => {
+						return (
+							<li key={comment._id} className='mb-2 text-blue-500 italic'>
+								{/* eu tive qeu colocar._id por casua do schema dele */}
+								{comment.text}
+							</li>
+						)
+					})}
+				</ul>
+			</div>
 		</div>
 	)
 }
