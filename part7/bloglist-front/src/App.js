@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import useUserInitialization from './components/userInitialization'
 
 import Login from './components/Login'
+import Header from './components/Header'
 import BlogSection from './components/BlogSection'
 import Users from './components/Users'
 import UserBlogs from './components/UserBlogs'
@@ -46,26 +47,19 @@ const App = () => {
 	useUserInitialization()
 	//aqui era o useEffect que cuidava da inicialização
 
-	const padding = {
-		padding: 5,
-	}
+
 	
 	return (
 		
 	    <div>
       {user ? (
-        <div>
-          <Link style={padding} to='/'>Home</Link>
-          <Link style={padding} to='/'>Blogs</Link>
-          <Link style={padding} to='/users'>Users</Link>
-        </div>
+        <Header/>
       ) : null}
       <ErrorNotification message={notifications.errorMessage} />
       <SuccessNotification message={notifications.successMessage} />
       <Login/>
       {user ? <h2>Blogs</h2> : null}
       <Routes>
-	
         <Route path='/' element={<BlogSection/>}/>
         <Route path='/users'element={<Users />}/>
         <Route path='/users/:id'element={<UserBlogs />}/>
