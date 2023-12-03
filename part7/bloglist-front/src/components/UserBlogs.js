@@ -27,20 +27,22 @@ const UserBlogs = () => {
 	}, [id, dispatch])
 
 	const userBlogs = allBlogs.filter((blog) => blog.user.id === id)
-    const userName = userBlogs.length > 0 ? userBlogs[0].user.name : 'Unknown User';
+	const userName = userBlogs.length > 0 ? userBlogs[0].user.name : 'Unknown User'
 
 	return (
-		<div className='p-4 text-center'>
-			<h2 className='text-2xl font-bold mb-4'>{userName}'s Blogs</h2>
-            <ul className='list-disc pl-4'>
-			{userBlogs.map((blog) => (
-					<li key={blog.id} className="mb-2">
-						<Link to={`/blogs/${blog.id}`} className="text-blue-500 hover:underline">
-							{blog.title}
-						</Link>
-					</li>
-				))}
-            </ul>
+		<div className='flex items-center justify-center h-full'>
+			<div className='p-4 text-center'>
+				<h2 className='text-2xl font-bold mb-4'>{userName} Blogs</h2>
+				<ul className='list-disc pl-4'>
+					{userBlogs.map((blog) => (
+						<li key={blog.id} className='mb-2'>
+							<Link to={`/blogs/${blog.id}`} className='text-blue-500 hover:underline'>
+								{blog.title}
+							</Link>
+						</li>
+					))}
+				</ul>
+			</div>
 		</div>
 	)
 }
