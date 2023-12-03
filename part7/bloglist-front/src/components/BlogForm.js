@@ -12,8 +12,8 @@ const FormField = ({ label, type, value, onChange }) => (
 			name={label.toLowerCase()}
 			value={value}
 			onChange={({ target }) => onChange(target.value)}
-			className='mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300'
-		/>
+			className="border rounded-md p-2 w-full lg:w-96"
+			/>
 	</div>
 )
 
