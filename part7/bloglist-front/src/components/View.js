@@ -5,7 +5,6 @@ import blogService from '../services/blogs'
 import { updateBlog, removeBlog } from '../reducers/blogReducer'
 import { useParams, useNavigate } from 'react-router-dom'
 
-
 const BlogDetails = () => {
 	const { id } = useParams()
 	const [blog, setBlog] = useState(null)
@@ -29,32 +28,29 @@ const BlogDetails = () => {
 		marginBottom: 5,
 	}
 
-
-
 	useEffect(() => {
 		const fetchData = async () => {
-		  try {
-			const retrievedBlog = await blogService.getSingleBlog(id);
-			setBlog(retrievedBlog);
-			setComments(retrievedBlog.comments || []);
-		  } catch (error) {
-			console.error('Error fetching blog details:', error);
-		  }
-		};
-	  
-		fetchData();
-	  }, [id]);
+			try {
+				const retrievedBlog = await blogService.getSingleBlog(id)
+				setBlog(retrievedBlog)
+				setComments(retrievedBlog.comments || [])
+			} catch (error) {
+				console.error('Error fetching blog details:', error)
+			}
+		}
+
+		fetchData()
+	}, [id])
 
 	const handleUpdateLikes = async (id, newLikes) => {
 		try {
-		  const updatedBlog = await blogService.update(id, { likes: newLikes });
-		  setBlog(updatedBlog); // Atualiza o estado local do blog
-		  dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }));
+			const updatedBlog = await blogService.update(id, { likes: newLikes })
+			setBlog(updatedBlog) // Atualiza o estado local do blog
+			dispatch(updateBlog({ id, updatedBlog: { id, likes: newLikes } }))
 		} catch (error) {
-		  console.error('Error updating likes:', error);
+			console.error('Error updating likes:', error)
 		}
-	  };
-	  
+	}
 
 	const handleDelete = async () => {
 		if (window.confirm(`Do you really want to delete ${blog.title} this blog?`)) {
@@ -78,25 +74,24 @@ const BlogDetails = () => {
 	}
 
 	const handleCommentSubmit = async (event) => {
-		event.preventDefault();
-	  
+		event.preventDefault()
+
 		try {
-		  await blogService.addComment(blog.id, commentText);
-		  // Fetch the updated blog details with comments
-		  const updatedBlog = await blogService.getSingleBlog(blog.id);
-		  // Append the new comment to the existing comments
-		  setComments(updatedBlog.comments || []);
-		  // Clear the comment text
-		  setCommentText('');
+			await blogService.addComment(blog.id, commentText)
+			// Fetch the updated blog details with comments
+			const updatedBlog = await blogService.getSingleBlog(blog.id)
+			// Append the new comment to the existing comments
+			setComments(updatedBlog.comments || [])
+			// Clear the comment text
+			setCommentText('')
 		} catch (error) {
-		  console.error('Error adding comment:', error.message);
+			console.error('Error adding comment:', error.message)
 		}
-	  };
+	}
 
 	return (
 		<div style={blogStyle} className='blog-details'>
-			{blog.title}{' '}
-			<br />
+			{blog.title} <br />
 			{blog.url} <br />
 			Likes {blog.likes}{' '}
 			<button onClick={() => handleUpdateLikes(blog.id, blog.likes + 1)} className='like-btn'>
@@ -111,25 +106,26 @@ const BlogDetails = () => {
 					</button>
 				</p>
 			)}
-    <h3>Comentários</h3>
-
-      <form onSubmit={handleCommentSubmit}>
-        <input
-          type="text"
-          id="commentText"
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-		  />
-        <button type="submit">add comment</button>
-      </form>
-		  <ul>
-			{comments.map((comment) => (
-			  <li key={comment.id}>
-				<strong>{comment.user}</strong>: {comment.text}
-			  </li>
-			))}
-		  </ul>
-    </div>
+			<h3>Comentários</h3>
+			<form onSubmit={handleCommentSubmit}>
+				<input
+					type='text'
+					id='commentText'
+					value={commentText}
+					onChange={(e) => setCommentText(e.target.value)}
+				/>
+				<button type='submit'>add comment</button>
+			</form>
+			<ul>
+				{comments.map((comment) => {
+					return (
+						<li key={comment._id}> {/* eu tive qeu colocar._id por casua do schema dele */}
+							<strong>{comment.user}</strong>: {comment.text}
+						</li>
+					)
+				})}
+			</ul>
+		</div>
 	)
 }
 
