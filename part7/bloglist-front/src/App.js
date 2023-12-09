@@ -8,17 +8,13 @@ import Header from './components/Header'
 import BlogSection from './components/BlogSection'
 import Users from './components/Users'
 import UserBlogs from './components/UserBlogs'
-import {
-  SuccessNotification,
-  ErrorNotification,
-} from './components/Notification'
-
+import { SuccessNotification, ErrorNotification } from './components/Notification'
 
 /* eslint-disable */
 
-import { Routes, Route, Link, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
-import { setBlogs} from './reducers/blogReducer'
+import { setBlogs } from './reducers/blogReducer'
 import View from './components/View'
 
 const App = () => {
@@ -28,7 +24,6 @@ const App = () => {
 	//não é mais necessário pois estou utilizando useSelector
 
 	const dispatch = useDispatch()
-
 
 	const user = useSelector((state) => state.user.user)
 	const notifications = useSelector((state) => state.notifications)
@@ -47,27 +42,21 @@ const App = () => {
 	useUserInitialization()
 	//aqui era o useEffect que cuidava da inicialização
 
-
-	
 	return (
-		
-	    <div>
-      {user ? (
-        <Header/>
-      ) : null}
-      <ErrorNotification message={notifications.errorMessage} />
-      <SuccessNotification message={notifications.successMessage} />
-      <Login/>
-      <Routes>
-        <Route path='/' element={<BlogSection/>}/>
-        <Route path='/users'element={<Users />}/>
-        <Route path='/users/:id'element={<UserBlogs />}/>
-		<Route path='/blogs/:id' element={<View/>} />
-        {user ? null : <Route path='/users' element={<Navigate to='/'/>}/>}
-      </Routes>
-    </div>
-	  );
+		<div>
+			{user ? <Header /> : null}
+			<ErrorNotification message={notifications.errorMessage} />
+			<SuccessNotification message={notifications.successMessage} />
+			<Login />
+			<Routes>
+				<Route path='/' element={<BlogSection />} />
+				<Route path='/users' element={<Users />} />
+				<Route path='/users/:id' element={<UserBlogs />} />
+				<Route path='/blogs/:id' element={<View />} />
+				{user ? null : <Route path='/users' element={<Navigate to='/' />} />}
+			</Routes>
+		</div>
+	)
 }
 
 export default App
-
