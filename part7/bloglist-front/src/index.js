@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import React from "react"
 import ReactDOM from "react-dom/client"
 import "./index.css" // Importa o arquivo CSS
